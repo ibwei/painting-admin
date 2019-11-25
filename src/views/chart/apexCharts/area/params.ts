@@ -4,6 +4,7 @@ import { dateSeries } from './dateSeries';
 import { dataSeries } from './dataSeries';
 import { githubdata } from './githubData';
 
+
 export const basicAreaOptions = {
   chart: {
     height: 380,
@@ -20,33 +21,31 @@ export const basicAreaOptions = {
     curve: 'straight',
   },
   colors: ['#fa5c7c'],
-  series: [
-    {
-      name: 'STOCK ABC',
-      data: [
-        8107.85,
-        8128.0,
-        8122.9,
-        8165.5,
-        8340.7,
-        8423.7,
-        8423.5,
-        8514.3,
-        8481.85,
-        8487.7,
-        8506.9,
-        8626.2,
-        8668.95,
-        8602.3,
-        8607.55,
-        8512.9,
-        8496.25,
-        8600.65,
-        8881.1,
-        9340.85,
-      ],
-    },
-  ],
+  series: [{
+    name: 'STOCK ABC',
+    data: [
+      8107.85,
+      8128.0,
+      8122.9,
+      8165.5,
+      8340.7,
+      8423.7,
+      8423.5,
+      8514.3,
+      8481.85,
+      8487.7,
+      8506.9,
+      8626.2,
+      8668.95,
+      8602.3,
+      8607.55,
+      8512.9,
+      8496.25,
+      8600.65,
+      8881.1,
+      9340.85,
+    ],
+  }],
   title: {
     text: 'Fundamental Analysis of Stocks',
     align: 'left',
@@ -92,22 +91,21 @@ export const basicAreaOptions = {
     },
     borderColor: '#f1f3fa',
   },
-  responsive: [
-    {
-      breakpoint: 600,
-      options: {
-        chart: {
-          toolbar: {
-            show: !1,
-          },
-        },
-        legend: {
+  responsive: [{
+    breakpoint: 600,
+    options: {
+      chart: {
+        toolbar: {
           show: !1,
         },
       },
+      legend: {
+        show: !1,
+      },
     },
-  ],
+  }],
 };
+
 
 export const splineAreaOptions = {
   chart: {
@@ -122,16 +120,13 @@ export const splineAreaOptions = {
     curve: 'smooth',
   },
   colors: ['#727cf5', '#6c757d'],
-  series: [
-    {
-      name: 'Series 1',
-      data: [31, 40, 28, 51, 42, 109, 100],
-    },
-    {
-      name: 'Series 2',
-      data: [11, 32, 45, 32, 34, 52, 41],
-    },
-  ],
+  series: [{
+    name: 'Series 1',
+    data: [31, 40, 28, 51, 42, 109, 100],
+  }, {
+    name: 'Series 2',
+    data: [11, 32, 45, 32, 34, 52, 41],
+  }],
   xaxis: {
     categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
   },
@@ -152,36 +147,32 @@ export const splineAreaOptions = {
 
 export const areaChartDatetimeOptions = {
   annotations: {
-    yaxis: [
-      {
-        value: 30,
-        borderColor: '#999',
-        yAxisIndex: 0,
-        label: {
-          show: !0,
-          text: 'Support',
-          style: {
-            color: '#fff',
-            background: '#00E396',
-          },
+    yaxis: [{
+      value: 30,
+      borderColor: '#999',
+      yAxisIndex: 0,
+      label: {
+        show: !0,
+        text: 'Support',
+        style: {
+          color: '#fff',
+          background: '#00E396',
         },
       },
-    ],
-    xaxis: [
-      {
-        value: new Date('14 Nov 2012').getTime(),
-        borderColor: '#999',
-        yAxisIndex: 0,
-        label: {
-          show: !0,
-          text: 'Rally',
-          style: {
-            color: '#fff',
-            background: '#775DD0',
-          },
+    }],
+    xaxis: [{
+      value: new Date('14 Nov 2012').getTime(),
+      borderColor: '#999',
+      yAxisIndex: 0,
+      label: {
+        show: !0,
+        text: 'Rally',
+        style: {
+          color: '#fff',
+          background: '#775DD0',
         },
       },
-    ],
+    }],
   },
   chart: {
     type: 'area',
@@ -193,11 +184,9 @@ export const areaChartDatetimeOptions = {
   dataLabels: {
     enabled: !1,
   },
-  series: [
-    {
-      data: dateSeries,
-    },
-  ],
+  series: [{
+    data: dateSeries,
+  }],
   markers: {
     size: 0,
     style: 'hollow',
@@ -236,178 +225,133 @@ export const areaChartNegativeOptions = {
     curve: 'straight',
   },
   colors: ['#0acf97', '#ffbc00'],
-  series: [
-    {
-      name: 'North',
-      data: [
-        {
-          x: 1996,
-          y: 322,
-        },
-        {
-          x: 1997,
-          y: 324,
-        },
-        {
-          x: 1998,
-          y: 329,
-        },
-        {
-          x: 1999,
-          y: 342,
-        },
-        {
-          x: 2e3,
-          y: 348,
-        },
-        {
-          x: 2001,
-          y: 334,
-        },
-        {
-          x: 2002,
-          y: 325,
-        },
-        {
-          x: 2003,
-          y: 316,
-        },
-        {
-          x: 2004,
-          y: 318,
-        },
-        {
-          x: 2005,
-          y: 330,
-        },
-        {
-          x: 2006,
-          y: 355,
-        },
-        {
-          x: 2007,
-          y: 366,
-        },
-        {
-          x: 2008,
-          y: 337,
-        },
-        {
-          x: 2009,
-          y: 352,
-        },
-        {
-          x: 2010,
-          y: 377,
-        },
-        {
-          x: 2011,
-          y: 383,
-        },
-        {
-          x: 2012,
-          y: 344,
-        },
-        {
-          x: 2013,
-          y: 366,
-        },
-        {
-          x: 2014,
-          y: 389,
-        },
-        {
-          x: 2015,
-          y: 334,
-        },
-      ],
-    },
-    {
-      name: 'South',
-      data: [
-        {
-          x: 1996,
-          y: 162,
-        },
-        {
-          x: 1997,
-          y: 90,
-        },
-        {
-          x: 1998,
-          y: 50,
-        },
-        {
-          x: 1999,
-          y: 77,
-        },
-        {
-          x: 2e3,
-          y: 35,
-        },
-        {
-          x: 2001,
-          y: -45,
-        },
-        {
-          x: 2002,
-          y: -88,
-        },
-        {
-          x: 2003,
-          y: -120,
-        },
-        {
-          x: 2004,
-          y: -156,
-        },
-        {
-          x: 2005,
-          y: -123,
-        },
-        {
-          x: 2006,
-          y: -88,
-        },
-        {
-          x: 2007,
-          y: -66,
-        },
-        {
-          x: 2008,
-          y: -45,
-        },
-        {
-          x: 2009,
-          y: -29,
-        },
-        {
-          x: 2010,
-          y: -45,
-        },
-        {
-          x: 2011,
-          y: -88,
-        },
-        {
-          x: 2012,
-          y: -132,
-        },
-        {
-          x: 2013,
-          y: -146,
-        },
-        {
-          x: 2014,
-          y: -169,
-        },
-        {
-          x: 2015,
-          y: -184,
-        },
-      ],
-    },
-  ],
+  series: [{
+    name: 'North',
+    data: [{
+      x: 1996,
+      y: 322,
+    }, {
+      x: 1997,
+      y: 324,
+    }, {
+      x: 1998,
+      y: 329,
+    }, {
+      x: 1999,
+      y: 342,
+    }, {
+      x: 2e3,
+      y: 348,
+    }, {
+      x: 2001,
+      y: 334,
+    }, {
+      x: 2002,
+      y: 325,
+    }, {
+      x: 2003,
+      y: 316,
+    }, {
+      x: 2004,
+      y: 318,
+    }, {
+      x: 2005,
+      y: 330,
+    }, {
+      x: 2006,
+      y: 355,
+    }, {
+      x: 2007,
+      y: 366,
+    }, {
+      x: 2008,
+      y: 337,
+    }, {
+      x: 2009,
+      y: 352,
+    }, {
+      x: 2010,
+      y: 377,
+    }, {
+      x: 2011,
+      y: 383,
+    }, {
+      x: 2012,
+      y: 344,
+    }, {
+      x: 2013,
+      y: 366,
+    }, {
+      x: 2014,
+      y: 389,
+    }, {
+      x: 2015,
+      y: 334,
+    }],
+  }, {
+    name: 'South',
+    data: [{
+      x: 1996,
+      y: 162,
+    }, {
+      x: 1997,
+      y: 90,
+    }, {
+      x: 1998,
+      y: 50,
+    }, {
+      x: 1999,
+      y: 77,
+    }, {
+      x: 2e3,
+      y: 35,
+    }, {
+      x: 2001,
+      y: -45,
+    }, {
+      x: 2002,
+      y: -88,
+    }, {
+      x: 2003,
+      y: -120,
+    }, {
+      x: 2004,
+      y: -156,
+    }, {
+      x: 2005,
+      y: -123,
+    }, {
+      x: 2006,
+      y: -88,
+    }, {
+      x: 2007,
+      y: -66,
+    }, {
+      x: 2008,
+      y: -45,
+    }, {
+      x: 2009,
+      y: -29,
+    }, {
+      x: 2010,
+      y: -45,
+    }, {
+      x: 2011,
+      y: -88,
+    }, {
+      x: 2012,
+      y: -132,
+    }, {
+      x: 2013,
+      y: -146,
+    }, {
+      x: 2014,
+      y: -169,
+    }, {
+      x: 2015,
+      y: -184,
+    }],
+  }],
   xaxis: {
     type: 'datetime',
     axisBorder: {
@@ -500,12 +444,10 @@ export const areaChartGithubOptions: any = {
     width: 0,
     curve: 'smooth',
   },
-  series: [
-    {
-      name: 'commits',
-      data: githubdata.series,
-    },
-  ],
+  series: [{
+    name: 'commits',
+    data: githubdata.series,
+  }],
   fill: {
     opacity: 1,
     type: 'solid',
@@ -559,12 +501,10 @@ export const areaChartGithub2Options = {
     opacity: 1,
     type: 'solid',
   },
-  series: [
-    {
-      name: 'commits',
-      data: githubdata.series,
-    },
-  ],
+  series: [{
+    name: 'commits',
+    data: githubdata.series,
+  }],
   yaxis: {
     tickAmount: 3,
     labels: {
@@ -586,12 +526,10 @@ export const areaChartGithub2Options = {
 function generateDayWiseTimeSeries(e: any, t: any, a: any) {
   let r = 0;
   let o;
-  for (o = []; r < t; null) {
+  for (o = []; r < t;) {
     const i = e;
-    const n = Math.floor(Math.random() * (a.max - a.min + 1)) + a.min;
-    o.push([i, n]);
-    e += 864e5;
-    r++;
+    const n = Math.floor(Math.random() * ((a.max - a.min) + 1)) + a.min;
+    o.push([i, n]); e += 864e5; r++;
   }
   return o;
 }
@@ -618,29 +556,25 @@ export const stackedAreaOptions = {
     width: 2,
     curve: 'smooth',
   },
-  series: [
-    {
-      name: 'South',
-      data: generateDayWiseTimeSeries(new Date('11 Feb 2017').getTime(), 20, {
-        min: 10,
-        max: 60,
-      }),
-    },
-    {
-      name: 'North',
-      data: generateDayWiseTimeSeries(new Date('11 Feb 2017').getTime(), 20, {
-        min: 10,
-        max: 20,
-      }),
-    },
-    {
-      name: 'Central',
-      data: generateDayWiseTimeSeries(new Date('11 Feb 2017').getTime(), 20, {
-        min: 10,
-        max: 15,
-      }),
-    },
-  ],
+  series: [{
+    name: 'South',
+    data: generateDayWiseTimeSeries(new Date('11 Feb 2017').getTime(), 20, {
+      min: 10,
+      max: 60,
+    }),
+  }, {
+    name: 'North',
+    data: generateDayWiseTimeSeries(new Date('11 Feb 2017').getTime(), 20, {
+      min: 10,
+      max: 20,
+    }),
+  }, {
+    name: 'Central',
+    data: generateDayWiseTimeSeries(new Date('11 Feb 2017').getTime(), 20, {
+      min: 10,
+      max: 15,
+    }),
+  }],
   fill: {
     gradient: {
       enabled: !0,
@@ -662,18 +596,16 @@ export const stackedAreaOptions = {
     },
     borderColor: '#f1f3fa',
   },
-  responsive: [
-    {
-      breakpoint: 600,
-      options: {
-        chart: {
-          toolbar: {
-            show: !1,
-          },
+  responsive: [{
+    breakpoint: 600,
+    options: {
+      chart: {
+        toolbar: {
+          show: !1,
         },
       },
     },
-  ],
+  }],
 };
 
 let ts1 = 13885344e5;
@@ -683,15 +615,15 @@ const dataSet: any = [[], [], []];
 let innerArr: any;
 
 for (let i = 0; i < 12; i++) {
-  innerArr = [(ts1 += 864e5), dataSeries[2][i].value];
+  innerArr = [ts1 += 864e5, dataSeries[2][i].value];
   dataSet[0].push(innerArr);
 }
 for (let i = 0; i < 18; i++) {
-  innerArr = [(ts2 += 864e5), dataSeries[1][i].value];
+  innerArr = [ts2 += 864e5, dataSeries[1][i].value];
   dataSet[1].push(innerArr);
 }
 for (let i = 0; i < 12; i++) {
-  innerArr = [(ts3 += 864e5), dataSeries[0][i].value];
+  innerArr = [ts3 += 864e5, dataSeries[0][i].value];
   dataSet[2].push(innerArr);
 }
 
@@ -712,20 +644,16 @@ export const areaTimeSeriesOptions = {
   dataLabels: {
     enabled: !1,
   },
-  series: [
-    {
-      name: 'PRODUCT A',
-      data: dataSet[0],
-    },
-    {
-      name: 'PRODUCT B',
-      data: dataSet[1],
-    },
-    {
-      name: 'PRODUCT C',
-      data: dataSet[2],
-    },
-  ],
+  series: [{
+    name: 'PRODUCT A',
+    data: dataSet[0],
+  }, {
+    name: 'PRODUCT B',
+    data: dataSet[1],
+  }, {
+    name: 'PRODUCT C',
+    data: dataSet[2],
+  }],
   colors: ['#39afd1', '#fa5c7c', '#727cf5'],
   markers: {
     size: 0,
@@ -795,18 +723,16 @@ export const areaTimeSeriesOptions = {
     },
     borderColor: '#f1f3fa',
   },
-  responsive: [
-    {
-      breakpoint: 600,
-      options: {
-        chart: {
-          toolbar: {
-            show: !1,
-          },
+  responsive: [{
+    breakpoint: 600,
+    options: {
+      chart: {
+        toolbar: {
+          show: !1,
         },
       },
     },
-  ],
+  }],
 };
 
 export const areaChartNullvaluesOptions = {
@@ -827,105 +753,79 @@ export const areaChartNullvaluesOptions = {
     curve: 'straight',
   },
   colors: ['#6c757d'],
-  series: [
-    {
-      name: 'Network',
-      data: [
-        {
-          x: 'Dec 23 2017',
-          y: null,
-        },
-        {
-          x: 'Dec 24 2017',
-          y: 44,
-        },
-        {
-          x: 'Dec 25 2017',
-          y: 31,
-        },
-        {
-          x: 'Dec 26 2017',
-          y: 38,
-        },
-        {
-          x: 'Dec 27 2017',
-          y: null,
-        },
-        {
-          x: 'Dec 28 2017',
-          y: 32,
-        },
-        {
-          x: 'Dec 29 2017',
-          y: 55,
-        },
-        {
-          x: 'Dec 30 2017',
-          y: 51,
-        },
-        {
-          x: 'Dec 31 2017',
-          y: 67,
-        },
-        {
-          x: 'Jan 01 2018',
-          y: 22,
-        },
-        {
-          x: 'Jan 02 2018',
-          y: 34,
-        },
-        {
-          x: 'Jan 03 2018',
-          y: null,
-        },
-        {
-          x: 'Jan 04 2018',
-          y: null,
-        },
-        {
-          x: 'Jan 05 2018',
-          y: 11,
-        },
-        {
-          x: 'Jan 06 2018',
-          y: 4,
-        },
-        {
-          x: 'Jan 07 2018',
-          y: 15,
-        },
-        {
-          x: 'Jan 08 2018',
-          y: null,
-        },
-        {
-          x: 'Jan 09 2018',
-          y: 9,
-        },
-        {
-          x: 'Jan 10 2018',
-          y: 34,
-        },
-        {
-          x: 'Jan 11 2018',
-          y: null,
-        },
-        {
-          x: 'Jan 12 2018',
-          y: null,
-        },
-        {
-          x: 'Jan 13 2018',
-          y: 13,
-        },
-        {
-          x: 'Jan 14 2018',
-          y: null,
-        },
-      ],
-    },
-  ],
+  series: [{
+    name: 'Network',
+    data: [{
+      x: 'Dec 23 2017',
+      y: null,
+    }, {
+      x: 'Dec 24 2017',
+      y: 44,
+    }, {
+      x: 'Dec 25 2017',
+      y: 31,
+    }, {
+      x: 'Dec 26 2017',
+      y: 38,
+    }, {
+      x: 'Dec 27 2017',
+      y: null,
+    }, {
+      x: 'Dec 28 2017',
+      y: 32,
+    }, {
+      x: 'Dec 29 2017',
+      y: 55,
+    }, {
+      x: 'Dec 30 2017',
+      y: 51,
+    }, {
+      x: 'Dec 31 2017',
+      y: 67,
+    }, {
+      x: 'Jan 01 2018',
+      y: 22,
+    }, {
+      x: 'Jan 02 2018',
+      y: 34,
+    }, {
+      x: 'Jan 03 2018',
+      y: null,
+    }, {
+      x: 'Jan 04 2018',
+      y: null,
+    }, {
+      x: 'Jan 05 2018',
+      y: 11,
+    }, {
+      x: 'Jan 06 2018',
+      y: 4,
+    }, {
+      x: 'Jan 07 2018',
+      y: 15,
+    }, {
+      x: 'Jan 08 2018',
+      y: null,
+    }, {
+      x: 'Jan 09 2018',
+      y: 9,
+    }, {
+      x: 'Jan 10 2018',
+      y: 34,
+    }, {
+      x: 'Jan 11 2018',
+      y: null,
+    }, {
+      x: 'Jan 12 2018',
+      y: null,
+    }, {
+      x: 'Jan 13 2018',
+      y: 13,
+    }, {
+      x: 'Jan 14 2018',
+      y: null,
+    }],
+  }],
   fill: {
     opacity: 0.8,
     gradient: {
@@ -969,16 +869,14 @@ export const areaChartNullvaluesOptions = {
     },
     borderColor: '#f1f3fa',
   },
-  responsive: [
-    {
-      breakpoint: 600,
-      options: {
-        chart: {
-          toolbar: {
-            show: !1,
-          },
+  responsive: [{
+    breakpoint: 600,
+    options: {
+      chart: {
+        toolbar: {
+          show: !1,
         },
       },
     },
-  ],
+  }],
 };

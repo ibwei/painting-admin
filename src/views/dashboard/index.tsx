@@ -1,5 +1,7 @@
 import { Component, Vue, Emit } from 'vue-property-decorator';
-import { Button, DatePicker, Modal, Row, Col, Card, Icon, Radio } from 'ant-design-vue';
+import {
+  Button, DatePicker, Modal, Row, Col, Card, Icon, Radio,
+} from 'ant-design-vue';
 import Chart from 'chart.js';
 import { numFormat } from '@/utils/index';
 
@@ -38,51 +40,38 @@ export default class Dashboard extends Vue {
     this.Doughnut();
   }
 
-  BarChartDom: any = null;
+  BarChartDom: any = null
 
   BarChart() {
     const BarChart: any = document.getElementById('BarChart');
     if (!BarChart) {
       return false;
     }
-    const a: any = BarChart.getContext('2d').createLinearGradient(0, 500, 0, 150);
+    const a: any = BarChart.getContext('2d').createLinearGradient(
+      0, 500, 0,
+      150,
+    );
     a.addColorStop(0, '#fa5c7c');
     a.addColorStop(1, '#727cf5');
     const config: any = {
       type: 'bar',
       data: {
-        labels: [
-          'Jan',
-          'Feb',
-          'Mar',
-          'Apr',
-          'May',
-          'Jun',
-          'Jul',
-          'Aug',
-          'Sep',
-          'Oct',
-          'Nov',
-          'Dec',
-        ],
-        datasets: [
-          {
-            label: 'projections',
-            backgroundColor: a,
-            borderColor: a,
-            hoverBackgroundColor: a,
-            hoverBorderColor: a,
-            data: this.pageData.projections,
-          },
-          {
-            label: 'actuals',
-            backgroundColor: '#e3eaef',
-            borderColor: '#e3eaef',
-            hoverBackgroundColor: '#e3eaef',
-            hoverBorderColor: '#e3eaef',
-            data: this.pageData.actuals,
-          },
-        ],
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        datasets: [{
+          label: 'projections',
+          backgroundColor: a,
+          borderColor: a,
+          hoverBackgroundColor: a,
+          hoverBorderColor: a,
+          data: this.pageData.projections,
+        }, {
+          label: 'actuals',
+          backgroundColor: '#e3eaef',
+          borderColor: '#e3eaef',
+          hoverBackgroundColor: '#e3eaef',
+          hoverBorderColor: '#e3eaef',
+          data: this.pageData.actuals,
+        }],
       },
       options: {
         maintainAspectRatio: !1,
@@ -90,27 +79,23 @@ export default class Dashboard extends Vue {
           display: !1,
         },
         scales: {
-          yAxes: [
-            {
-              gridLines: {
-                display: !1,
-              },
-              stacked: !1,
-              ticks: {
-                stepSize: 20,
-              },
+          yAxes: [{
+            gridLines: {
+              display: !1,
             },
-          ],
-          xAxes: [
-            {
-              barPercentage: 0.7,
-              categoryPercentage: 0.5,
-              stacked: !1,
-              gridLines: {
-                color: 'rgba(0,0,0,0.01)',
-              },
+            stacked: !1,
+            ticks: {
+              stepSize: 20,
             },
-          ],
+          }],
+          xAxes: [{
+            barPercentage: 0.7,
+            categoryPercentage: 0.5,
+            stacked: !1,
+            gridLines: {
+              color: 'rgba(0,0,0,0.01)',
+            },
+          }],
         },
       },
     };
@@ -123,21 +108,18 @@ export default class Dashboard extends Vue {
       type: 'line',
       data: {
         labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-        datasets: [
-          {
-            label: 'Current Week',
-            backgroundColor: 'transparent',
-            borderColor: '#727cf5',
-            data: this.pageData.lineData.Current,
-          },
-          {
-            label: 'Previous Week',
-            fill: !0,
-            backgroundColor: 'transparent',
-            borderColor: '#0acf97',
-            data: this.pageData.lineData.Previous,
-          },
-        ],
+        datasets: [{
+          label: 'Current Week',
+          backgroundColor: 'transparent',
+          borderColor: '#727cf5',
+          data: this.pageData.lineData.Current,
+        }, {
+          label: 'Previous Week',
+          fill: !0,
+          backgroundColor: 'transparent',
+          borderColor: '#0acf97',
+          data: this.pageData.lineData.Previous,
+        }],
       },
       options: {
         maintainAspectRatio: !1,
@@ -156,48 +138,42 @@ export default class Dashboard extends Vue {
           },
         },
         scales: {
-          xAxes: [
-            {
-              reverse: !0,
-              gridLines: {
-                color: 'rgba(0,0,0,0.05)',
-              },
+          xAxes: [{
+            reverse: !0,
+            gridLines: {
+              color: 'rgba(0,0,0,0.05)',
             },
-          ],
-          yAxes: [
-            {
-              ticks: {
-                stepSize: 20,
-              },
-              display: !0,
-              borderDash: [5, 5],
-              gridLines: {
-                color: 'rgba(0,0,0,0)',
-                fontColor: '#fff',
-              },
+          }],
+          yAxes: [{
+            ticks: {
+              stepSize: 20,
             },
-          ],
+            display: !0,
+            borderDash: [5, 5],
+            gridLines: {
+              color: 'rgba(0,0,0,0)',
+              fontColor: '#fff',
+            },
+          }],
         },
       },
     };
     this.BarChartDom = new Chart(LineChart.getContext('2d'), config);
   }
 
-  DoughnutDom: any = null;
+  DoughnutDom: any = null
 
   Doughnut() {
     const config: any = {
       type: 'doughnut',
       data: {
         labels: ['Direct', 'Affilliate', 'Sponsored', 'E-mail'],
-        datasets: [
-          {
-            data: this.pageData.doughnut,
-            backgroundColor: ['#727cf5', '#fa5c7c', '#0acf97', '#ebeff2'],
-            borderColor: 'transparent',
-            borderWidth: '3',
-          },
-        ],
+        datasets: [{
+          data: this.pageData.doughnut,
+          backgroundColor: ['#727cf5', '#fa5c7c', '#0acf97', '#ebeff2'],
+          borderColor: 'transparent',
+          borderWidth: '3',
+        }],
       },
       options: {
         maintainAspectRatio: !1,
@@ -211,17 +187,20 @@ export default class Dashboard extends Vue {
     this.DoughnutDom = new Chart(Doughnut.getContext('2d'), config);
   }
 
+
   ColLayout: any = {
     span: 12,
     lg: 12,
     md: 12,
     sm: 24,
     xs: 24,
-  };
+  }
 
-  tabChange() {}
+  tabChange() {
 
-  iconList = ['team', 'shopping-cart', 'pay-circle', 'line-chart'];
+  }
+
+  iconList = ['team', 'shopping-cart', 'pay-circle', 'line-chart']
 
   loading: boolean = true;
 
@@ -231,31 +210,29 @@ export default class Dashboard extends Vue {
         <a-row gutter={{ xs: 8, md: 12, xl: 20 }} class="dash-col">
           <a-col span={10} xxl={10} xl={10} lg={12} md={24} sm={24} xs={24}>
             <a-row gutter={{ xs: 8, md: 12, xl: 20 }}>
-              {this.pageData &&
-                this.pageData.dataList.map((item: any, index: number) => (
-                  <a-col {...{ props: this.ColLayout }} class="sub-item">
-                    <a-card loading={this.loading} class="dash-card">
-                      <h3>{item.name}</h3>
-                      <a-icon class="icon" type={this.iconList[index]}></a-icon>
-                      <p class="number">{numFormat(item.value)}</p>
-                      <div class="footer">
-                        <span class={`s-number ${index % 2 ? 'green' : 'red'}`}>
-                          <a-icon type={index % 2 ? 'arrow-up' : 'arrow-down'}></a-icon>
-                          {item.number}%
-                        </span>
-                        <span class="txt">Since last month</span>
-                      </div>
-                    </a-card>
-                  </a-col>
-                ))}
-              {!this.pageData &&
-                this.iconList.map((item: any) => (
-                  <a-col {...{ props: this.ColLayout }} class="sub-item">
-                    <a-card loading={this.loading} class="dash-card" style="height: 160px">
-                      ............
-                    </a-card>
-                  </a-col>
-                ))}
+              {
+                this.pageData && this.pageData.dataList.map((item: any, index: number) => <a-col {...{ props: this.ColLayout }} class="sub-item">
+                  <a-card loading={this.loading} class="dash-card">
+                    <h3>{item.name}</h3>
+                    <a-icon class="icon" type={this.iconList[index]}></a-icon>
+                    <p class="number">{numFormat(item.value)}</p>
+                    <div class="footer">
+                      <span class={`s-number ${index % 2 ? 'green' : 'red'}`}>
+                        <a-icon type={index % 2 ? 'arrow-up' : 'arrow-down'}></a-icon>
+                        {item.number}%
+                      </span>
+                      <span class="txt">Since last month</span>
+                    </div>
+                  </a-card>
+                </a-col>)
+              }
+              {
+                !this.pageData && this.iconList.map((item: any) => <a-col {...{ props: this.ColLayout }} class="sub-item">
+                  <a-card loading={this.loading} class="dash-card" style="height: 160px">
+                    ............
+                  </a-card>
+                </a-col>)
+              }
             </a-row>
           </a-col>
           <a-col span={14} xxl={14} xl={14} lg={12} md={24} sm={24} xs={24}>
@@ -280,17 +257,12 @@ export default class Dashboard extends Vue {
                 </div>
                 <div class="item">
                   <h4 class="item-title">Previous Week</h4>
-                  <p class="number number2">
-                    ${this.pageData && numFormat(this.pageData.PreviousWeek)}
-                  </p>
+                  <p class="number number2">${this.pageData && numFormat(this.pageData.PreviousWeek)}</p>
                 </div>
               </div>
               <div class="float-text">
                 <p class="txt">Today's Earning: $2,562.30</p>
-                <p class="tips">
-                  Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget
-                  dui. Etiam rhoncus...
-                </p>
+                <p class="tips">Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus...</p>
                 <a-button type="dashed">
                   View Statements <a-icon type="arrow-right"></a-icon>
                 </a-button>

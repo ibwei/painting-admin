@@ -29,7 +29,7 @@ export default class Bar extends Vue {
     md: 12,
     sm: 24,
     xs: 24,
-  };
+  }
 
   basicBarChart: any = null;
 

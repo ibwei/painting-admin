@@ -8,7 +8,7 @@ export default class ApexCharts extends Vue {
     const { keepList } = this.$store.state.app;
     return (
       <keep-alive max={10} include={keepList}>
-        <router-view />
+        <router-view/>
       </keep-alive>
     );
   }

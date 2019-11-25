@@ -1,5 +1,7 @@
 import { Vue, Component, Prop } from 'vue-property-decorator';
-import { Modal, Form, Input, Radio, DatePicker, InputNumber, Cascader } from 'ant-design-vue';
+import {
+  Modal, Form, Input, Radio, DatePicker, InputNumber, Cascader,
+} from 'ant-design-vue';
 import moment from 'moment';
 import city from '@/utils/city';
 
@@ -37,16 +39,14 @@ class InfoModal extends Vue {
       xs: { span: 24 },
       sm: { span: 20 },
     },
-  };
+  }
 
   submit() {
     this.Form.validateFields([], {}, (err: any, values: any) => {
       if (!err) {
         if (this.type === 'add') {
           window.api.baseInfoAdd(values).then((res: any) => {
-            const {
-              result: { resultCode, resultMessage },
-            } = res.data;
+            const { result: { resultCode, resultMessage } } = res.data;
             if (!resultCode) {
               this.$message.success(resultMessage);
               this.Form.resetFields();
@@ -57,9 +57,7 @@ class InfoModal extends Vue {
           });
         } else {
           window.api.baseInfoUpdate(values).then((res: any) => {
-            const {
-              result: { resultCode, resultMessage },
-            } = res.data;
+            const { result: { resultCode, resultMessage } } = res.data;
             if (!resultCode) {
               this.$message.success(resultMessage);
               this.Form.resetFields();
@@ -87,25 +85,43 @@ class InfoModal extends Vue {
         on-cancel={this.cancel}
       >
         <a-form>
-          <a-form-item {...{ props: this.formItemLayout }} label="name">
+          <a-form-item
+          {...{ props: this.formItemLayout }}
+          label="name"
+          >
             {getFieldDecorator('name', {
               initialValue: this.data.name,
-              rules: [{ required: true, message: 'please enter the name' }],
+              rules: [
+                { required: true, message: 'please enter the name' },
+              ],
             })(<a-input placeholder="name"></a-input>)}
           </a-form-item>
-          <a-form-item {...{ props: this.formItemLayout }} label="nickName">
+          <a-form-item
+          {...{ props: this.formItemLayout }}
+          label="nickName"
+          >
             {getFieldDecorator('nickName', {
               initialValue: this.data.nickName,
-              rules: [{ required: true, message: 'please enter the nickName' }],
+              rules: [
+                { required: true, message: 'please enter the nickName' },
+              ],
             })(<a-input placeholder="nickName"></a-input>)}
           </a-form-item>
-          <a-form-item {...{ props: this.formItemLayout }} label="age">
+          <a-form-item
+          {...{ props: this.formItemLayout }}
+          label="age"
+          >
             {getFieldDecorator('age', {
               initialValue: this.data.age,
-              rules: [{ required: true, message: 'please enter the age' }],
+              rules: [
+                { required: true, message: 'please enter the age' },
+              ],
             })(<a-input-number style="width: 100%" placeholder="age"></a-input-number>)}
           </a-form-item>
-          <a-form-item {...{ props: this.formItemLayout }} label="phone">
+          <a-form-item
+          {...{ props: this.formItemLayout }}
+          label="phone"
+          >
             {getFieldDecorator('phone', {
               initialValue: this.data.phone,
               rules: [
@@ -117,52 +133,72 @@ class InfoModal extends Vue {
               ],
             })(<a-input htmlType="number" placeholder="phone"></a-input>)}
           </a-form-item>
-          <a-form-item {...{ props: this.formItemLayout }} label="birthDate">
+          <a-form-item
+          {...{ props: this.formItemLayout }}
+          label="birthDate"
+          >
             {getFieldDecorator('birthDate', {
               initialValue: this.data.birthDate,
-              rules: [{ required: true, message: 'please select the birthDate' }],
-            })(
-              <a-date-picker
-                format="YYYY-MM-DD HH:mm:ss"
-                style="width: 100%"
-                showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
-              />,
-            )}
+              rules: [
+                { required: true, message: 'please select the birthDate' },
+              ],
+            })(<a-date-picker
+              format="YYYY-MM-DD HH:mm:ss"
+              style="width: 100%"
+              showTime={ { defaultValue: moment('00:00:00', 'HH:mm:ss') } }
+            />)}
           </a-form-item>
-          <a-form-item {...{ props: this.formItemLayout }} label="isMale">
+          <a-form-item
+          {...{ props: this.formItemLayout }}
+          label="isMale"
+          >
             {getFieldDecorator('isMale', {
               initialValue: this.data.isMale,
-              rules: [{ required: true, message: 'please select the birthDate' }],
-            })(
-              <a-radio-group>
+              rules: [
+                { required: true, message: 'please select the birthDate' },
+              ],
+            })(<a-radio-group>
                 <a-radio value={true}>Male</a-radio>
                 <a-radio value={false}>Female</a-radio>
-              </a-radio-group>,
-            )}
+              </a-radio-group>)}
           </a-form-item>
-          <a-form-item {...{ props: this.formItemLayout }} label="id Number">
+          <a-form-item
+          {...{ props: this.formItemLayout }}
+          label="id Number"
+          >
             {getFieldDecorator('id', {
               initialValue: this.data.id,
-              rules: [{ required: true, message: 'please enter the id Number' }],
+              rules: [
+                { required: true, message: 'please enter the id Number' },
+              ],
             })(<a-input placeholder="id Number"></a-input>)}
           </a-form-item>
-          <a-form-item {...{ props: this.formItemLayout }} label="email">
+          <a-form-item
+          {...{ props: this.formItemLayout }}
+          label="email"
+          >
             {getFieldDecorator('email', {
               initialValue: this.data.email,
-              rules: [{ required: true, message: 'please enter the id email' }],
+              rules: [
+                { required: true, message: 'please enter the id email' },
+              ],
             })(<a-input placeholder="email"></a-input>)}
           </a-form-item>
-          <a-form-item {...{ props: this.formItemLayout }} label="address">
+          <a-form-item
+          {...{ props: this.formItemLayout }}
+          label="address"
+          >
             {getFieldDecorator('address', {
               initialValue: this.data.address,
-              rules: [{ required: true, message: 'please select the address' }],
-            })(
-              <a-cascader
-                allowClear
-                options={city}
-                placeholder="please select the address"
-              ></a-cascader>,
-            )}
+              rules: [
+                { required: true, message: 'please select the address' },
+              ],
+            })(<a-cascader
+              allowClear
+              options={city}
+              placeholder="please select the address"
+              >
+              </a-cascader>)}
           </a-form-item>
         </a-form>
       </a-modal>

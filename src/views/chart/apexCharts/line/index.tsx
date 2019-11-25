@@ -32,7 +32,7 @@ export default class Line extends Vue {
     md: 12,
     sm: 24,
     xs: 24,
-  };
+  }
 
   lineChart: any = null;
 
@@ -110,14 +110,11 @@ export default class Line extends Vue {
       );
       this.lineChartRealtimedChart.render();
       this.timer = window.setInterval(() => {
-        this.lineChartRealtimedChart.appendData([
-          {
-            data: [Math.floor(20 * Math.random() + 20)],
-          },
-          {
-            data: [Math.floor(20 * Math.random() + 20)],
-          },
-        ]);
+        this.lineChartRealtimedChart.appendData([{
+          data: [Math.floor((20 * Math.random()) + 20)],
+        }, {
+          data: [Math.floor((20 * Math.random()) + 20)],
+        }]);
       }, 1e3);
     });
   }

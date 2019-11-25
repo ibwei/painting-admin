@@ -1,5 +1,6 @@
 import { Component, Vue } from 'vue-property-decorator';
 
+
 @Component({
   name: 'Charts',
 })
@@ -8,7 +9,7 @@ export default class Charts extends Vue {
     const { keepList } = this.$store.state.app;
     return (
       <keep-alive max={10} include={keepList}>
-        <router-view />
+        <router-view/>
       </keep-alive>
     );
   }

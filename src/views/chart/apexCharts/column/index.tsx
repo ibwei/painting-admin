@@ -29,7 +29,7 @@ export default class Column extends Vue {
     md: 12,
     sm: 24,
     xs: 24,
-  };
+  }
 
   basicColumnChart: any = null;
 

@@ -3,7 +3,8 @@ import { Tag, Popover, Button } from 'ant-design-vue';
 import { tableList, FilterFormList, Opreat } from '@/interface';
 import city from '@/utils/city';
 import InfoModal from './infoModal';
-import MapModal from './components/mapModal';
+import MapModal from './components/mapModal'
+
 
 import './index.less';
 
@@ -77,6 +78,11 @@ export default class BaseInfo extends Vue {
       dataIndex: 'belongToFacilities',
     },
     {
+      title: '类型',
+      dataIndex: 'type',
+      customRender: this.typeRender,
+    },
+    {
       title: '所在地理地址',
       dataIndex: 'address',
       customRender: this.positionRender,
@@ -107,7 +113,7 @@ export default class BaseInfo extends Vue {
 
   title: string = '新增区域';
 
-  visible: boolean = false;
+  visible: boolean = true;
 
   modelType: string = 'add';
 
@@ -115,10 +121,16 @@ export default class BaseInfo extends Vue {
 
   positionRender(address: string, others: any) {
     return (
-      <a-button type="default" onClick={this.showMapModal.bind(this, others)}>
-        点击查看
-      </a-button>
-    );
+      <a-button type="default" onClick={this.showMapModal.bind(this, others)}>点击查看</a-button>
+    )
+  }
+
+  typeRender(type: string) {
+    const colorArray: Array<string> = ['pink', 'red', 'orange', 'green', 'cyan', 'blue', 'purple'];
+    const index = Math.floor(Math.random() * 7);
+    return (
+      <a-tag color={colorArray[index]}>{type}</a-tag>
+    )
   }
 
   tableClick(key: string, row: any) {
@@ -127,11 +139,11 @@ export default class BaseInfo extends Vue {
       case 'edit':
         this.editData = data;
         this.visible = true;
-        this.title = '修改区域信息';
+        this.title = '修改设备信息';
         this.modelType = 'edit';
         break;
       case 'delete':
-        window.api.areaBaseInfoDelete({ id: row.id }).then((res: any) => {
+        window.api.deviceBaseInfoDelete({ id: row.id }).then((res: any) => {
           const { err_code } = res.data;
           if (err_code === 0) {
             this.$message.success('删除成功');
@@ -167,6 +179,7 @@ export default class BaseInfo extends Vue {
   position: any;
 
   deviceName: string = '设备';
+
 
   showMapModal(others: any) {
     this.position = others.position;
@@ -211,12 +224,7 @@ export default class BaseInfo extends Vue {
           on-close={this.closeModal}
           on-success={this.success}
         />
-        <map-modal
-          on-close={this.hideMapModal}
-          position={this.position}
-          deviceName={this.deviceName}
-          visible={this.popoverVisible}
-        ></map-modal>
+        <map-modal on-close={this.hideMapModal} position={this.position} deviceName={this.deviceName} visible={this.popoverVisible}></map-modal>
       </div>
     );
   }

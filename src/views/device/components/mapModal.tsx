@@ -1,14 +1,14 @@
-import { Component, Vue, Prop, Watch } from "vue-property-decorator";
-import { Modal } from "ant-design-vue";
-import coordTrasns from "@/utils/coordTrasns";
-import { loadBmap, loadMapInfoBox, loadCanvasLayer } from "@/utils/index";
-import "./mapModal.less";
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
+import { Modal } from 'ant-design-vue';
+import coordTrasns from '@/utils/coordTrasns';
+import { loadBmap, loadMapInfoBox, loadCanvasLayer } from '@/utils/index';
+import './mapModal.less';
 
 @Component({
-  name: "MapModal",
+  name: 'MapModal',
   components: {
-    "a-modal": Modal
-  }
+    'a-modal': Modal,
+  },
 })
 export default class MapModal extends Vue {
   @Prop() visible?: boolean;
@@ -17,13 +17,19 @@ export default class MapModal extends Vue {
 
   @Prop() position?: any;
 
-  @Watch("visible")
+  @Watch('visible')
   protected valueWatch(newV: any, oldV: any) {
     if (newV === true && this.isFirst !== true) {
-      /* console.log(this.$props);
-      
-      var marker = new this.BMap.Marker(this.$props.); 
-      this.map.setCenter() */
+      const point = new this.BMap.Point(this.$props.position.x, this.$props.position.y);
+      this.map.removeOverlay(this.marker);
+      this.marker = new this.BMap.Marker(point, {
+        offset: new this.BMap.Size(220, 150),
+        title: this.$props.deviceName,
+      });
+      this.map.addOverlay(this.marker);
+      // @ts-ignore
+      this.marker.setAnimation(BMAP_ANIMATION_BOUNCE);
+      this.map.setCenter(point);
     }
   }
 
@@ -58,33 +64,29 @@ export default class MapModal extends Vue {
     lng: number;
   } = {
     lat: 29.563694,
-    lng: 106.560421
+    lng: 106.560421,
   };
 
   // 地图方法类
   mounted() {
-    console.log(this);
-    console.log(this.isFirst);
     if (this.isFirst) {
-      this.$emit("close");
+      this.$emit('close');
       loadBmap().then((BMap: any) => {
         this.BMap = BMap;
-        this.map = new BMap.Map("modalmap"); // 创建Map实例
-        this.map.centerAndZoom(new BMap.Point(106.55, 29.57), 16); // 初始化地图,设置中心点坐标和地图级别
-        //添加地图类型控件
-        this.map.setCurrentCity("北京"); // 设置地图显示的城市 此项是必须设置的
+        this.map = new BMap.Map('modalmap'); // 创建Map实例
+        this.map.centerAndZoom(new BMap.Point(106.55, 29.57), 14); // 初始化地图,设置中心点坐标和地图级别
+        this.map.setCurrentCity('北京'); // 设置地图显示的城市 此项是必须设置的
         this.map.enableScrollWheelZoom(true);
         this.marker = new BMap.Marker(new BMap.Point(106.55, 29.57)); // 创建标注
         this.map.addOverlay(this.marker);
-        // 将标注添加到地图中
-        // eslint-disable-next-line
+        // @ts-ignore
         this.isFirst = false;
       });
     }
   }
 
   handleOk() {
-    this.$emit("close");
+    this.$emit('close');
   }
 
   render() {

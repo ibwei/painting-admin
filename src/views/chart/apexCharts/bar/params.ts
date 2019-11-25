@@ -14,25 +14,13 @@ export const basicBarOptions = {
   dataLabels: {
     enabled: !1,
   },
-  series: [
-    {
-      data: [400, 430, 448, 470, 540, 580, 690, 1100, 1200, 1380],
-    },
-  ],
+  series: [{
+    data: [400, 430, 448, 470, 540, 580, 690, 1100, 1200, 1380],
+  }],
   colors: ['#39afd1'],
   xaxis: {
-    categories: [
-      'South Korea',
-      'Canada',
-      'United Kingdom',
-      'Netherlands',
-      'Italy',
-      'France',
-      'Japan',
-      'United States',
-      'China',
-      'Germany',
-    ],
+    categories: ['South Korea', 'Canada', 'United Kingdom', 'Netherlands', 'Italy', 'France', 'Japan',
+      'United States', 'China', 'Germany'],
   },
   states: {
     hover: {
@@ -73,16 +61,13 @@ export const groupedBarOptions = {
     width: 1,
     colors: ['#fff'],
   },
-  series: [
-    {
-      name: 'Series 1',
-      data: [44, 55, 41, 64, 22, 43, 21],
-    },
-    {
-      name: 'Series 2',
-      data: [53, 32, 33, 52, 13, 44, 32],
-    },
-  ],
+  series: [{
+    name: 'Series 1',
+    data: [44, 55, 41, 64, 22, 43, 21],
+  }, {
+    name: 'Series 2',
+    data: [53, 32, 33, 52, 13, 44, 32],
+  }],
   xaxis: {
     categories: [2001, 2002, 2003, 2004, 2005, 2006, 2007],
   },
@@ -113,28 +98,22 @@ export const stackedBarOptions = {
   stroke: {
     show: !1,
   },
-  series: [
-    {
-      name: 'Marine Sprite',
-      data: [44, 55, 41, 37, 22, 43, 21],
-    },
-    {
-      name: 'Striking Calf',
-      data: [53, 32, 33, 52, 13, 43, 32],
-    },
-    {
-      name: 'Tank Picture',
-      data: [12, 17, 11, 9, 15, 11, 20],
-    },
-    {
-      name: 'Bucket Slope',
-      data: [9, 7, 5, 8, 6, 9, 4],
-    },
-    {
-      name: 'Reborn Kid',
-      data: [25, 12, 19, 32, 25, 24, 10],
-    },
-  ],
+  series: [{
+    name: 'Marine Sprite',
+    data: [44, 55, 41, 37, 22, 43, 21],
+  }, {
+    name: 'Striking Calf',
+    data: [53, 32, 33, 52, 13, 43, 32],
+  }, {
+    name: 'Tank Picture',
+    data: [12, 17, 11, 9, 15, 11, 20],
+  }, {
+    name: 'Bucket Slope',
+    data: [9, 7, 5, 8, 6, 9, 4],
+  }, {
+    name: 'Reborn Kid',
+    data: [25, 12, 19, 32, 25, 24, 10],
+  }],
   xaxis: {
     categories: [2008, 2009, 2010, 2011, 2012, 2013, 2014],
     labels: {
@@ -192,28 +171,22 @@ export const fullStackedBarOptions = {
     width: 1,
     colors: ['#fff'],
   },
-  series: [
-    {
-      name: 'Marine Sprite',
-      data: [44, 55, 41, 37, 22, 43, 21],
-    },
-    {
-      name: 'Striking Calf',
-      data: [53, 32, 33, 52, 13, 43, 32],
-    },
-    {
-      name: 'Tank Picture',
-      data: [12, 17, 11, 9, 15, 11, 20],
-    },
-    {
-      name: 'Bucket Slope',
-      data: [9, 7, 5, 8, 6, 9, 4],
-    },
-    {
-      name: 'Reborn Kid',
-      data: [25, 12, 19, 32, 25, 24, 10],
-    },
-  ],
+  series: [{
+    name: 'Marine Sprite',
+    data: [44, 55, 41, 37, 22, 43, 21],
+  }, {
+    name: 'Striking Calf',
+    data: [53, 32, 33, 52, 13, 43, 32],
+  }, {
+    name: 'Tank Picture',
+    data: [12, 17, 11, 9, 15, 11, 20],
+  }, {
+    name: 'Bucket Slope',
+    data: [9, 7, 5, 8, 6, 9, 4],
+  }, {
+    name: 'Reborn Kid',
+    data: [25, 12, 19, 32, 25, 24, 10],
+  }],
   xaxis: {
     categories: [2008, 2009, 2010, 2011, 2012, 2013, 2014],
   },
@@ -265,54 +238,16 @@ export const negativeBarOptions = {
     width: 1,
     colors: ['#fff'],
   },
-  series: [
-    {
-      name: 'Males',
-      data: [
-        0.4,
-        0.65,
-        0.76,
-        0.88,
-        1.5,
-        2.1,
-        2.9,
-        3.8,
-        3.9,
-        4.2,
-        4,
-        4.3,
-        4.1,
-        4.2,
-        4.5,
-        3.9,
-        3.5,
-        3,
-      ],
-    },
-    {
-      name: 'Females',
-      data: [
-        -0.8,
-        -1.05,
-        -1.06,
-        -1.18,
-        -1.4,
-        -2.2,
-        -2.85,
-        -3.7,
-        -3.96,
-        -4.22,
-        -4.3,
-        -4.4,
-        -4.1,
-        -4,
-        -4.1,
-        -3.4,
-        -3.1,
-        -2.8,
-      ],
-    },
-  ],
+  series: [{
+    name: 'Males',
+    data: [0.4, 0.65, 0.76, 0.88, 1.5, 2.1, 2.9, 3.8, 3.9, 4.2, 4, 4.3, 4.1, 4.2, 4.5, 3.9, 3.5, 3],
+  }, {
+    name: 'Females',
+    data: [
+      -0.8, -1.05, -1.06, -1.18, -1.4, -2.2, -2.85, -3.7,
+      -3.96, -4.22, -4.3, -4.4, -4.1, -4, -4.1, -3.4, -3.1, -2.8,
+    ],
+  }],
   grid: {
     borderColor: '#f1f3fa',
     xaxis: {
@@ -338,26 +273,8 @@ export const negativeBarOptions = {
     },
   },
   xaxis: {
-    categories: [
-      '85+',
-      '80-84',
-      '75-79',
-      '70-74',
-      '65-69',
-      '60-64',
-      '55-59',
-      '50-54',
-      '45-49',
-      '40-44',
-      '35-39',
-      '30-34',
-      '25-29',
-      '20-24',
-      '15-19',
-      '10-14',
-      '5-9',
-      '0-4',
-    ],
+    categories: ['85+', '80-84', '75-79', '70-74', '65-69', '60-64', '55-59', '50-54', '45-49', '40-44', '35-39',
+      '30-34', '25-29', '20-24', '15-19', '10-14', '5-9', '0-4'],
     title: {
       text: 'Percent',
     },
@@ -395,24 +312,19 @@ export const patternBarOptions = {
   stroke: {
     width: 2,
   },
-  series: [
-    {
-      name: 'Marine Sprite',
-      data: [44, 55, 41, 37, 22, 43, 21],
-    },
-    {
-      name: 'Striking Calf',
-      data: [53, 32, 33, 52, 13, 43, 32],
-    },
-    {
-      name: 'Tank Picture',
-      data: [12, 17, 11, 9, 15, 11, 20],
-    },
-    {
-      name: 'Bucket Slope',
-      data: [9, 7, 5, 8, 6, 9, 4],
-    },
-  ],
+  series: [{
+    name: 'Marine Sprite',
+    data: [44, 55, 41, 37, 22, 43, 21],
+  }, {
+    name: 'Striking Calf',
+    data: [53, 32, 33, 52, 13, 43, 32],
+  }, {
+    name: 'Tank Picture',
+    data: [12, 17, 11, 9, 15, 11, 20],
+  }, {
+    name: 'Bucket Slope',
+    data: [9, 7, 5, 8, 6, 9, 4],
+  }],
   xaxis: {
     categories: [2008, 2009, 2010, 2011, 2012, 2013, 2014],
   },
@@ -448,16 +360,14 @@ export const patternBarOptions = {
   grid: {
     borderColor: '#f1f3fa',
   },
-  responsive: [
-    {
-      breakpoint: 600,
-      options: {
-        legend: {
-          show: !1,
-        },
+  responsive: [{
+    breakpoint: 600,
+    options: {
+      legend: {
+        show: !1,
       },
     },
-  ],
+  }],
 };
 
 const labels = Array({ length: 39 }).map((e, t) => t + 1);
@@ -486,45 +396,14 @@ export const imageFillBarOptions = {
     colors: ['#fff'],
     width: 0.2,
   },
-  series: [
-    {
-      name: 'coins',
-      data: [
-        2,
-        4,
-        3,
-        4,
-        3,
-        5,
-        5,
-        6.5,
-        6,
-        5,
-        4,
-        5,
-        8,
-        7,
-        7,
-        8,
-        8,
-        10,
-        9,
-        9,
-        12,
-        12,
-        11,
-        12,
-        13,
-        14,
-        16,
-        14,
-        15,
-        17,
-        19,
-        21,
-      ],
-    },
-  ],
+  series: [{
+    name: 'coins',
+    data: [
+      2, 4, 3, 4, 3, 5, 5, 6.5, 6, 5, 4, 5, 8, 7, 7,
+      8, 8, 10, 9, 9, 12, 12, 11, 12, 13, 14, 16, 14, 15,
+      17, 19, 21,
+    ],
+  }],
   labels,
   yaxis: {
     axisBorder: {

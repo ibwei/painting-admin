@@ -1,5 +1,13 @@
-import { Vue, Component, Prop } from 'vue-property-decorator';
-import { Modal, Form, Input, Radio, DatePicker, InputNumber, Cascader } from 'ant-design-vue';
+  /* eslint-disable */
+import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
+import { loadBmap } from '@/utils/index';
+import {
+  Modal, Form, Input, Radio, DatePicker, InputNumber, Cascader, Select
+} from 'ant-design-vue';
+
+import './index.less';
+
+
 
 @Component({
   components: {
@@ -7,6 +15,8 @@ import { Modal, Form, Input, Radio, DatePicker, InputNumber, Cascader } from 'an
     'a-form': Form,
     'a-form-item': Form.Item,
     'a-input': Input,
+    'a-select': Select,
+    'a-select-option': Select.Option,
     'a-input-number': InputNumber,
     'a-radio': Radio,
     'a-radio-group': Radio.Group,
@@ -26,6 +36,30 @@ class InfoModal extends Vue {
 
   @Prop() data!: any;
 
+  @Watch('visible')
+
+  protected valueWatch(newV: any, oldV: any) {
+    if (newV === true && this.isFirst !== true) {
+      const point = new this.BMap.Point(this.data.position.x, this.data.position.y);
+      this.map.removeOverlay(this.marker);
+      this.marker = new this.BMap.Marker(point, { offset: new this.BMap.Size(200, 100) });
+      this.map.addOverlay(this.marker);
+      // @ts-ignore
+      this.marker.setAnimation(BMAP_ANIMATION_BOUNCE);
+      this.map.setCenter(point);
+    }
+  }
+
+  map: any = null;
+
+  BMap: any = null;
+
+  // 坐标定位图片
+  marker: any = null;
+
+  // 是否首次加载
+  isFirst: boolean = true;
+
   formItemLayout = {
     labelCol: {
       xs: { span: 24 },
@@ -35,16 +69,51 @@ class InfoModal extends Vue {
       xs: { span: 24 },
       sm: { span: 20 },
     },
-  };
+  }
+
+  // 地图方法类
+  created() {
+    this.$nextTick(() => {
+      if (this.isFirst) {
+        this.$emit('close');
+        loadBmap().then((BMap: any) => {
+          this.BMap = BMap;
+          this.map = new BMap.Map('editmap');    // 创建Map实例
+          this.map.centerAndZoom(new BMap.Point(106.55, 29.57), 14);  // 初始化地图,设置中心点坐标和地图级别
+          this.map.setCurrentCity('北京');          // 设置地图显示的城市 此项是必须设置的
+          this.map.enableScrollWheelZoom(true);
+          this.marker = new BMap.Marker(new BMap.Point(106.55, 29.57), { offset: new this.BMap.Size(10, 10) });  // 创建标注     
+          this.map.addOverlay(this.marker);
+          this.map.addEventListener('click', this.mapClick);
+          // @ts-ignore
+          this.isFirst = false;
+        });
+      }
+    })
+  }
+
+  //点击地图触发
+  mapClick(e: any) {
+    let point = new this.BMap.Point(e.point.lng, e.point.lat);
+    this.map.removeOverlay(this.marker);
+    this.marker = new this.BMap.Marker(point, { offset: new this.BMap.Size(10, 10) });
+    this.map.addOverlay(this.marker);
+    // @ts-ignore
+    this.marker.setAnimation(BMAP_ANIMATION_BOUNCE);
+    this.map.setCenter(point);
+    this.data.position = { x: e.point.lng, y: e.point.lat };
+  }
+
+  typeArray: Array<string> = ['类型1', '类型2', '类型3', '类型4'];
+  areaArray: Array<string> = ['区域1', '区域2', '区域3', '区域4'];
+  facilitiesArray: Array<string> = ['设施1', '设施2', '设施3', '设施4'];
 
   submit() {
     this.$props.Form.validateFields((err: any, values: any) => {
       if (!err) {
         if (this.type === 'edit') {
-          window.api.areaBaseInfoUpdate({ id: this.data.id, ...values }).then((res: any) => {
-            const {
-              result: { resultCode, resultMessage },
-            } = res.data;
+          window.api.deviceBaseInfoUpdate({ id: this.data.id, position: this.data.position, ...values }).then((res: any) => {
+            const { result: { resultCode, resultMessage } } = res.data;
             if (!resultCode) {
               this.$message.success(resultMessage);
               this.Form.resetFields();
@@ -54,13 +123,8 @@ class InfoModal extends Vue {
             }
           });
         } else if (this.type === 'add') {
-          window.api.areaBaseInfoAdd(values).then((res: any) => {
-            console.log(res);
-            const {
-              err_code,
-              result: { resultMessage },
-            } = res.data;
-            console.log(err_code);
+          window.api.deviceBaseInfoAdd(values).then((res: any) => {
+            const { err_code, result: { resultMessage } } = res.data;
             if (!err_code) {
               this.$message.success(resultMessage);
               this.Form.resetFields();
@@ -77,9 +141,21 @@ class InfoModal extends Vue {
   cancel() {
     this.$emit('close');
   }
-
   render() {
     const { getFieldDecorator } = this.Form;
+    const selectType = this.typeArray.map((item, index) =>
+      <a-select-option key={index} value={item}>
+        {item}
+      </a-select-option>);
+    const area = this.typeArray.map((item, index) =>
+      <a-select-option key={index} value={item}>
+        {item}
+      </a-select-option>);
+    const facilities = this.typeArray.map((item, index) =>
+      <a-select-option key={index} value={item}>
+        {item}
+      </a-select-option>);
+
     return (
       <a-modal
         title={this.title}
@@ -88,23 +164,65 @@ class InfoModal extends Vue {
         on-cancel={this.cancel}
       >
         <a-form>
-          <a-form-item {...{ props: this.formItemLayout }} label="区域名称">
+          <a-form-item
+            {...{ props: this.formItemLayout }}
+            label="设备名称"
+          >
             {getFieldDecorator('name', {
               initialValue: this.data.name,
-              rules: [{ required: true, message: '请输入区域名' }],
-            })(<a-input placeholder="请输入区域名"></a-input>)}
+              rules: [
+                { required: true, message: '请输入设备名' },
+              ],
+            })(<a-input placeholder="请输入设备名"></a-input>)}
           </a-form-item>
-          <a-form-item {...{ props: this.formItemLayout }} label="创建人">
-            {getFieldDecorator('createName', {
-              initialValue: this.data.createName,
-              rules: [{ required: true, message: '请输入创建人名称' }],
-            })(<a-input placeholder="请输入创建人名称"></a-input>)}
-          </a-form-item>
-          <a-form-item {...{ props: this.formItemLayout }} label="类型">
+          <a-form-item
+            {...{ props: this.formItemLayout }}
+            label="类型"
+          >
             {getFieldDecorator('type', {
               initialValue: this.data.type,
-              rules: [{ required: true, message: '请选择类型' }],
-            })(<a-input placeholder="请选择类型"></a-input>)}
+              rules: [
+                { required: true, message: '请选择类型' },
+              ],
+            })(
+              <a-select size="default" style="width: 200px">
+                {selectType}
+              </a-select>
+            )}
+          </a-form-item>
+          <a-form-item
+            {...{ props: this.formItemLayout }}
+            label="所属区域"
+          >
+            {getFieldDecorator('belongToArea', {
+              initialValue: this.data.belongToArea,
+              rules: [
+                { required: true, message: '请选择所属区域' },
+              ],
+            })(
+              <a-select size="default" style="width: 200px">
+                {area}
+              </a-select>
+            )}
+          </a-form-item>
+          <a-form-item
+            {...{ props: this.formItemLayout }}
+            label="所属设施"
+          >
+            {getFieldDecorator('belongToFacilities', {
+              initialValue: this.data.belongToFacilities,
+              rules: [
+                { required: true, message: '请选择所属设施' },
+              ],
+            })(
+              <a-select size="default" style="width: 200px">
+                {facilities}
+              </a-select>
+            )}
+          </a-form-item>
+          <a-form-item label="地理位置"
+            {...{ props: this.formItemLayout }} >
+            <div id='editmap' className='map'></div>
           </a-form-item>
         </a-form>
       </a-modal>

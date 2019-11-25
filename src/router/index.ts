@@ -12,6 +12,27 @@ export const constantRouterMap: routerItem[] & RouterOptions['routes'] = [
     path: '/device', name: 'device', component: getComponent('device/index'),
   },
   {
+    path: '/device/deviceType', name: 'deviceType', component: getComponent('device/deviceType/index'),
+  },
+  {
+    path: '/facilities', name: 'facilities', component: getComponent('facilities/index'),
+  },
+  {
+    path: '/facilities/facilitiesList', name: 'facilitiesList', component: getComponent('facilities/index'),
+  },
+  {
+    path: '/facilities/facilitiesTypeList', name: 'facilitiesTypeList', component: getComponent('facilities/facilitiesType/index'),
+  },
+  {
+    path: '/line', name: 'line', component: getComponent('line/index'),
+  },
+  {
+    path: '/line/lineList', name: 'lineList', component: getComponent('line/index'),
+  },
+  {
+    path: '/line/lineTypeList', name: 'lineTypeList', component: getComponent('line/lineType/index'),
+  },
+  {
     path: '/dashboard', redirect: '/dashboard',
   },
   {
@@ -48,19 +69,77 @@ export const asyncRouterMap: routerItem[] = [
   },
   {
     path: '/area',
-    icon: 'cluster',
+    icon: 'dot-chart',
     name: '区域管理',
     component: getComponent('area/index'),
     permission: true,
     meta: { key: 'Area' },
   },
   {
-    path: '/device',
+    path: '/line',
+    icon: 'line-chart',
+    name: '管道管理',
+    component: getComponent('line/index'),
+    permission: true,
+    meta: { key: 'line' },
+    children: [
+      {
+        path: 'lineTypeList',
+        name: '管道类型',
+        component: getComponent('line/lineType/index'),
+        permission: true,
+        meta: { key: 'lineTypeList' },
+      }, {
+        path: 'lineList',
+        name: '管道列表',
+        component: getComponent('line/index'),
+        permission: true,
+        meta: { key: 'lineList' },
+      }]
+  },
+  {
+    path: '/facilities',
     icon: 'cluster',
+    name: '设施管理',
+    component: getComponent('facilities/index'),
+    permission: true,
+    meta: { key: 'Facilities' },
+    children: [
+      {
+        path: 'facilitiesList',
+        name: '设施类型',
+        component: getComponent('facilities/index'),
+        permission: true,
+        meta: { key: 'facilitiesList' },
+      }, {
+        path: 'facilitiesTypeList',
+        name: '设施列表',
+        component: getComponent('facilities/facilitiesType/index'),
+        permission: true,
+        meta: { key: 'facilitiesTypeList' },
+      }]
+  },
+  {
+    path: '/device',
+    icon: 'desktop',
     name: '设备管理',
     component: getComponent('device/index'),
     permission: true,
     meta: { key: 'Device' },
+    children: [
+      {
+        path: 'deviceList',
+        name: '设备列表',
+        component: getComponent('device/index'),
+        permission: true,
+        meta: { key: 'deviceList' },
+      }, {
+        path: 'deviceType',
+        name: '设备类型',
+        component: getComponent('device/deviceType/index'),
+        permission: true,
+        meta: { key: 'deviceType' },
+      }]
   },
   {
     path: '/customers',

@@ -1,4 +1,6 @@
-import { Component, Prop, Emit, Vue, Watch, Provide } from 'vue-property-decorator';
+import {
+  Component, Prop, Emit, Vue, Watch, Provide,
+} from 'vue-property-decorator';
 import { Tabs } from 'ant-design-vue';
 import config from '@/utils/config';
 import { menuItem } from '@/interface';
@@ -51,11 +53,7 @@ export default class AppMain extends Vue {
 
   render() {
     const {
-      sidebar: { opened = 1 },
-      tabList,
-      tabActiveKey,
-      keepList,
-      isMobile,
+      sidebar: { opened = 1 }, tabList, tabActiveKey, keepList, isMobile,
     } = this.$store.state.app;
     this.onTabs = tabActiveKey; // 激活状态保存
     this.tabList = tabList;
@@ -68,27 +66,22 @@ export default class AppMain extends Vue {
     }
     return (
       <div class={`app-main ${opened ? '' : 'sideLayout'}`}>
-        {isMobile ? null : <Sidebar />}
+        {
+          isMobile ? null : <Sidebar />
+        }
         <div class="page-content">
           <Header />
-          <a-tabs
-            class="page-tabs"
-            activeKey={this.onTabs}
-            type="editable-card"
-            on-change={this.tabChange}
-            on-edit={this.onTabEdit}
-          >
-            {tabList.map((item: any, index: number) => (
-              <a-tab-pane
-                closable={tabList.length > 1}
-                key={item.name}
-                tab={item.name}
-              ></a-tab-pane>
-            ))}
+          <a-tabs class="page-tabs" activeKey={this.onTabs} type="editable-card" on-change={this.tabChange} on-edit={this.onTabEdit}>
+            {
+              tabList.map((item: any, index: number) => <a-tab-pane
+              closable={tabList.length > 1} key={item.name}
+              tab={item.name}>
+              </a-tab-pane>)
+            }
           </a-tabs>
           <div class="page-wrap">
             <keep-alive max={10} include={keepList}>
-              <router-view />
+              <router-view/>
             </keep-alive>
           </div>
         </div>

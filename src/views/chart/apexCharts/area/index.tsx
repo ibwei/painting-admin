@@ -31,7 +31,7 @@ export default class Area extends Vue {
     md: 12,
     sm: 24,
     xs: 24,
-  };
+  }
 
   basicAreaChart: any = null;
 
@@ -80,28 +80,20 @@ export default class Area extends Vue {
       this.areaChartGithub2Chart.render();
       areaChartGithubOptions.events = {
         selection(e: any, t: any) {
-          this.areaChartGithub2Chart.updateOptions(
-            {
-              xaxis: {
-                min: t.xaxis.min,
-                max: t.xaxis.max,
-              },
+          this.areaChartGithub2Chart.updateOptions({
+            xaxis: {
+              min: t.xaxis.min,
+              max: t.xaxis.max,
             },
-            !1,
-            !1,
-          );
+          }, !1, !1);
         },
         updated(e: any, t: any) {
-          this.areaChartGithub2Chart.updateOptions(
-            {
-              xaxis: {
-                min: t.config.xaxis.min,
-                max: t.config.xaxis.max,
-              },
+          this.areaChartGithub2Chart.updateOptions({
+            xaxis: {
+              min: t.config.xaxis.min,
+              max: t.config.xaxis.max,
             },
-            !1,
-            !1,
-          );
+          }, !1, !1);
         },
       };
       this.areaChartGithubChart = new window.ApexCharts(

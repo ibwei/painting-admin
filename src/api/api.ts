@@ -5,6 +5,7 @@ import lodash from 'lodash';
 import { message } from 'ant-design-vue';
 import router from '@/router/index';
 
+
 interface ApiList {
   [key: string]: {
     url: string; // 请求地址
@@ -86,6 +87,81 @@ export default class Api {
       fetchType: 'json',
       method: 'post',
     },
+    deviceBaseInfoAdd: {
+      url: '/device/baseInfo/add',
+      fetchType: 'json',
+      method: 'post',
+    },
+    deviceBaseInfoUpdate: {
+      url: '/device/baseInfo/update',
+      fetchType: 'json',
+      method: 'post',
+    },
+    deviceBaseInfoDelete: {
+      url: '/device/baseInfo/delete',
+      fetchType: 'json',
+      method: 'post',
+    },
+    deviceTypeBaseInfoAdd: {
+      url: '/deviceType/baseInfo/add',
+      fetchType: 'json',
+      method: 'post',
+    },
+    deviceTypeBaseInfoUpdate: {
+      url: '/deviceType/baseInfo/update',
+      fetchType: 'json',
+      method: 'post',
+    },
+    deviceTypeBaseInfoDelete: {
+      url: '/deviceType/baseInfo/delete',
+      fetchType: 'json',
+      method: 'post',
+    },
+    facilitiesBaseInfoAdd: {
+      url: '/facilities/baseInfo/add',
+      fetchType: 'json',
+      method: 'post',
+    },
+    facilitiesBaseInfoUpdate: {
+      url: '/facilities/baseInfo/update',
+      fetchType: 'json',
+      method: 'post',
+    },
+    facilitiesBaseInfoDelete: {
+      url: '/facilities/baseInfo/delete',
+      fetchType: 'json',
+      method: 'post',
+    },
+    facilitiesTypeBaseInfoAdd: {
+      url: '/facilitiesType/baseInfo/add',
+      fetchType: 'json',
+      method: 'post',
+    },
+    facilitiesTypeBaseInfoUpdate: {
+      url: '/facilitiesType/baseInfo/update',
+      fetchType: 'json',
+      method: 'post',
+    },
+    facilitiesTypeBaseInfoDelete: {
+      url: '/facilitiesType/baseInfo/delete',
+      fetchType: 'json',
+      method: 'post',
+    },
+    lineTypeBaseInfoAdd: {
+      url: '/lineTypeType/baseInfo/add',
+      fetchType: 'json',
+      method: 'post',
+    },
+    lineTypeBaseInfoUpdate: {
+      url: '/lineType/baseInfo/update',
+      fetchType: 'json',
+      method: 'post',
+    },
+    lineTypeBaseInfoDelete: {
+      url: '/lineType/baseInfo/delete',
+      fetchType: 'json',
+      method: 'post',
+    },
   };
 
   // 对外暴露方法
@@ -123,49 +199,50 @@ export default class Api {
     }
   }
 
-  request = (options: Options) =>
-    this.fetch(options)
-      .then((response: any) => {
-        const { statusText, status } = response;
-        let { data } = response;
-        if (data instanceof Array) {
-          data = {
-            list: data,
-          };
-        }
-        // 登录超时判断
-        if (response.data.result && response.data.result.resultCode === 3) {
-          router.replace({ name: 'login' });
-          return Promise.reject({
-            success: false,
-            message: response.data.result.resultMessage,
-          });
-        }
-        return Promise.resolve({
-          success: true,
-          message: statusText,
-          statusCode: status,
-          data,
+  request = (options: Options) => this.fetch(options)
+    .then((response: any) => {
+      const { statusText, status } = response;
+      let { data } = response;
+      if (data instanceof Array) {
+        data = {
+          list: data,
+        };
+      }
+      // 登录超时判断
+      if (response.data.result && response.data.result.resultCode === 3) {
+        router.replace({ name: 'login' });
+        return Promise.reject({
+          success: false,
+          message: response.data.result.resultMessage,
         });
-      })
-      .catch((error: any) => {
-        const { response } = error;
-        let msg;
-        let statusCode;
-        if (response && response instanceof Object) {
-          const { data, statusText } = response;
-          statusCode = response.status;
-          msg = data.message || statusText;
-        } else {
-          statusCode = 600;
-          msg = error.message || 'Network Error';
-        }
-        message.error(msg);
-        return Promise.reject({ success: false, statusCode, message: msg });
+      }
+      return Promise.resolve({
+        success: true,
+        message: statusText,
+        statusCode: status,
+        data,
       });
+    })
+    .catch((error: any) => {
+      const { response } = error;
+      let msg;
+      let statusCode;
+      if (response && response instanceof Object) {
+        const { data, statusText } = response;
+        statusCode = response.status;
+        msg = data.message || statusText;
+      } else {
+        statusCode = 600;
+        msg = error.message || 'Network Error';
+      }
+      message.error(msg);
+      return Promise.reject({ success: false, statusCode, message: msg });
+    });
 
   fetch = (options: Options) => {
-    const { url, data, fetchType, method = 'get' } = options;
+    const {
+      url, data, fetchType, method = 'get',
+    } = options;
     let cloneData: any = lodash.cloneDeep(data);
     cloneData = qs.stringify(cloneData);
     const headers = {

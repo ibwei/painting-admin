@@ -22,20 +22,16 @@ export const basicColumnOptions = {
     colors: ['transparent'],
   },
   colors: ['#727cf5', '#0acf97', '#fa5c7c'],
-  series: [
-    {
-      name: 'Net Profit',
-      data: [44, 55, 57, 56, 61, 58, 63, 60, 66],
-    },
-    {
-      name: 'Revenue',
-      data: [76, 85, 101, 98, 87, 105, 91, 114, 94],
-    },
-    {
-      name: 'Free Cash Flow',
-      data: [35, 41, 36, 26, 45, 48, 52, 53, 41],
-    },
-  ],
+  series: [{
+    name: 'Net Profit',
+    data: [44, 55, 57, 56, 61, 58, 63, 60, 66],
+  }, {
+    name: 'Revenue',
+    data: [76, 85, 101, 98, 87, 105, 91, 114, 94],
+  }, {
+    name: 'Free Cash Flow',
+    data: [35, 41, 36, 26, 45, 48, 52, 53, 41],
+  }],
   xaxis: {
     categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
   },
@@ -90,27 +86,12 @@ export const datalabelsColumnOptions = {
     },
   },
   colors: ['#727cf5'],
-  series: [
-    {
-      name: 'Inflation',
-      data: [2.3, 3.1, 4, 10.1, 4, 3.6, 3.2, 2.3, 1.4, 0.8, 0.5, 0.2],
-    },
-  ],
+  series: [{
+    name: 'Inflation',
+    data: [2.3, 3.1, 4, 10.1, 4, 3.6, 3.2, 2.3, 1.4, 0.8, 0.5, 0.2],
+  }],
   xaxis: {
-    categories: [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
-    ],
+    categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
     position: 'top',
     labels: {
       offsetY: -18,
@@ -198,31 +179,18 @@ export const stackedColumnOptions = {
       columnWidth: '50%',
     },
   },
-  series: [
-    {
-      name: 'Product A',
-      data: [44, 55, 41, 67, 22, 43, 21, 49],
-    },
-    {
-      name: 'Product B',
-      data: [13, 23, 20, 8, 13, 27, 33, 12],
-    },
-    {
-      name: 'Product C',
-      data: [11, 17, 15, 15, 21, 14, 15, 13],
-    },
-  ],
+  series: [{
+    name: 'Product A',
+    data: [44, 55, 41, 67, 22, 43, 21, 49],
+  }, {
+    name: 'Product B',
+    data: [13, 23, 20, 8, 13, 27, 33, 12],
+  }, {
+    name: 'Product C',
+    data: [11, 17, 15, 15, 21, 14, 15, 13],
+  }],
   xaxis: {
-    categories: [
-      '2011 Q1',
-      '2011 Q2',
-      '2011 Q3',
-      '2011 Q4',
-      '2012 Q1',
-      '2012 Q2',
-      '2012 Q3',
-      '2012 Q4',
-    ],
+    categories: ['2011 Q1', '2011 Q2', '2011 Q3', '2011 Q4', '2012 Q1', '2012 Q2', '2012 Q3', '2012 Q4'],
   },
   colors: ['#39afd1', '#ffbc00', '#e3eaef'],
   fill: {
@@ -252,31 +220,18 @@ export const fullStackedColumnOptions = {
       columnWidth: '50%',
     },
   },
-  series: [
-    {
-      name: 'Product A',
-      data: [44, 55, 41, 67, 22, 43, 21, 49],
-    },
-    {
-      name: 'Product B',
-      data: [13, 23, 20, 8, 13, 27, 33, 12],
-    },
-    {
-      name: 'Product C',
-      data: [11, 17, 15, 15, 21, 14, 15, 13],
-    },
-  ],
+  series: [{
+    name: 'Product A',
+    data: [44, 55, 41, 67, 22, 43, 21, 49],
+  }, {
+    name: 'Product B',
+    data: [13, 23, 20, 8, 13, 27, 33, 12],
+  }, {
+    name: 'Product C',
+    data: [11, 17, 15, 15, 21, 14, 15, 13],
+  }],
   xaxis: {
-    categories: [
-      '2011 Q1',
-      '2011 Q2',
-      '2011 Q3',
-      '2011 Q4',
-      '2012 Q1',
-      '2012 Q2',
-      '2012 Q3',
-      '2012 Q4',
-    ],
+    categories: ['2011 Q1', '2011 Q2', '2011 Q3', '2011 Q4', '2012 Q1', '2012 Q2', '2012 Q3', '2012 Q4'],
   },
   fill: {
     opacity: 1,
@@ -293,21 +248,19 @@ export const fullStackedColumnOptions = {
 
 export const rotateLabelsColumnOptions = {
   annotations: {
-    points: [
-      {
-        x: 'Bananas',
-        seriesIndex: 0,
-        label: {
-          borderColor: '#727cf5',
-          offsetY: 0,
-          style: {
-            color: '#fff',
-            background: '#727cf5',
-          },
-          text: 'Bananas are good',
+    points: [{
+      x: 'Bananas',
+      seriesIndex: 0,
+      label: {
+        borderColor: '#727cf5',
+        offsetY: 0,
+        style: {
+          color: '#fff',
+          background: '#727cf5',
         },
+        text: 'Bananas are good',
       },
-    ],
+    }],
   },
   chart: {
     height: 380,
@@ -329,12 +282,10 @@ export const rotateLabelsColumnOptions = {
     width: 2,
   },
   colors: ['#fa5c7c'],
-  series: [
-    {
-      name: 'Servings',
-      data: [44, 55, 41, 67, 22, 43, 21, 33, 45, 31, 87, 65, 35],
-    },
-  ],
+  series: [{
+    name: 'Servings',
+    data: [44, 55, 41, 67, 22, 43, 21, 33, 45, 31, 87, 65, 35],
+  }],
   grid: {
     row: {
       colors: ['#f1f3fa', 'transparent'],
@@ -345,21 +296,8 @@ export const rotateLabelsColumnOptions = {
     labels: {
       rotate: -45,
     },
-    categories: [
-      'Apples',
-      'Oranges',
-      'Strawberries',
-      'Pineapples',
-      'Mangoes',
-      'Bananas',
-      'Blackberries',
-      'Pears',
-      'Watermelons',
-      'Cherries',
-      'Pomegranates',
-      'Tangerines',
-      'Papayas',
-    ],
+    categories: ['Apples', 'Oranges', 'Strawberries', 'Pineapples', 'Mangoes', 'Bananas', 'Blackberries', 'Pears',
+      'Watermelons', 'Cherries', 'Pomegranates', 'Tangerines', 'Papayas'],
   },
   yaxis: {
     title: {
@@ -392,18 +330,15 @@ export const negativeValueColumnOptions = {
   plotOptions: {
     bar: {
       colors: {
-        ranges: [
-          {
-            from: -100,
-            to: -46,
-            color: '#fa5c7c',
-          },
-          {
-            from: -45,
-            to: 0,
-            color: '#ffbc00',
-          },
-        ],
+        ranges: [{
+          from: -100,
+          to: -46,
+          color: '#fa5c7c',
+        }, {
+          from: -45,
+          to: 0,
+          color: '#ffbc00',
+        }],
       },
       columnWidth: '80%',
     },
@@ -412,46 +347,15 @@ export const negativeValueColumnOptions = {
     enabled: !1,
   },
   colors: ['#727cf5'],
-  series: [
-    {
-      name: 'Cash Flow',
-      data: [
-        1.45,
-        5.42,
-        5.9,
-        -0.42,
-        -12.6,
-        -18.1,
-        -18.2,
-        -14.16,
-        -11.1,
-        -6.09,
-        0.34,
-        3.88,
-        13.07,
-        5.8,
-        2,
-        7.37,
-        8.1,
-        13.57,
-        15.75,
-        17.1,
-        19.8,
-        -27.03,
-        -54.4,
-        -47.2,
-        -43.3,
-        -18.6,
-        -48.6,
-        -41.1,
-        -39.6,
-        -37.6,
-        -29.4,
-        -21.4,
-        -2.4,
-      ],
-    },
-  ],
+  series: [{
+    name: 'Cash Flow',
+    data: [
+      1.45, 5.42, 5.9, -0.42, -12.6, -18.1, -18.2, -14.16,
+      -11.1, -6.09, 0.34, 3.88, 13.07, 5.8, 2, 7.37, 8.1,
+      13.57, 15.75, 17.1, 19.8, -27.03, -54.4, -47.2, -43.3,
+      -18.6, -48.6, -41.1, -39.6, -37.6, -29.4, -21.4, -2.4,
+    ],
+  }],
   yaxis: {
     title: {
       text: 'Growth',
@@ -464,39 +368,11 @@ export const negativeValueColumnOptions = {
   },
   xaxis: {
     categories: [
-      '2011-01-01',
-      '2011-02-01',
-      '2011-03-01',
-      '2011-04-01',
-      '2011-05-01',
-      '2011-06-01',
-      '2011-07-01',
-      '2011-08-01',
-      '2011-09-01',
-      '2011-10-01',
-      '2011-11-01',
-      '2011-12-01',
-      '2012-01-01',
-      '2012-02-01',
-      '2012-03-01',
-      '2012-04-01',
-      '2012-05-01',
-      '2012-06-01',
-      '2012-07-01',
-      '2012-08-01',
-      '2012-09-01',
-      '2012-10-01',
-      '2012-11-01',
-      '2012-12-01',
-      '2013-01-01',
-      '2013-02-01',
-      '2013-03-01',
-      '2013-04-01',
-      '2013-05-01',
-      '2013-06-01',
-      '2013-07-01',
-      '2013-08-01',
-      '2013-09-01',
+      '2011-01-01', '2011-02-01', '2011-03-01', '2011-04-01', '2011-05-01', '2011-06-01', '2011-07-01',
+      '2011-08-01', '2011-09-01', '2011-10-01', '2011-11-01', '2011-12-01', '2012-01-01', '2012-02-01',
+      '2012-03-01', '2012-04-01', '2012-05-01', '2012-06-01', '2012-07-01', '2012-08-01', '2012-09-01',
+      '2012-10-01', '2012-11-01', '2012-12-01', '2013-01-01', '2013-02-01', '2013-03-01', '2013-04-01',
+      '2013-05-01', '2013-06-01', '2013-07-01', '2013-08-01', '2013-09-01',
     ],
     labels: {
       rotate: -90,
@@ -511,16 +387,7 @@ export const negativeValueColumnOptions = {
   },
 };
 
-const colors = [
-  '#727cf5',
-  '#6c757d',
-  '#0acf97',
-  '#fa5c7c',
-  '#ffbc00',
-  '#39afd1',
-  '#e3eaef',
-  '#313a46',
-];
+const colors = ['#727cf5', '#6c757d', '#0acf97', '#fa5c7c', '#ffbc00', '#39afd1', '#e3eaef', '#313a46'];
 export const distributedColumnOptions = {
   chart: {
     height: 380,
@@ -544,11 +411,9 @@ export const distributedColumnOptions = {
   dataLabels: {
     enabled: !1,
   },
-  series: [
-    {
-      data: [21, 22, 10, 28, 16, 21, 13, 30],
-    },
-  ],
+  series: [{
+    data: [21, 22, 10, 28, 16, 21, 13, 30],
+  }],
   xaxis: {
     categories: ['John', 'Joe', 'Jake', 'Amber', 'Peter', 'Mary', 'David', 'Lily'],
     labels: {

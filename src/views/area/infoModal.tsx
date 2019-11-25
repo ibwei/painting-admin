@@ -1,5 +1,8 @@
 import { Vue, Component, Prop } from 'vue-property-decorator';
-import { Modal, Form, Input, Radio, DatePicker, InputNumber, Cascader } from 'ant-design-vue';
+import {
+  Modal, Form, Input, Radio, DatePicker, InputNumber, Cascader,
+} from 'ant-design-vue';
+
 
 @Component({
   components: {
@@ -35,16 +38,14 @@ class InfoModal extends Vue {
       xs: { span: 24 },
       sm: { span: 20 },
     },
-  };
+  }
 
   submit() {
     this.$props.Form.validateFields((err: any, values: any) => {
       if (!err) {
         if (this.type === 'edit') {
           window.api.areaBaseInfoUpdate({ id: this.data.id, ...values }).then((res: any) => {
-            const {
-              result: { resultCode, resultMessage },
-            } = res.data;
+            const { result: { resultCode, resultMessage } } = res.data;
             if (!resultCode) {
               this.$message.success(resultMessage);
               this.Form.resetFields();
@@ -56,10 +57,7 @@ class InfoModal extends Vue {
         } else if (this.type === 'add') {
           window.api.areaBaseInfoAdd(values).then((res: any) => {
             console.log(res);
-            const {
-              err_code,
-              result: { resultMessage },
-            } = res.data;
+            const { err_code, result: { resultMessage } } = res.data;
             console.log(err_code);
             if (!err_code) {
               this.$message.success(resultMessage);
@@ -88,22 +86,26 @@ class InfoModal extends Vue {
         on-cancel={this.cancel}
       >
         <a-form>
-          <a-form-item {...{ props: this.formItemLayout }} label="区域名称">
+          <a-form-item
+            {...{ props: this.formItemLayout }}
+            label="区域名称"
+          >
             {getFieldDecorator('name', {
               initialValue: this.data.name,
-              rules: [{ required: true, message: '请输入区域名' }],
+              rules: [
+                { required: true, message: '请输入区域名' },
+              ],
             })(<a-input placeholder="请输入区域名"></a-input>)}
           </a-form-item>
-          <a-form-item {...{ props: this.formItemLayout }} label="创建人">
-            {getFieldDecorator('createName', {
-              initialValue: this.data.createName,
-              rules: [{ required: true, message: '请输入创建人名称' }],
-            })(<a-input placeholder="请输入创建人名称"></a-input>)}
-          </a-form-item>
-          <a-form-item {...{ props: this.formItemLayout }} label="类型">
+          <a-form-item
+            {...{ props: this.formItemLayout }}
+            label="类型"
+          >
             {getFieldDecorator('type', {
               initialValue: this.data.type,
-              rules: [{ required: true, message: '请选择类型' }],
+              rules: [
+                { required: true, message: '请选择类型' },
+              ],
             })(<a-input placeholder="请选择类型"></a-input>)}
           </a-form-item>
         </a-form>
