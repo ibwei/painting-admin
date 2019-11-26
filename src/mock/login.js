@@ -14,12 +14,14 @@ const adminUsers = [
     username: 'admin',
     password: 'admin',
     permissions: userPermission.ADMIN,
-  }, {
+  },
+  {
     id: 1,
     username: 'guest',
     password: 'guest',
     permissions: userPermission.DEFAULT,
-  }, {
+  },
+  {
     id: 2,
     username: '吴彦祖',
     password: '123456',
@@ -35,8 +37,8 @@ module.exports = {
       const now = new Date();
       now.setDate(now.getDate() + 1);
       res.cookie('token', JSON.stringify({ id: user[0].id, deadline: now.getTime() }), {
-        maxAge: 900000,
         httpOnly: true,
+        expires: new Date(Date.now() + 99900000),
       });
       res.json(baseData('success', '登录成功'));
     } else {

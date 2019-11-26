@@ -30,7 +30,7 @@ export default class UpdatePwd extends Vue {
 
   img404cloud: any = img404cloud;
 
-  message: string = '特朗普说这个页面你不能进......';
+  message: string = '404 NOT FOUND';
 }
 </script>
 

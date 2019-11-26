@@ -9,6 +9,7 @@ const deviceType = require('./deviceType');
 const facilities = require('./facilities');
 const facilitiesType = require('./facilitiesType');
 const lineType = require('./lineType');
+const inspectRoad = require('./inspectRoad');
 
 module.exports = function mockInit(app) {
   app.use(bodyParser.json());
@@ -41,9 +42,9 @@ module.exports = function mockInit(app) {
   app.post('/api/facilitiesType/baseInfo/add', facilitiesType.add);
   app.post('/api/facilitiesType/baseInfo/update', facilitiesType.update);
   app.post('/api/facilitiesType/baseInfo/delete', facilitiesType.delete);
-
   app.post('/api/lineType/lineTypeList', lineType.lineTypeList);
   app.post('/api/lineType/baseInfo/add', lineType.add);
   app.post('/api/lineType/baseInfo/update', lineType.update);
   app.post('/api/lineType/baseInfo/delete', lineType.delete);
+  app.post('/api/inspectRoad', inspectRoad.list);
 };

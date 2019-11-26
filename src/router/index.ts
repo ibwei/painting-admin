@@ -6,49 +6,33 @@ const getComponent = require(`./import_${process.env.NODE_ENV}`);
 
 export const constantRouterMap: routerItem[] & RouterOptions['routes'] = [
   {
-    path: '/', name: 'area', component: getComponent('area/index'),
+    path: '/dashboard',
+    redirect: '/dashboard',
   },
   {
-    path: '/device', name: 'device', component: getComponent('device/index'),
+    path: '/login',
+    name: 'login',
+    component: getComponent('login/index'),
   },
   {
-    path: '/device/deviceType', name: 'deviceType', component: getComponent('device/deviceType/index'),
+    path: '/modiflyPwd',
+    name: 'modiflyPwd',
+    component: getComponent('updatePwd/index.vue'),
   },
   {
-    path: '/facilities', name: 'facilities', component: getComponent('facilities/index'),
+    path: '/updateSelf',
+    name: 'personCenter',
+    component: getComponent('updateSelf/index.vue'),
   },
   {
-    path: '/facilities/facilitiesList', name: 'facilitiesList', component: getComponent('facilities/index'),
+    path: '*',
+    name: '404',
+    component: getComponent('error/404.vue'),
   },
   {
-    path: '/facilities/facilitiesTypeList', name: 'facilitiesTypeList', component: getComponent('facilities/facilitiesType/index'),
-  },
-  {
-    path: '/line', name: 'line', component: getComponent('line/index'),
-  },
-  {
-    path: '/line/lineList', name: 'lineList', component: getComponent('line/index'),
-  },
-  {
-    path: '/line/lineTypeList', name: 'lineTypeList', component: getComponent('line/lineType/index'),
-  },
-  {
-    path: '/dashboard', redirect: '/dashboard',
-  },
-  {
-    path: '/login', name: 'login', component: getComponent('login/index'),
-  },
-  {
-    path: '/modiflyPwd', name: 'modiflyPwd', component: getComponent('updatePwd/index.vue'),
-  },
-  {
-    path: '/updateSelf', name: 'personCenter', component: getComponent('updateSelf/index.vue'),
-  },
-  {
-    path: '*', name: '404', component: getComponent('error/404.vue'),
-  },
-  {
-    path: '/401', name: '401', component: getComponent('error/401.vue'),
+    path: '/401',
+    name: '401',
+    component: getComponent('error/401.vue'),
   },
 ];
 /**
@@ -57,7 +41,7 @@ export const constantRouterMap: routerItem[] & RouterOptions['routes'] = [
  * Array值的情况，只要其中一个有，就有权限，
  * String值，会匹配vuex里面的perssions数组，如果有，就有权限
  * meta.key 这个是用来匹配缓存的，请确保key值和对应页面的class名称一致，否则页面无法正常缓存
-*/
+ */
 export const asyncRouterMap: routerItem[] = [
   {
     path: '/dashboard',
@@ -76,6 +60,23 @@ export const asyncRouterMap: routerItem[] = [
     meta: { key: 'Area' },
   },
   {
+    path: '/inspection',
+    icon: 'dot-chart',
+    name: '巡检管理',
+    component: getComponent('inspection/index'),
+    permission: true,
+    meta: { key: 'inspection' },
+    children: [
+      {
+        path: 'road',
+        name: '巡检路线管理',
+        component: getComponent('inspection/road/index'),
+        permission: true,
+        meta: { key: 'road' },
+      },
+    ],
+  },
+  {
     path: '/line',
     icon: 'line-chart',
     name: '管道管理',
@@ -89,13 +90,15 @@ export const asyncRouterMap: routerItem[] = [
         component: getComponent('line/lineType/index'),
         permission: true,
         meta: { key: 'lineTypeList' },
-      }, {
+      },
+      {
         path: 'lineList',
         name: '管道列表',
         component: getComponent('line/index'),
         permission: true,
         meta: { key: 'lineList' },
-      }]
+      },
+    ],
   },
   {
     path: '/facilities',
@@ -111,13 +114,15 @@ export const asyncRouterMap: routerItem[] = [
         component: getComponent('facilities/index'),
         permission: true,
         meta: { key: 'facilitiesList' },
-      }, {
+      },
+      {
         path: 'facilitiesTypeList',
         name: '设施列表',
         component: getComponent('facilities/facilitiesType/index'),
         permission: true,
         meta: { key: 'facilitiesTypeList' },
-      }]
+      },
+    ],
   },
   {
     path: '/device',
@@ -133,13 +138,15 @@ export const asyncRouterMap: routerItem[] = [
         component: getComponent('device/index'),
         permission: true,
         meta: { key: 'deviceList' },
-      }, {
+      },
+      {
         path: 'deviceType',
         name: '设备类型',
         component: getComponent('device/deviceType/index'),
         permission: true,
         meta: { key: 'deviceType' },
-      }]
+      },
+    ],
   },
   {
     path: '/customers',

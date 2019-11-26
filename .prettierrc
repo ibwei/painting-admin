@@ -3,4 +3,5 @@
   "semi": true,
   "trailingComma": "all",
   "bracketSpacing": true,
+  "arrowParens": "avoid"
 }
