@@ -8,6 +8,7 @@ const device = require('./device');
 const deviceType = require('./deviceType');
 const facilities = require('./facilities');
 const facilitiesType = require('./facilitiesType');
+const line = require('./line');
 const lineType = require('./lineType');
 const inspectRoad = require('./inspectRoad');
 
