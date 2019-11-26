@@ -5,9 +5,8 @@ import InfoModal from './infoModal';
 import MapModal from '../components/mapModal';
 import './index.less';
 
-
 @Component({
-  name: 'BaseInfo',
+  name: 'lineType',
   components: {
     'a-tag': Tag,
     'info-modal': InfoModal,
@@ -16,7 +15,7 @@ import './index.less';
     'map-modal': MapModal,
   },
 })
-export default class BaseInfo extends Vue {
+export default class LineType extends Vue {
   filterParams: any = {
     name: '',
     startTime: '',
@@ -100,20 +99,18 @@ export default class BaseInfo extends Vue {
 
   positionRender(address: string, others: any) {
     return (
-      <a-button type="default" onClick={this.showMapModal.bind(this, others)}>点击查看</a-button>
-    )
+      <a-button type="default" onClick={this.showMapModal.bind(this, others)}>
+        点击查看
+      </a-button>
+    );
   }
 
   wrongImageRender(url: string) {
-    return (
-      <img src={url} alt='告警图标' />
-    )
+    return <img src={url} alt="告警图标" />;
   }
 
   warnImageRender(url: string) {
-    return (
-      <img src={url} alt='告警图标' />
-    )
+    return <img src={url} alt="告警图标" />;
   }
 
   tableClick(key: string, row: any) {
@@ -206,7 +203,12 @@ export default class BaseInfo extends Vue {
           on-close={this.closeModal}
           on-success={this.success}
         />
-        <map-modal on-close={this.hideMapModal} position={this.position} deviceName={this.facilitiesName} visible={this.popoverVisible}></map-modal>
+        <map-modal
+          on-close={this.hideMapModal}
+          position={this.position}
+          deviceName={this.facilitiesName}
+          visible={this.popoverVisible}
+        ></map-modal>
       </div>
     );
   }

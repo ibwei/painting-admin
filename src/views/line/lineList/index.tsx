@@ -1,13 +1,12 @@
 import { Component, Vue } from 'vue-property-decorator';
-import { Tag, Popover, Button } from 'ant-design-vue';
+import { Tag, Popover, Button, Modal } from 'ant-design-vue';
 import { tableList, FilterFormList, Opreat } from '@/interface';
 import InfoModal from './infoModal';
 import MapModal from '../components/mapModal';
 import './index.less';
 
-
 @Component({
-  name: 'facilitiesType',
+  name: 'lineList',
   components: {
     'a-tag': Tag,
     'info-modal': InfoModal,
@@ -16,7 +15,8 @@ import './index.less';
     'map-modal': MapModal,
   },
 })
-export default class facilitiesType extends Vue {
+export default class LineList extends Vue {
+
   filterParams: any = {
     name: '',
     startTime: '',
@@ -36,9 +36,9 @@ export default class facilitiesType extends Vue {
   filterList: FilterFormList[] = [
     {
       key: 'name',
-      label: '类型名称',
+      label: '管道名称',
       type: 'input',
-      placeholder: '请输入设施类型名',
+      placeholder: '请输入管道类型名',
     },
     {
       key: 'createtime',
@@ -51,39 +51,38 @@ export default class facilitiesType extends Vue {
 
   tableList: tableList[] = [
     {
-      title: '设施ID',
-      dataIndex: 'facilitiesId',
+      title: '管道ID',
+      dataIndex: 'id',
     },
     {
-      title: '设施类型',
+      title: '管道名称',
       dataIndex: 'name',
     },
     {
-      title: '自定义属性1',
+      title: '管道类型',
+      dataIndex: 'type',
+    },
+    {
+      title: '基础属性1',
       dataIndex: 'property1',
     },
     {
-      title: '自定义属性2',
+      title: '基础属性2',
       dataIndex: 'property2',
-    },
-    {
-      title: '告警样式',
-      dataIndex: 'warnImage',
-      customRender: this.warnImageRender,
-    },
-    {
-      title: '错误样式',
-      dataIndex: 'wrongImage',
-      customRender: this.wrongImageRender,
-    },
-    {
-      title: '所在地理地址',
-      dataIndex: 'address',
-      customRender: this.positionRender,
     },
     {
       title: '创建时间',
       dataIndex: 'createTime',
+    },
+    {
+      title: '最新巡检记录',
+      dataIndex: 'xjlist',
+      customRender: this.recordRender,
+    },
+    {
+      title: '查看管道详情',
+      dataIndex: 'detail',
+      customRender: this.openLineDetail,
     },
   ];
 
@@ -115,20 +114,40 @@ export default class facilitiesType extends Vue {
 
   positionRender(address: string, others: any) {
     return (
-      <a-button type="default" onClick={this.showMapModal.bind(this, others)}>点击查看</a-button>
-    )
+      <a-button type="default" onClick={this.showMapModal.bind(this, others)}>
+        点击查看
+      </a-button>
+    );
   }
 
-  wrongImageRender(url: string) {
+  recordRender(type: string, others: any) {
     return (
-      <img src={url} alt='告警图标' />
-    )
+      <a-button type="default" onClick={this.info}>
+        最新巡检记录
+      </a-button>
+    );
   }
 
-  warnImageRender(url: string) {
+  openLineDetail(type: string, others: any) {
     return (
-      <img src={url} alt='告警图标' />
-    )
+      <a-button type="default" onClick={this.showMapModal}>
+        查看地理位置,以及包含的设备、设施
+      </a-button>
+    );
+  }
+
+
+  info() {
+    const h = this.$createElement;
+    Modal.info({
+      title: '最新巡检记录',
+      content: h('div', {}, [
+        h('p', '2019年11月27日15:49:09 发现2个设施故障'),
+        h('p', '2019年11月21日15:49:22 发现1个设备故障'),
+        h('p', '2019年11月16日16:49:22 暂无异常'),
+      ]),
+      onOk() { },
+    });
   }
 
   tableClick(key: string, row: any) {
@@ -141,7 +160,7 @@ export default class facilitiesType extends Vue {
         this.modelType = 'edit';
         break;
       case 'delete':
-        window.api.facilitiesTypeBaseInfoDelete({ id: row.id }).then((res: any) => {
+        window.api.lineTypeBaseInfoDelete({ id: row.id }).then((res: any) => {
           const { err_code } = res.data;
           if (err_code === 0) {
             this.$message.success('删除成功');
@@ -168,10 +187,10 @@ export default class facilitiesType extends Vue {
     this.editData = {};
   }
 
-  popoverVisible: boolean = true;
+  mapVisible: boolean = false;
 
   hideMapModal() {
-    this.popoverVisible = false;
+    this.mapVisible = false;
   }
 
   position: any;
@@ -180,8 +199,7 @@ export default class facilitiesType extends Vue {
 
   showMapModal(others: any) {
     this.position = others.position;
-    this.facilitiesName = others.name;
-    this.popoverVisible = true;
+    this.mapVisible = true;
   }
 
   success() {
@@ -200,7 +218,7 @@ export default class facilitiesType extends Vue {
           filterList={this.filterList}
           filterGrade={[]}
           scroll={{ x: 900 }}
-          url={'facilitiesType/facilitiesTypeList'}
+          url={'line/lineList'}
           filterParams={this.filterParams}
           outParams={this.outParams}
           addBtn={true}
@@ -221,7 +239,14 @@ export default class facilitiesType extends Vue {
           on-close={this.closeModal}
           on-success={this.success}
         />
-        <map-modal on-close={this.hideMapModal} position={this.position} deviceName={this.facilitiesName} visible={this.popoverVisible}></map-modal>
+        {this.mapVisible ?
+          (<map-modal
+            visible={this.mapVisible}
+            on-close={this.hideMapModal}
+            position={{ x: 106.55, y: 34.66 }}
+          ></map-modal>)
+          : ''
+        }
       </div>
     );
   }

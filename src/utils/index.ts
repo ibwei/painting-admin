@@ -129,3 +129,23 @@ export const loadMapInfoBox = () => new Promise(((resolve, reject) => {
   };
   script.onreadystatechange = script.onload;
 }));
+
+
+export const loadMapCurveLine = () => new Promise(((resolve, reject) => {
+  const script: any = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src = '//api.map.baidu.com/library/CurveLine/1.5/src/CurveLine.min.js';
+  script.onerror = reject;
+  const { head } = document;
+  if (head) {
+    head.appendChild(script);
+  }
+  script.onload = function onload() {
+    if (!this.readyState || this.readyState === 'loaded' || this.readyState === 'complete') {
+      resolve();
+    }
+    script.onload = null;
+    script.onreadystatechange = null;
+  };
+  script.onreadystatechange = script.onload;
+}));

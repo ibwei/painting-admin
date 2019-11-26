@@ -1,6 +1,6 @@
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import { Modal } from 'ant-design-vue';
-import { loadBmap } from '@/utils/index';
+import { loadBmap, loadMapCurveLine } from '@/utils/index';
 import './mapModal.less';
 
 @Component({
@@ -15,22 +15,6 @@ export default class MapModal extends Vue {
   @Prop() deviceName?: string;
 
   @Prop() position?: any;
-
-  @Watch('visible')
-  protected valueWatch(newV: any, oldV: any) {
-    if (newV === true && this.isFirst !== true) {
-      const point = new this.BMap.Point(this.$props.position.x, this.$props.position.y);
-      this.map.removeOverlay(this.marker);
-      this.marker = new this.BMap.Marker(point, {
-        offset: new this.BMap.Size(220, 150),
-        title: this.$props.deviceName,
-      });
-      this.map.addOverlay(this.marker);
-      // @ts-ignore
-      this.marker.setAnimation(BMAP_ANIMATION_BOUNCE);
-      this.map.setCenter(point);
-    }
-  }
 
   map: any = null;
 
@@ -68,20 +52,62 @@ export default class MapModal extends Vue {
 
   // 地图方法类
   mounted() {
-    if (this.isFirst) {
-      this.$emit('close');
-      loadBmap().then((BMap: any) => {
+    loadBmap().then((BMap: any) => {
+      loadMapCurveLine().then(() => {
         this.BMap = BMap;
-        this.map = new BMap.Map('modalmap'); // 创建Map实例
-        this.map.centerAndZoom(new BMap.Point(106.55, 29.57), 14); // 初始化地图,设置中心点坐标和地图级别
-        this.map.setCurrentCity('北京'); // 设置地图显示的城市 此项是必须设置的
+        this.map = new BMap.Map('line'); // 创建Map实例
+        this.map.centerAndZoom(new BMap.Point(106.55, 29.57), 16); // 初始化地图,设置中心点坐标和地图级别
+        this.map.setCurrentCity('重庆'); // 设置地图显示的城市 此项是必须设置的
         this.map.enableScrollWheelZoom(true);
-        this.marker = new BMap.Marker(new BMap.Point(106.55, 29.57)); // 创建标注
-        this.map.addOverlay(this.marker);
+        // const oval = new this.BMap.Polygon(this.add_oval(new BMap.Point(106.55, 29.57), 0.1, 0.3), { strokeColor: '#409EFF', strokeWeight: 6, strokeOpacity: 0.5 });
+        const oval = new this.BMap.Circle(new this.BMap.Point(106.55, 29.57), 1000, {
+          strokeColor: '#409EFF',
+          fillColor: '#409EFF',
+          strokeStyle: 'solid',
+          llOpacity: '0.3',
+        });
+
+        let point = new BMap.Point(106.556, 29.576);
+        let marker = new BMap.Marker(point); // 创建标注
+        this.map.addOverlay(marker); // 将标注添加到地图中
         // @ts-ignore
-        this.isFirst = false;
+        marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+        this.map.addOverlay(marker);
+        point = new BMap.Point(106.553, 29.5701);
+        marker = new BMap.Marker(point); // 创建标注
+        this.map.addOverlay(marker); // 将标注添加到地图中
+        // @ts-ignore
+        marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+        point = new BMap.Point(106.549993, 29.569999);
+        marker = new BMap.Marker(point); // 创建标注
+        this.map.addOverlay(marker); // 将标注添加到地图中
+        // @ts-ignore
+        marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+        point = new BMap.Point(106.54666, 29.570001);
+        marker = new BMap.Marker(point); // 创建标注
+        this.map.addOverlay(marker); // 将标注添加到地图中
+        this.map.addOverlay(marker);
+        // @ts-ignore
+        marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+        this.map.addOverlay(oval);
       });
+    });
+  }
+
+  add_oval(centre: any, x: number, y: number) {
+    const assemble = [];
+    let angle;
+    let dot;
+    const tangent = x / y;
+    for (let i = 0; i < 10; i++) {
+      angle = ((2 * Math.PI) / 36) * i;
+      dot = new this.BMap.Point(
+        centre.lng + Math.sin(angle) * y * tangent,
+        centre.lat + Math.cos(angle) * y,
+      );
+      assemble.push(dot);
     }
+    return assemble;
   }
 
   handleOk() {
@@ -94,11 +120,12 @@ export default class MapModal extends Vue {
         visible={this.$props.visible}
         onOkText="确定"
         centered
+        width={860}
         onCancel={this.handleOk}
         footer={null}
       >
         <div className="modal-wrap">
-          <div id="modalmap" className="modalmap"></div>
+          <div id="line" className="line"></div>
         </div>
       </a-modal>
     );

@@ -5,9 +5,10 @@ import InfoModal from './infoModal';
 
 
 import './index.less';
+import Device from '../index';
 
 @Component({
-  name: 'BaseInfo',
+  name: 'deviceType',
   components: {
     'a-tag': Tag,
     'info-modal': InfoModal,
@@ -15,7 +16,7 @@ import './index.less';
     'a-button': Button,
   },
 })
-export default class BaseInfo extends Vue {
+export default class DeviceType extends Vue {
   filterParams: any = {
     name: '',
     startTime: '',

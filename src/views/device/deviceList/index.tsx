@@ -1,24 +1,28 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { Tag, Popover, Button } from 'ant-design-vue';
 import { tableList, FilterFormList, Opreat } from '@/interface';
+import city from '@/utils/city';
 import InfoModal from './infoModal';
-import MapModal from '../components/mapModal';
+import MapModal from '../components/mapModal'
+
+
 import './index.less';
 
-
 @Component({
-  name: 'facilitiesType',
+  name: 'device',
   components: {
     'a-tag': Tag,
     'info-modal': InfoModal,
+    'map-modal': MapModal,
     'a-popover': Popover,
     'a-button': Button,
-    'map-modal': MapModal,
   },
 })
-export default class facilitiesType extends Vue {
+export default class Device extends Vue {
   filterParams: any = {
     name: '',
+    address: [],
+    createtime: [],
     startTime: '',
     endTime: '',
   };
@@ -36,45 +40,47 @@ export default class facilitiesType extends Vue {
   filterList: FilterFormList[] = [
     {
       key: 'name',
-      label: '类型名称',
+      label: 'name',
       type: 'input',
-      placeholder: '请输入设施类型名',
+      placeholder: 'Seach Name',
+    },
+    {
+      key: 'address',
+      label: 'address',
+      type: 'cascader',
+      placeholder: 'Seach address',
+      options: city,
     },
     {
       key: 'createtime',
       label: 'Createtime',
       type: 'datetimerange',
-      placeholder: ['开始时间', '截止时间'],
+      placeholder: ['start date', 'end date'],
       value: ['startTime', 'endTime'],
     },
   ];
 
   tableList: tableList[] = [
     {
-      title: '设施ID',
-      dataIndex: 'facilitiesId',
+      title: '设备编号',
+      dataIndex: 'deviceId',
     },
     {
-      title: '设施类型',
+      title: '设备名称',
       dataIndex: 'name',
     },
     {
-      title: '自定义属性1',
-      dataIndex: 'property1',
+      title: '所属区域',
+      dataIndex: 'belongToArea',
     },
     {
-      title: '自定义属性2',
-      dataIndex: 'property2',
+      title: '所属设施',
+      dataIndex: 'belongToFacilities',
     },
     {
-      title: '告警样式',
-      dataIndex: 'warnImage',
-      customRender: this.warnImageRender,
-    },
-    {
-      title: '错误样式',
-      dataIndex: 'wrongImage',
-      customRender: this.wrongImageRender,
+      title: '类型',
+      dataIndex: 'type',
+      customRender: this.typeRender,
     },
     {
       title: '所在地理地址',
@@ -105,9 +111,9 @@ export default class facilitiesType extends Vue {
     },
   ];
 
-  title: string = '新增类型';
+  title: string = '新增区域';
 
-  visible: boolean = false;
+  visible: boolean = true;
 
   modelType: string = 'add';
 
@@ -119,15 +125,11 @@ export default class facilitiesType extends Vue {
     )
   }
 
-  wrongImageRender(url: string) {
+  typeRender(type: string) {
+    const colorArray: Array<string> = ['pink', 'red', 'orange', 'green', 'cyan', 'blue', 'purple'];
+    const index = Math.floor(Math.random() * 7);
     return (
-      <img src={url} alt='告警图标' />
-    )
-  }
-
-  warnImageRender(url: string) {
-    return (
-      <img src={url} alt='告警图标' />
+      <a-tag color={colorArray[index]}>{type}</a-tag>
     )
   }
 
@@ -137,11 +139,11 @@ export default class facilitiesType extends Vue {
       case 'edit':
         this.editData = data;
         this.visible = true;
-        this.title = '修改类型';
+        this.title = '修改设备信息';
         this.modelType = 'edit';
         break;
       case 'delete':
-        window.api.facilitiesTypeBaseInfoDelete({ id: row.id }).then((res: any) => {
+        window.api.deviceBaseInfoDelete({ id: row.id }).then((res: any) => {
           const { err_code } = res.data;
           if (err_code === 0) {
             this.$message.success('删除成功');
@@ -157,7 +159,7 @@ export default class facilitiesType extends Vue {
   }
 
   add() {
-    this.title = '添加类型';
+    this.title = '添加设备';
     this.modelType = 'add';
     this.visible = true;
     this.editData = {};
@@ -176,11 +178,12 @@ export default class facilitiesType extends Vue {
 
   position: any;
 
-  facilitiesName: string = '';
+  deviceName: string = '设备';
+
 
   showMapModal(others: any) {
     this.position = others.position;
-    this.facilitiesName = others.name;
+    this.deviceName = others.name;
     this.popoverVisible = true;
   }
 
@@ -200,7 +203,7 @@ export default class facilitiesType extends Vue {
           filterList={this.filterList}
           filterGrade={[]}
           scroll={{ x: 900 }}
-          url={'facilitiesType/facilitiesTypeList'}
+          url={'/device/deviceList'}
           filterParams={this.filterParams}
           outParams={this.outParams}
           addBtn={true}
@@ -221,7 +224,7 @@ export default class facilitiesType extends Vue {
           on-close={this.closeModal}
           on-success={this.success}
         />
-        <map-modal on-close={this.hideMapModal} position={this.position} deviceName={this.facilitiesName} visible={this.popoverVisible}></map-modal>
+        <map-modal on-close={this.hideMapModal} position={this.position} deviceName={this.deviceName} visible={this.popoverVisible}></map-modal>
       </div>
     );
   }
