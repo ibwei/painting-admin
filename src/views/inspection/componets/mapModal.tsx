@@ -66,7 +66,7 @@ export default class MapModal extends Vue {
           );
           this.map.enableScrollWheelZoom();
 
-          let polyLine = this.$props.position.map((item: any) => new BMap.Point(item.x, item.y));
+          const polyLine = this.$props.position.map((item: any) => new BMap.Point(item.x, item.y));
           const polyLines = new BMap.Polyline(polyLine, {
             strokeColor: 'blue',
             strokeWeight: 2,

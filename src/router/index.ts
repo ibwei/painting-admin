@@ -4,6 +4,7 @@ import { routerItem } from '@/interface';
 
 const getComponent = require(`./import_${process.env.NODE_ENV}`);
 
+// 不需要权限判断的路由
 export const constantRouterMap: routerItem[] & RouterOptions['routes'] = [
   {
     path: '/dashboard',

@@ -13,14 +13,10 @@ import './styles/global.less';
 
 const Apis = new Api({ baseUrl: process.env.NODE_ENV === 'production' ? '/api' : '/api' });
 // 全局api
+// 配置接口
 window.api = Apis.api;
+// 第三方接口
 window.ajax = Apis;
-
-const options = {
-  position: 'fixed',
-  show: true,
-  height: '3px',
-};
 
 // Vue.use(VueInsProgressBar, options);
 Vue.prototype.$message = message;
