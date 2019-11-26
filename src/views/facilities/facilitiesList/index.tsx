@@ -1,24 +1,26 @@
+/* eslint-disable */
 import { Component, Vue } from 'vue-property-decorator';
 import { Tag, Popover, Button } from 'ant-design-vue';
 import { tableList, FilterFormList, Opreat } from '@/interface';
+import city from '@/utils/city';
 import InfoModal from './infoModal';
-import MapModal from '../components/mapModal';
+
 import './index.less';
 
-
 @Component({
-  name: 'facilitiesType',
+  name: 'facilities',
   components: {
     'a-tag': Tag,
     'info-modal': InfoModal,
     'a-popover': Popover,
     'a-button': Button,
-    'map-modal': MapModal,
   },
 })
-export default class facilitiesType extends Vue {
+export default class Facilities extends Vue {
   filterParams: any = {
     name: '',
+    address: [],
+    createtime: [],
     startTime: '',
     endTime: '',
   };
@@ -36,50 +38,57 @@ export default class facilitiesType extends Vue {
   filterList: FilterFormList[] = [
     {
       key: 'name',
-      label: '类型名称',
+      label: 'name',
       type: 'input',
-      placeholder: '请输入设施类型名',
+      placeholder: 'Seach Name',
+    },
+    {
+      key: 'address',
+      label: 'address',
+      type: 'cascader',
+      placeholder: 'Seach address',
+      options: city,
     },
     {
       key: 'createtime',
       label: 'Createtime',
       type: 'datetimerange',
-      placeholder: ['开始时间', '截止时间'],
+      placeholder: ['start date', 'end date'],
       value: ['startTime', 'endTime'],
     },
   ];
 
   tableList: tableList[] = [
     {
-      title: '设施ID',
-      dataIndex: 'facilitiesId',
+      title: '设施编号',
+      dataIndex: 'id',
     },
     {
-      title: '设施类型',
+      title: '设施名称',
       dataIndex: 'name',
     },
     {
-      title: '自定义属性1',
+      title: '所属区域',
+      dataIndex: 'belongToArea',
+    },
+    {
+      title: '属性1',
       dataIndex: 'property1',
     },
     {
-      title: '自定义属性2',
+      title: '属性2',
       dataIndex: 'property2',
     },
     {
-      title: '告警样式',
-      dataIndex: 'warnImage',
-      customRender: this.warnImageRender,
+      title: '关联设备',
+      dataIndex: 'relativeDevice',
+      customRender: this.deviceRender,
+      width: "300px",
     },
     {
-      title: '错误样式',
-      dataIndex: 'wrongImage',
-      customRender: this.wrongImageRender,
-    },
-    {
-      title: '所在地理地址',
-      dataIndex: 'address',
-      customRender: this.positionRender,
+      title: '设施图标',
+      dataIndex: 'thumbnail',
+      customRender: this.thumbnailRender,
     },
     {
       title: '创建时间',
@@ -105,7 +114,7 @@ export default class facilitiesType extends Vue {
     },
   ];
 
-  title: string = '新增类型';
+  title: string = '新增设施类型';
 
   visible: boolean = false;
 
@@ -113,21 +122,22 @@ export default class facilitiesType extends Vue {
 
   editData: object = {};
 
-  positionRender(address: string, others: any) {
-    return (
-      <a-button type="default" onClick={this.showMapModal.bind(this, others)}>点击查看</a-button>
-    )
+  deviceRender(relativeDevice: Array<any>, others: any) {
+
+    const colorArray: Array<string> = ['pink', 'red', 'orange', 'green', 'cyan', 'blue', 'purple'];
+
+    const list = relativeDevice.map(item => {
+      const index = Math.floor(Math.random() * 7);
+      return (
+        <a-tag color={colorArray[index]} style={{ marginTop: "10px" }}>{item.name}</a-tag>
+      );
+    })
+    return list;
   }
 
-  wrongImageRender(url: string) {
+  thumbnailRender(url: string) {
     return (
-      <img src={url} alt='告警图标' />
-    )
-  }
-
-  warnImageRender(url: string) {
-    return (
-      <img src={url} alt='告警图标' />
+      <img src={url} alt="设施缩略图" />
     )
   }
 
@@ -137,11 +147,11 @@ export default class facilitiesType extends Vue {
       case 'edit':
         this.editData = data;
         this.visible = true;
-        this.title = '修改类型';
+        this.title = '修改设施信息';
         this.modelType = 'edit';
         break;
       case 'delete':
-        window.api.facilitiesTypeBaseInfoDelete({ id: row.id }).then((res: any) => {
+        window.api.facilitiesBaseInfoDelete({ id: row.id }).then((res: any) => {
           const { err_code } = res.data;
           if (err_code === 0) {
             this.$message.success('删除成功');
@@ -157,7 +167,7 @@ export default class facilitiesType extends Vue {
   }
 
   add() {
-    this.title = '添加类型';
+    this.title = '添加设施';
     this.modelType = 'add';
     this.visible = true;
     this.editData = {};
@@ -176,13 +186,6 @@ export default class facilitiesType extends Vue {
 
   position: any;
 
-  facilitiesName: string = '';
-
-  showMapModal(others: any) {
-    this.position = others.position;
-    this.facilitiesName = others.name;
-    this.popoverVisible = true;
-  }
 
   success() {
     this.visible = false;
@@ -200,7 +203,7 @@ export default class facilitiesType extends Vue {
           filterList={this.filterList}
           filterGrade={[]}
           scroll={{ x: 900 }}
-          url={'facilitiesType/facilitiesTypeList'}
+          url={'/facilities/facilitiesList'}
           filterParams={this.filterParams}
           outParams={this.outParams}
           addBtn={true}
@@ -221,7 +224,6 @@ export default class facilitiesType extends Vue {
           on-close={this.closeModal}
           on-success={this.success}
         />
-        <map-modal on-close={this.hideMapModal} position={this.position} deviceName={this.facilitiesName} visible={this.popoverVisible}></map-modal>
       </div>
     );
   }

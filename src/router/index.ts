@@ -94,7 +94,7 @@ export const asyncRouterMap: routerItem[] = [
       {
         path: 'lineList',
         name: '管道列表',
-        component: getComponent('line/index'),
+        component: getComponent('line/lineList/index'),
         permission: true,
         meta: { key: 'lineList' },
       },
@@ -111,7 +111,7 @@ export const asyncRouterMap: routerItem[] = [
       {
         path: 'facilitiesList',
         name: '设施类型',
-        component: getComponent('facilities/index'),
+        component: getComponent('facilities/facilitiesList/index'),
         permission: true,
         meta: { key: 'facilitiesList' },
       },
@@ -135,12 +135,13 @@ export const asyncRouterMap: routerItem[] = [
       {
         path: 'deviceList',
         name: '设备列表',
-        component: getComponent('device/index'),
+        component: getComponent('device/deviceList/index'),
         permission: true,
         meta: { key: 'deviceList' },
       },
       {
         path: 'deviceType',
+
         name: '设备类型',
         component: getComponent('device/deviceType/index'),
         permission: true,

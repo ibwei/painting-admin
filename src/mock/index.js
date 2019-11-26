@@ -13,7 +13,11 @@ const inspectRoad = require('./inspectRoad');
 
 module.exports = function mockInit(app) {
   app.use(bodyParser.json());
-  app.use(bodyParser.urlencoded({ extended: false }));
+  app.use(
+    bodyParser.urlencoded({
+      extended: false,
+    }),
+  );
   app.all('/api/*', login.authLogin);
   app.post('/api/user/login', login.loginByName);
   app.post('/api/user/getUserInfo', login.getUserInfo);
@@ -42,6 +46,10 @@ module.exports = function mockInit(app) {
   app.post('/api/facilitiesType/baseInfo/add', facilitiesType.add);
   app.post('/api/facilitiesType/baseInfo/update', facilitiesType.update);
   app.post('/api/facilitiesType/baseInfo/delete', facilitiesType.delete);
+  app.post('/api/line/lineList', line.lineList);
+  app.post('/api/line/baseInfo/add', line.add);
+  app.post('/api/line/baseInfo/update', line.update);
+  app.post('/api/line/baseInfo/delete', line.delete);
   app.post('/api/lineType/lineTypeList', lineType.lineTypeList);
   app.post('/api/lineType/baseInfo/add', lineType.add);
   app.post('/api/lineType/baseInfo/update', lineType.update);

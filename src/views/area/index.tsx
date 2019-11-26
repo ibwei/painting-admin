@@ -1,21 +1,21 @@
 import { Component, Vue } from 'vue-property-decorator';
-import { Tag } from 'ant-design-vue';
+import { Tag, Modal } from 'ant-design-vue';
 import moment from 'moment';
 import { tableList, FilterFormList, Opreat } from '@/interface';
 import city from '@/utils/city';
 import InfoModal from './infoModal';
 
-
 import './index.less';
 
 @Component({
-  name: 'BaseInfo',
+  name: 'area',
   components: {
     'a-tag': Tag,
     'info-modal': InfoModal,
+    'a-modal': Modal,
   },
 })
-export default class BaseInfo extends Vue {
+export default class Area extends Vue {
   filterParams: any = {
     name: '',
     address: [],
@@ -56,6 +56,8 @@ export default class BaseInfo extends Vue {
       value: ['startTime', 'endTime'],
     },
   ];
+
+  warnListModalShow: boolean = false;
 
   tableList: tableList[] = [
     {
@@ -125,7 +127,7 @@ export default class BaseInfo extends Vue {
   }
 
   areaError(num: number) {
-    return <a-tag color={num ? 'red' : 'grey'}>{num ? `${num}个异常设备` : '暂无异常设备'}</a-tag>;
+    return <a-tag onClick={this.showWarnDeviceList.bind(this, num)} color={num ? 'red' : 'grey'}>{num ? `${num}个异常设备` : '暂无异常设备'}</a-tag>;
   }
 
   tableClick(key: string, row: any) {
@@ -159,6 +161,19 @@ export default class BaseInfo extends Vue {
     this.modelType = 'add';
     this.visible = true;
     this.editData = {};
+  }
+
+  // 关闭地理位置故障列表modal
+  hideWarnDeviceList() {
+    this.warnListModalShow = false;
+  }
+
+  showWarnDeviceList(num: number) {
+    if (num > 0) {
+      this.warnListModalShow = true;
+    } else {
+      this.$message.info('无设备故障');
+    }
   }
 
   closeModal() {
@@ -195,6 +210,11 @@ export default class BaseInfo extends Vue {
           on-menuClick={this.tableClick}
           on-add={this.add}
         />
+        <a-modal title="故障设备列表" visible={this.warnListModalShow} onCancel={this.hideWarnDeviceList} onOk={this.hideWarnDeviceList}>
+          <p>故障设备1 目前位置在 106.5,23.2</p>
+          <p>故障设备1 目前位置在 106.5,23.2</p>
+          <p>故障设备1 目前位置在 106.5,23.2</p>
+        </a-modal>
         <info-modal
           title={this.title}
           visible={this.visible}
