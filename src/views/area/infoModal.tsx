@@ -1,7 +1,8 @@
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import {
-  Modal, Form, Input, Radio, DatePicker, InputNumber, Cascader,
+  Modal, Form, Input, Radio, DatePicker, InputNumber, Cascader, Button,
 } from 'ant-design-vue';
+import MapModal from './components/mapModal';
 
 
 @Component({
@@ -10,11 +11,13 @@ import {
     'a-form': Form,
     'a-form-item': Form.Item,
     'a-input': Input,
+    'a-button': Button,
     'a-input-number': InputNumber,
     'a-radio': Radio,
     'a-radio-group': Radio.Group,
     'a-date-picker': DatePicker,
     'a-cascader': Cascader,
+    'map-modal': MapModal,
   },
   props: {
     Form,
@@ -56,9 +59,7 @@ class InfoModal extends Vue {
           });
         } else if (this.type === 'add') {
           window.api.areaBaseInfoAdd(values).then((res: any) => {
-            console.log(res);
             const { err_code, result: { resultMessage } } = res.data;
-            console.log(err_code);
             if (!err_code) {
               this.$message.success(resultMessage);
               this.Form.resetFields();
@@ -74,6 +75,10 @@ class InfoModal extends Vue {
 
   cancel() {
     this.$emit('close');
+  }
+
+  showMap(type: string) {
+    this.$emit('showEditMap', type)
   }
 
   render() {
@@ -99,14 +104,14 @@ class InfoModal extends Vue {
           </a-form-item>
           <a-form-item
             {...{ props: this.formItemLayout }}
-            label="类型"
+            label="区域范围"
           >
             {getFieldDecorator('type', {
               initialValue: this.data.type,
               rules: [
                 { required: true, message: '请选择类型' },
               ],
-            })(<a-input placeholder="请选择类型"></a-input>)}
+            })(<a-button onClick={this.showMap.bind(this, 'edit')}>选取区域范围</a-button>)}
           </a-form-item>
         </a-form>
       </a-modal>

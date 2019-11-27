@@ -1,4 +1,4 @@
-  /* eslint-disable */
+/* eslint-disable */
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import { loadBmap } from '@/utils/index';
 import {
@@ -36,10 +36,14 @@ class InfoModal extends Vue {
 
   @Prop() data!: any;
 
+  @Prop() position: any;
+
+  @Prop() deviceName: any;
+
   @Watch('visible')
 
   protected valueWatch(newV: any, oldV: any) {
-    if (newV === true && this.isFirst !== true) {
+    if (newV === true) {
       const point = new this.BMap.Point(this.data.position.x, this.data.position.y);
       this.map.removeOverlay(this.marker);
       this.marker = new this.BMap.Marker(point, { offset: new this.BMap.Size(200, 100) });
@@ -57,8 +61,6 @@ class InfoModal extends Vue {
   // 坐标定位图片
   marker: any = null;
 
-  // 是否首次加载
-  isFirst: boolean = true;
 
   formItemLayout = {
     labelCol: {
@@ -74,21 +76,18 @@ class InfoModal extends Vue {
   // 地图方法类
   created() {
     this.$nextTick(() => {
-      if (this.isFirst) {
-        this.$emit('close');
-        loadBmap().then((BMap: any) => {
-          this.BMap = BMap;
-          this.map = new BMap.Map('editmap');    // 创建Map实例
-          this.map.centerAndZoom(new BMap.Point(106.55, 29.57), 14);  // 初始化地图,设置中心点坐标和地图级别
-          this.map.setCurrentCity('北京');          // 设置地图显示的城市 此项是必须设置的
-          this.map.enableScrollWheelZoom(true);
-          this.marker = new BMap.Marker(new BMap.Point(106.55, 29.57), { offset: new this.BMap.Size(10, 10) });  // 创建标注     
-          this.map.addOverlay(this.marker);
-          this.map.addEventListener('click', this.mapClick);
-          // @ts-ignore
-          this.isFirst = false;
-        });
-      }
+      loadBmap().then((BMap: any) => {
+        this.BMap = BMap;
+        this.map = new BMap.Map('editmap');    // 创建Map实例
+        this.map.centerAndZoom(new BMap.Point(this.data.position.x, this.data.position.y), 12);  // 初始化地图,设置中心点坐标和地图级别
+        this.map.setCurrentCity('北京');          // 设置地图显示的城市 此项是必须设置的
+        this.map.enableScrollWheelZoom(true);
+        this.marker = new BMap.Marker(new BMap.Point(this.data.position.x, this.data.position.y), { offset: new this.BMap.Size(10, 10) });  // 创建标注     
+        this.map.addOverlay(this.marker);
+        this.map.addEventListener('click', this.mapClick);
+        // @ts-ignore
+        this.marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+      });
     })
   }
 

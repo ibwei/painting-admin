@@ -131,7 +131,7 @@ export default class LineList extends Vue {
   openLineDetail(type: string, others: any) {
     return (
       <a-button type="default" onClick={this.showMapModal}>
-        查看地理位置,以及包含的设备、设施
+        查看地理位置
       </a-button>
     );
   }

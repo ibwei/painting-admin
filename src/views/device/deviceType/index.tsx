@@ -94,12 +94,6 @@ export default class DeviceType extends Vue {
 
   editData: object = {};
 
-  positionRender(address: string, others: any) {
-    return (
-      <a-button type="default" onClick={this.showMapModal.bind(this, others)}>点击查看</a-button>
-    )
-  }
-
   typeRender(type: string) {
     const colorArray: Array<string> = ['pink', 'red', 'orange', 'green', 'cyan', 'blue', 'purple'];
     const index = Math.floor(Math.random() * 7);
@@ -145,18 +139,7 @@ export default class DeviceType extends Vue {
     this.editData = {};
   }
 
-  popoverVisible: boolean = true;
-
-  hideMapModal() {
-    this.popoverVisible = false;
-  }
-
   position: any;
-
-  showMapModal(others: any) {
-    this.position = others.position;
-    this.popoverVisible = true;
-  }
 
   success() {
     this.visible = false;
