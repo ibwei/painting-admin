@@ -5,7 +5,6 @@ import lodash from 'lodash';
 import { message } from 'ant-design-vue';
 import router from '@/router/index';
 
-
 interface ApiList {
   [key: string]: {
     url: string; // 请求地址
@@ -162,6 +161,11 @@ export default class Api {
       fetchType: 'json',
       method: 'post',
     },
+    inspectRoad: {
+      url: '/inspectRoad',
+      fetchType: 'json',
+      method: 'post',
+    },
   };
 
   // 对外暴露方法
@@ -199,50 +203,49 @@ export default class Api {
     }
   }
 
-  request = (options: Options) => this.fetch(options)
-    .then((response: any) => {
-      const { statusText, status } = response;
-      let { data } = response;
-      if (data instanceof Array) {
-        data = {
-          list: data,
-        };
-      }
-      // 登录超时判断
-      if (response.data.result && response.data.result.resultCode === 3) {
-        router.replace({ name: 'login' });
-        return Promise.reject({
-          success: false,
-          message: response.data.result.resultMessage,
+  request = (options: Options) =>
+    this.fetch(options)
+      .then((response: any) => {
+        const { statusText, status } = response;
+        let { data } = response;
+        if (data instanceof Array) {
+          data = {
+            list: data,
+          };
+        }
+        // 登录超时判断
+        if (response.data.result && response.data.result.resultCode === 3) {
+          router.replace({ name: 'login' });
+          return Promise.reject({
+            success: false,
+            message: response.data.result.resultMessage,
+          });
+        }
+        return Promise.resolve({
+          success: true,
+          message: statusText,
+          statusCode: status,
+          data,
         });
-      }
-      return Promise.resolve({
-        success: true,
-        message: statusText,
-        statusCode: status,
-        data,
+      })
+      .catch((error: any) => {
+        const { response } = error;
+        let msg;
+        let statusCode;
+        if (response && response instanceof Object) {
+          const { data, statusText } = response;
+          statusCode = response.status;
+          msg = data.message || statusText;
+        } else {
+          statusCode = 600;
+          msg = error.message || 'Network Error';
+        }
+        message.error(msg);
+        return Promise.reject({ success: false, statusCode, message: msg });
       });
-    })
-    .catch((error: any) => {
-      const { response } = error;
-      let msg;
-      let statusCode;
-      if (response && response instanceof Object) {
-        const { data, statusText } = response;
-        statusCode = response.status;
-        msg = data.message || statusText;
-      } else {
-        statusCode = 600;
-        msg = error.message || 'Network Error';
-      }
-      message.error(msg);
-      return Promise.reject({ success: false, statusCode, message: msg });
-    });
 
   fetch = (options: Options) => {
-    const {
-      url, data, fetchType, method = 'get',
-    } = options;
+    const { url, data, fetchType, method = 'get' } = options;
     let cloneData: any = lodash.cloneDeep(data);
     cloneData = qs.stringify(cloneData);
     const headers = {

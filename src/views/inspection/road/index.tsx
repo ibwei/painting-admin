@@ -165,9 +165,7 @@ export default class Road extends Vue {
     return <a-button onClick={this.handleSeleceMap.bind(this, obj)}>点击查看</a-button>;
   }
 
-  handleSelectDetail(data: string[], e: any) {
-    e.preventDefault();
-
+  handleSelectDetail(data: string[], e?: any) {
     const tmp: any = [];
     const random = Math.floor(Math.random() * 10) + 1;
     const random2 = Math.floor(Math.random() * 10) + 1;
@@ -200,7 +198,7 @@ export default class Road extends Vue {
     const data = JSON.parse(JSON.stringify(row));
     switch (key) {
       case 'edit':
-        this.editData = data;
+        this.editData = { ...data, area: 'jack' };
         this.changeVis = true;
         this.title = '修改设施信息';
         this.modelType = 'edit';
@@ -270,19 +268,21 @@ export default class Road extends Vue {
             onCancel={this.handleCancel}
             width="800px"
           >
-            <a-table
-              columns={[
-                { title: '名称', dataIndex: 'name', width: '40%' },
-                { title: '类型', dataIndex: 'type', width: '40%' },
-                { title: '区域', dataIndex: 'area', width: '40%' },
-              ]}
-              dataSource={this.dataSource}
-              rowKey="name"
-              rowSelection={{
-                selectedRowKeys: [1, 2, 3],
-                onChange: () => {},
-              }}
-            ></a-table>
+            <div Style={{ padding: '15px' }}>
+              <a-table
+                columns={[
+                  { title: '名称', dataIndex: 'name', width: '40%' },
+                  { title: '类型', dataIndex: 'type', width: '40%' },
+                  { title: '区域', dataIndex: 'area', width: '40%' },
+                ]}
+                dataSource={this.dataSource}
+                rowKey="name"
+                rowSelection={{
+                  selectedRowKeys: [1, 2, 3],
+                  onChange: () => {},
+                }}
+              ></a-table>
+            </div>
           </a-modal>
         ) : (
           ''
@@ -304,9 +304,23 @@ export default class Road extends Vue {
         {this.changeVis ? (
           <a-changeModal
             visible={this.changeVis}
-            onOk={this.success}
-            onCancel={this.closeModal}
-            title={this.title}
+            handleOk={this.success}
+            handkeCancel={this.closeModal}
+            title={this.modelType}
+            width="800px"
+            data={this.editData}
+            changeDetail={(props: string) => {
+              const self = this;
+              window.api.inspectRoad({ page: 1, size: 100 }).then(({ data }) => {
+                self.handleSelectDetail(data.entity.data[0][props]);
+              });
+            }}
+            handleSeleceMap={() => {
+              const self = this;
+              window.api.inspectRoad({ page: 1, size: 100 }).then(({ data }) => {
+                self.handleSeleceMap(data.entity.data[0].pointer);
+              });
+            }}
           ></a-changeModal>
         ) : (
           ''

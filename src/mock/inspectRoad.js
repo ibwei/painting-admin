@@ -85,7 +85,7 @@ module.exports = {
     data.entity = list;
     setTimeout(() => {
       res.status(200).json(data);
-    }, 1000);
+    }, 100);
   },
   delete(req, res) {
     const { id } = req.body;
