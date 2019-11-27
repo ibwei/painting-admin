@@ -4,9 +4,10 @@ import { routerItem } from '@/interface';
 
 const getComponent = require(`./import_${process.env.NODE_ENV}`);
 
+// 不需要权限判断的路由
 export const constantRouterMap: routerItem[] & RouterOptions['routes'] = [
   {
-    path: '/dashboard',
+    path: '/',
     redirect: '/dashboard',
   },
   {
@@ -73,6 +74,29 @@ export const asyncRouterMap: routerItem[] = [
         component: getComponent('inspection/road/index'),
         permission: true,
         meta: { key: 'road' },
+      },
+      {
+        path: 'plan',
+        name: '巡检计划管理',
+        component: getComponent('inspection/plan/index'),
+        permission: true,
+        meta: { key: 'inspectionPlan' },
+        children: [
+          {
+            path: 'list',
+            name: '计划列表',
+            component: getComponent('inspection/plan/list/index'),
+            permission: true,
+            meta: { key: 'inspectPlanList' },
+          },
+          {
+            path: 'calender',
+            name: '计划日历',
+            component: getComponent('inspection/plan/calendar/index'),
+            permission: true,
+            meta: { key: 'inspectPlancalender' },
+          },
+        ],
       },
     ],
   },

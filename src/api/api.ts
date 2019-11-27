@@ -173,7 +173,6 @@ export default class Api {
 
   constructor(options: { baseUrl: string }) {
     axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded';
-
     this.service = axios.create({
       baseURL: options.baseUrl, // api的base_url
       timeout: 20000, // 请求超时时间
