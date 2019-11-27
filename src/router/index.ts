@@ -121,6 +121,13 @@ export const asyncRouterMap: routerItem[] = [
           },
         ],
       },
+      {
+        path: 'monitor',
+        name: '巡检监控',
+        component: getComponent('inspection/monitor/index'),
+        permission: true,
+        meta: { key: 'monitor' },
+      },
     ],
   },
   {
