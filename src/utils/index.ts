@@ -149,3 +149,46 @@ export const loadMapCurveLine = () => new Promise(((resolve, reject) => {
   };
   script.onreadystatechange = script.onload;
 }));
+
+/**
+ * @method 加载百度地图鼠标绘制工具以及样式
+ * @return Promise<any>
+ */
+const loadMapInfoBoxCss = () => new Promise(((resolve, reject) => {
+  const script: any = document.createElement('link');
+  script.rel = 'stylesheet';
+  script.href = 'http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.css';
+  script.onerror = reject;
+  const { head } = document;
+  if (head) {
+    head.appendChild(script);
+  }
+  script.onload = function onload() {
+    if (!this.readyState || this.readyState === 'loaded' || this.readyState === 'complete') {
+      resolve();
+    }
+    script.onload = null;
+    script.onreadystatechange = null;
+  };
+  script.onreadystatechange = script.onload;
+}));
+
+export const loadDrawingManager = () => new Promise(((resolve, reject) => {
+  loadMapInfoBoxCss();
+  const script: any = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src = 'http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.js';
+  script.onerror = reject;
+  const { head } = document;
+  if (head) {
+    head.appendChild(script);
+  }
+  script.onload = function onload() {
+    if (!this.readyState || this.readyState === 'loaded' || this.readyState === 'complete') {
+      resolve();
+    }
+    script.onload = null;
+    script.onreadystatechange = null;
+  };
+  script.onreadystatechange = script.onload;
+}));

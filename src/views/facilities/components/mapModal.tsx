@@ -19,7 +19,7 @@ export default class MapModal extends Vue {
 
   @Watch('visible')
   protected valueWatch(newV: any, oldV: any) {
-    if (newV === true && this.isFirst !== true) {
+    if (newV === true) {
       const point = new this.BMap.Point(this.$props.position.x, this.$props.position.y);
       console.log(point);
       this.map.removeOverlay(this.marker);
@@ -41,8 +41,6 @@ export default class MapModal extends Vue {
   // 坐标定位图片
   marker: any = null;
 
-  // 是否首次加载
-  isFirst: boolean = true;
 
   // 百度地图对象
   SMap: any = null;
@@ -64,26 +62,21 @@ export default class MapModal extends Vue {
     lat: number;
     lng: number;
   } = {
-    lat: 29.563694,
-    lng: 106.560421,
-  };
+      lat: 29.563694,
+      lng: 106.560421,
+    };
 
   // 地图方法类
   mounted() {
-    if (this.isFirst) {
-      this.$emit('close');
-      loadBmap().then((BMap: any) => {
-        this.BMap = BMap;
-        this.map = new BMap.Map('modalmap'); // 创建Map实例
-        this.map.centerAndZoom(new BMap.Point(106.55, 29.57), 14); // 初始化地图,设置中心点坐标和地图级别
-        this.map.setCurrentCity('北京'); // 设置地图显示的城市 此项是必须设置的
-        this.map.enableScrollWheelZoom(true);
-        this.marker = new BMap.Marker(new BMap.Point(106.55, 29.57)); // 创建标注
-        this.map.addOverlay(this.marker);
-        // @ts-ignore
-        this.isFirst = false;
-      });
-    }
+    loadBmap().then((BMap: any) => {
+      this.BMap = BMap;
+      this.map = new BMap.Map('modalmap'); // 创建Map实例
+      this.map.centerAndZoom(new BMap.Point(106.55, 29.57), 14); // 初始化地图,设置中心点坐标和地图级别
+      this.map.setCurrentCity('北京'); // 设置地图显示的城市 此项是必须设置的
+      this.map.enableScrollWheelZoom(true);
+      this.marker = new BMap.Marker(new BMap.Point(106.55, 29.57)); // 创建标注
+      this.map.addOverlay(this.marker);
+    });
   }
 
   handleOk() {

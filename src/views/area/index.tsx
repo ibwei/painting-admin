@@ -1,11 +1,12 @@
 import { Component, Vue } from 'vue-property-decorator';
-import { Tag, Modal } from 'ant-design-vue';
+import { Tag, Modal, Button } from 'ant-design-vue';
 import moment from 'moment';
 import { tableList, FilterFormList, Opreat } from '@/interface';
 import city from '@/utils/city';
 import InfoModal from './infoModal';
-
+import MapModal from './components/mapModal';
 import './index.less';
+
 
 @Component({
   name: 'area',
@@ -13,6 +14,8 @@ import './index.less';
     'a-tag': Tag,
     'info-modal': InfoModal,
     'a-modal': Modal,
+    'map-modal': MapModal,
+    'a-button': Button,
   },
 })
 export default class Area extends Vue {
@@ -86,6 +89,11 @@ export default class Area extends Vue {
       dataIndex: 'shesiNum',
     },
     {
+      title: '地理位置',
+      dataIndex: 'id',
+      customRender: this.positionRender,
+    },
+    {
       title: '地理位置信息异常',
       dataIndex: 'errorNum',
       customRender: this.areaError,
@@ -122,18 +130,49 @@ export default class Area extends Vue {
 
   editData: object = {};
 
+  //打开地图的入口 [查看|编辑]
+  openType: string = '';
+
+  //地图需要展示的图形 [多边形,圆形,自定义等]
+  type: string = '';
+
   genderRender(text: any) {
     return <a-tag color={text === '多边形' ? 'blue' : 'purple'}>{text}</a-tag>;
+  }
+
+  positionRender(id: number, others: any) {
+    return (
+      <a-button onClick={this.showMap.bind(this, others)}>查看地理位置</a-button>
+    )
   }
 
   areaError(num: number) {
     return <a-tag onClick={this.showWarnDeviceList.bind(this, num)} color={num ? 'red' : 'grey'}>{num ? `${num}个异常设备` : '暂无异常设备'}</a-tag>;
   }
 
+  mapVisible: boolean = false;
+
+  showMap(others: any) {
+    if ((typeof others) === 'object') {
+      this.type = others.type;
+      this.openType = 'read'
+    } else {
+      this.type = others;
+      this.openType = 'edit'
+    }
+    this.mapVisible = true;
+  }
+
+  hideMapModal() {
+    this.mapVisible = false;
+  }
+
   tableClick(key: string, row: any) {
     const data = JSON.parse(JSON.stringify(row));
+    this.type = row.type;
     switch (key) {
       case 'edit':
+        this.openType = 'edit';
         this.editData = data;
         this.visible = true;
         this.title = '修改区域信息';
@@ -142,7 +181,6 @@ export default class Area extends Vue {
       case 'delete':
         window.api.areaBaseInfoDelete({ id: row.id }).then((res: any) => {
           const { err_code } = res.data;
-          console.log(res);
           if (err_code === 0) {
             this.$message.success('删除成功');
             this.success();
@@ -174,6 +212,12 @@ export default class Area extends Vue {
     } else {
       this.$message.info('无设备故障');
     }
+  }
+
+  //编辑框传回来的edit
+  showEditMap(type: string) {
+    console.log('haha')
+    this.showMap(type)
   }
 
   closeModal() {
@@ -215,14 +259,25 @@ export default class Area extends Vue {
           <p>故障设备1 目前位置在 106.5,23.2</p>
           <p>故障设备1 目前位置在 106.5,23.2</p>
         </a-modal>
-        <info-modal
+        {this.visible ? (<info-modal
           title={this.title}
           visible={this.visible}
           type={this.modelType}
           data={this.editData}
           on-close={this.closeModal}
           on-success={this.success}
-        />
+          on-showEditMap={this.showEditMap}
+        />) : ''}
+        {this.mapVisible ?
+          (<map-modal
+            visible={this.mapVisible}
+            on-close={this.hideMapModal}
+            openType={this.openType}
+            type={this.type}
+            position={{ x: 106.55, y: 34.66 }}
+          ></map-modal>)
+          : ''
+        }
       </div>
     );
   }

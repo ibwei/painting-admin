@@ -46,9 +46,9 @@ export default class MapModal extends Vue {
     lat: number;
     lng: number;
   } = {
-    lat: 29.563694,
-    lng: 106.560421,
-  };
+      lat: 29.563694,
+      lng: 106.560421,
+    };
 
   // 地图方法类
   mounted() {
@@ -56,18 +56,18 @@ export default class MapModal extends Vue {
       loadMapCurveLine().then(() => {
         this.BMap = BMap;
         this.map = new BMap.Map('line'); // 创建Map实例
-        this.map.centerAndZoom(new BMap.Point(106.55, 29.57), 16); // 初始化地图,设置中心点坐标和地图级别
+        this.map.centerAndZoom(new BMap.Point(106.546, 29.573), 16); // 初始化地图,设置中心点坐标和地图级别
         this.map.setCurrentCity('重庆'); // 设置地图显示的城市 此项是必须设置的
         this.map.enableScrollWheelZoom(true);
         // const oval = new this.BMap.Polygon(this.add_oval(new BMap.Point(106.55, 29.57), 0.1, 0.3), { strokeColor: '#409EFF', strokeWeight: 6, strokeOpacity: 0.5 });
-        const oval = new this.BMap.Circle(new this.BMap.Point(106.55, 29.57), 1000, {
+        /* const oval = new this.BMap.Circle(new this.BMap.Point(106.55, 29.57), 1000, {
           strokeColor: '#409EFF',
           fillColor: '#409EFF',
           strokeStyle: 'solid',
           llOpacity: '0.3',
-        });
+        }); */
 
-        let point = new BMap.Point(106.556, 29.576);
+        let point = new BMap.Point(106.554, 29.576);
         let marker = new BMap.Marker(point); // 创建标注
         this.map.addOverlay(marker); // 将标注添加到地图中
         // @ts-ignore
@@ -89,7 +89,15 @@ export default class MapModal extends Vue {
         this.map.addOverlay(marker);
         // @ts-ignore
         marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
-        this.map.addOverlay(oval);
+
+        const line = new this.BMap.Polyline([new this.BMap.Point(106.5566, 29.57), new this.BMap.Point(106.55, 29.58), new this.BMap.Point(106.54, 29.58), new this.BMap.Point(106.533, 29.57), new this.BMap.Point(106.5566, 29.57)], 1000, {
+          strokeColor: '#409EFF',
+          fillColor: '#409EFF',
+          strokeStyle: 'solid',
+          llOpacity: '0.3',
+          strokeWeight: 6,
+        });
+        this.map.addOverlay(line);
       });
     });
   }

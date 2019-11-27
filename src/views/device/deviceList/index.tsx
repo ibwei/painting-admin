@@ -111,9 +111,9 @@ export default class Device extends Vue {
     },
   ];
 
-  title: string = '新增区域';
+  title: string = '新增设备';
 
-  visible: boolean = true;
+  visible: boolean = false;
 
   modelType: string = 'add';
 
@@ -166,11 +166,12 @@ export default class Device extends Vue {
   }
 
   closeModal() {
+
     this.visible = false;
     this.editData = {};
   }
 
-  popoverVisible: boolean = true;
+  popoverVisible: boolean = false;
 
   hideMapModal() {
     this.popoverVisible = false;
@@ -216,15 +217,18 @@ export default class Device extends Vue {
           on-menuClick={this.tableClick}
           on-add={this.add}
         />
-        <info-modal
+        {this.visible ? (<info-modal
           title={this.title}
+          position={this.position}
           visible={this.visible}
+          deviceName={this.deviceName}
           type={this.modelType}
           data={this.editData}
           on-close={this.closeModal}
           on-success={this.success}
-        />
-        <map-modal on-close={this.hideMapModal} position={this.position} deviceName={this.deviceName} visible={this.popoverVisible}></map-modal>
+        />) : ''}
+        {this.popoverVisible ? (<map-modal on-close={this.hideMapModal} position={this.position} deviceName={this.deviceName} visible={this.popoverVisible}></map-modal>) : ''}
+
       </div>
     );
   }
