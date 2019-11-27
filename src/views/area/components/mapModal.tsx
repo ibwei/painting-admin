@@ -52,13 +52,12 @@ export default class MapModal extends Vue {
     lat: number;
     lng: number;
   } = {
-      lat: 29.563694,
-      lng: 106.560421,
-    };
+    lat: 29.563694,
+    lng: 106.560421,
+  };
 
   // 地图方法类
   mounted() {
-
     loadBmap().then((BMap: any) => {
       loadMapCurveLine().then(() => {
         this.BMap = BMap;
@@ -77,17 +76,26 @@ export default class MapModal extends Vue {
             });
             this.map.addOverlay(oval);
           } else {
-            const line = new this.BMap.Polyline([new this.BMap.Point(106.5566, 29.57), new this.BMap.Point(106.5566, 29.58), new this.BMap.Point(106.54, 29.58), new this.BMap.Point(106.54, 29.57), new this.BMap.Point(106.5566, 29.57)], 1000, {
-              strokeColor: '#409EFF',
-              fillColor: '#409EFF',
-              strokeStyle: 'solid',
-              llOpacity: '0.3',
-              strokeWeight: 6,
-            });
+            const line = new this.BMap.Polyline(
+              [
+                new this.BMap.Point(106.5566, 29.57),
+                new this.BMap.Point(106.5566, 29.58),
+                new this.BMap.Point(106.54, 29.58),
+                new this.BMap.Point(106.54, 29.57),
+                new this.BMap.Point(106.5566, 29.57),
+              ],
+              1000,
+              {
+                strokeColor: '#409EFF',
+                fillColor: '#409EFF',
+                strokeStyle: 'solid',
+                llOpacity: '0.3',
+                strokeWeight: 6,
+              },
+            );
             this.map.addOverlay(line);
           }
         } else {
-
           loadDrawingManager().then(() => {
             this.overlayList = [];
             const overlaycomplete = (e: any) => {
@@ -95,13 +103,13 @@ export default class MapModal extends Vue {
             };
 
             const styleOptions = {
-              strokeColor: 'red',    //边线颜色。
-              fillColor: 'red',      //填充颜色。当参数为空时，圆形将没有填充效果。
+              strokeColor: 'red', //边线颜色。
+              fillColor: 'red', //填充颜色。当参数为空时，圆形将没有填充效果。
               strokeWeight: 3,
               strokeOpacity: 0.8,
               fillOpacity: 0.6,
               strokeStyle: 'solid',
-            }
+            };
             // @ts-ignore
             const drawingManager = new BMapLib.DrawingManager(this.map, {
               isOpen: false, //是否开启绘制模式
@@ -125,9 +133,9 @@ export default class MapModal extends Vue {
 
   clearAll() {
     for (let i = 0; i < this.overlayList.length; i++) {
-      this.map.removeOverlay(this.overlayList[i])
+      this.map.removeOverlay(this.overlayList[i]);
     }
-    this.overlayList = []
+    this.overlayList = [];
   }
 
   add_oval(centre: any, x: number, y: number) {
@@ -150,7 +158,6 @@ export default class MapModal extends Vue {
     this.$emit('close');
   }
 
-
   render() {
     return (
       <a-modal
@@ -163,9 +170,13 @@ export default class MapModal extends Vue {
       >
         <div className="modal-wrap">
           <div id="line" className="line"></div>
-          <div style="margin-top:20px;" className='bottom-button'>
-            <a-button type="primary" onClick={this.clearAll}>清空重新选择</a-button>
-            <a-button style="margin-left:20px;" type="primary" onClick={this.clearAll}>确定选择</a-button>
+          <div style="margin-top:20px;" className="bottom-button">
+            <a-button type="primary" onClick={this.clearAll}>
+              清空重新选择
+            </a-button>
+            <a-button style="margin-left:20px;" type="primary">
+              确定选择
+            </a-button>
           </div>
         </div>
       </a-modal>
