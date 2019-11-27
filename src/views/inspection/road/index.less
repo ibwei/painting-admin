@@ -1,0 +1,26 @@
+@import '../../../styles/global.less';
+.inspectRoad {
+  /deep/.ant-collapse .ant-collapse-item .ant-collapse-header .anticon {
+    left: initial;
+    right: 16px;
+  }
+  /deep/ .ant-collapse,
+  .ant-collapse-item {
+    background-color: white;
+    border: 0;
+  }
+  .device {
+    display: flex;
+    justify-content: space-between;
+    .first {
+      width: 80%;
+      box-sizing: border-box;
+      padding-left: 20px;
+    }
+    .second {
+      color: @primary-color;
+      cursor: pointer;
+      width: 20%;
+    }
+  }
+}
