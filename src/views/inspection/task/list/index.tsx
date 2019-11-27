@@ -249,13 +249,15 @@ export default class List extends Vue {
   }
 
   statusRender(data: string) {
+    let color: string = 'green';
     if (data === '未开始') {
-      return <a-tag color="red">{data}</a-tag>;
+      color = 'red';
     } else if (data === '进行中') {
-      return <a-tag color="blue">{data}</a-tag>;
+      color = 'blue';
     } else {
-      return <a-tag color="green">{data}</a-tag>;
+      color = 'green';
     }
+    return <a-tag color={color}>{data}</a-tag>;
   }
 
   render() {
