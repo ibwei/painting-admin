@@ -98,6 +98,29 @@ export const asyncRouterMap: routerItem[] = [
           },
         ],
       },
+      {
+        path: 'task',
+        name: '巡检任务管理',
+        component: getComponent('inspection/task/index'),
+        permission: true,
+        meta: { key: 'task' },
+        children: [
+          {
+            path: 'list',
+            name: '巡检任务列表',
+            component: getComponent('inspection/task/list/index'),
+            permission: true,
+            meta: { key: 'list' },
+          },
+          {
+            path: 'abnormal',
+            name: '异常巡检列表',
+            component: getComponent('inspection/task/abnormal/index'),
+            permission: true,
+            meta: { key: 'abnormal' },
+          },
+        ],
+      },
     ],
   },
   {
