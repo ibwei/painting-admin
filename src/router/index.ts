@@ -235,6 +235,37 @@ export const asyncRouterMap: routerItem[] = [
       },
     ],
   },
+  {
+    path: '/danger',
+    icon: 'team',
+    name: '隐患管理',
+    component: getComponent('danger/index'),
+    permission: true,
+    meta: { key: 'Danger' },
+    children: [
+      {
+        path: 'message',
+        name: '隐患消息',
+        component: getComponent('danger/message/index'),
+        permission: true,
+        meta: { key: 'Message' },
+      },
+      {
+        path: 'setting',
+        name: '隐患设置',
+        component: getComponent('danger/setting/index'),
+        permission: true,
+        meta: { key: 'Setting' },
+      },
+      {
+        path: 'map',
+        name: '隐患地图',
+        component: getComponent('danger/map/index'),
+        permission: true,
+        meta: { key: 'Map' },
+      },
+    ],
+  },
 ];
 
 Vue.use(Router);
