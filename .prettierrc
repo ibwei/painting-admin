@@ -1,5 +1,4 @@
 {
-<<<<<<< HEAD
   "singleQuote": true,
   "semi": true,
   "trailingComma": "all",
@@ -8,11 +7,3 @@
   "jsxSingleQuote": true,
   "tabWidth": 2
 }
-=======
-    "singleQuote": true,
-    "semi": true,
-    "trailingComma": "all",
-    "bracketSpacing": true,
-    "arrowParens": "avoid"
-}
->>>>>>> beff7638509cee7da4e05fa511a843116c86378a
