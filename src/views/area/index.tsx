@@ -260,9 +260,9 @@ export default class Area extends Vue {
 
   success() {
     this.visible = false;
-    const Table: any = this.$refs.baseInfoTable;
+    const Table2: any = this.$refs.baseInfoTable;
     this.editData = {};
-    Table.reloadTable();
+    Table2.reloadTable();
   }
 
   render() {

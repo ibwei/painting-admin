@@ -171,13 +171,13 @@ export default class List extends Vue {
   outParams: any = {};
 
   opreat: Opreat[] = [
-    // {
-    //   key: 'edit',
-    //   rowKey: 'id',
-    //   color: 'blue',
-    //   text: '编辑',
-    //   roles: true,
-    // },
+    {
+      key: 'edit',
+      rowKey: 'id',
+      color: 'blue',
+      text: '查看详情',
+      roles: true,
+    },
     // {
     //   key: 'delete',
     //   rowKey: 'id',
@@ -201,10 +201,7 @@ export default class List extends Vue {
     const data = JSON.parse(JSON.stringify(row));
     switch (key) {
       case 'edit':
-        this.editData = { ...data, area: 'jack' };
-        this.changeVis = true;
-        this.title = '修改设施信息';
-        this.modelType = 'edit';
+        this.$router.push('/inspection/task/detail');
         break;
       case 'delete':
         // window.api.facilitiesBaseInfoDelete({ id: row.id }).then((res: any) => {

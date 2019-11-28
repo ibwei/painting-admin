@@ -11,28 +11,87 @@ const BaseInfoData = Mock.mock({
   // 关联设备
   // 创建人
   // 创建时间
-  'list|100': [
+  list: [
     {
-      id: '@increment',
-      'type|1': ['日常任务', '临时任务', '日常任务', '日常任务', '日常任务'],
-      luxian: '路线@integer(1,1000)',
-      area: '区域@integer(1,1000)',
-      group: '分组@integer(1,1000)',
-      people: '@cname',
+      key: 1,
+      name: '部门1',
+      status: 1,
+      type: '组织',
       time: '@datetime',
-      'status|1': ['未开始', '已完成', '进行中'],
-      'xuanjianfangshi|1': ['车巡', '步巡'],
-      'danger|1': ['未签到', '无GPS信息'],
-      createName: '@cname',
-      createTime: '@datetime',
-      shebeiname: '设备@integer(1,1000)',
-      shebeitype: '类型@integer(1,1000)',
-      shebeiluxian: '路线一',
-      shebeiquyu: '区域一',
-      shebeifenzu: '分组一',
-      shebeipeople: '张思聪',
-      shebeipeople2: '张思聪',
-      'shebeistatus|1': ['正常', '异常', '正常', '正常', '正常', '正常', '正常', '正常'],
+      type1: '类型@integer(1,100)',
+      children: [
+        {
+          key: 11,
+          name: '部门1-2',
+          status: 1,
+          type: '部门1',
+          time: '@datetime',
+          type1: '类型@integer(1,100)',
+        },
+        {
+          key: 12,
+          name: '部门1-3',
+          status: 1,
+          type: '部门1',
+          time: '@datetime',
+          type1: '类型@integer(1,100)',
+          children: [
+            {
+              key: 121,
+              name: '部门1-3-1',
+              status: 1,
+              type: '部门1-3',
+              time: '@datetime',
+              type1: '类型@integer(1,100)',
+            },
+          ],
+        },
+        {
+          key: 13,
+          name: '部门1-4',
+          status: 1,
+          type: '部门1',
+          time: '@datetime',
+          type1: '类型@integer(1,100)',
+
+          children: [
+            {
+              key: 131,
+              name: '部门1-4-1',
+              status: 1,
+              type: '部门1-4',
+              time: '@datetime',
+              type1: '类型@integer(1,100)',
+              children: [
+                {
+                  key: 1311,
+                  name: '部门1-4-1-1',
+                  status: 1,
+                  type: '部门1-4-1',
+                  time: '@datetime',
+                  type1: '类型@integer(1,100)',
+                },
+                {
+                  key: 1312,
+                  name: '部门1-4-1-2',
+                  status: 1,
+                  type: '部门1-4-1',
+                  time: '@datetime',
+                  type1: '类型@integer(1,100)',
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      key: 2,
+      name: '部门2',
+      status: 0,
+      type: '组织2',
+      time: '@datetime',
+      type1: '类型@integer(1,100)',
     },
   ],
 });
