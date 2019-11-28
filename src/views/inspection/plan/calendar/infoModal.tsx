@@ -43,7 +43,7 @@ class InfoModal extends Vue {
     return (
       <a-modal
         width='50%'
-        title='日期详情'
+        title={`日期详情--${this.date.format('YYYY-MM-DD')}`}
         visible={this.visible}
         on-ok={this.submit}
         on-cancel={this.cancel}
