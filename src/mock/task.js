@@ -14,31 +14,25 @@ const BaseInfoData = Mock.mock({
   'list|100': [
     {
       id: '@increment',
-      name: '路线@integer(1,100)',
-      'sheshi|100-500': ['设施@integer(1,1000)'],
-      'shebei|100-500': ['设备@integer(1,1000)'],
-      'guandao|100-500': ['管道@integer(1,1000)'],
+      'type|1': ['日常任务', '临时任务', '日常任务', '日常任务', '日常任务'],
+      luxian: '路线@integer(1,1000)',
+      area: '区域@integer(1,1000)',
+      group: '分组@integer(1,1000)',
+      people: '@cname',
+      time: '@datetime',
+      'status|1': ['未开始', '已完成', '进行中'],
       'xuanjianfangshi|1': ['车巡', '步巡'],
-      'xianlu|100-500': ['路线@integer(1,1000)'],
-      'people|100-500': ['@cname'],
-      thumbnail: "@image('150x80', '@color()','@color()', 'png', '设施'+'@integer(1,100)')",
-      pointer: { x: Mock.Random.float(106, 106, 2, 3), y: Mock.Random.float(29, 29, 2, 3) },
-      luxian: [
-        {
-          x: parseFloat('106') + parseFloat('0.@integer(1,3)'),
-          y: Mock.Random.float(29, 29, 1, 1),
-        },
-        {
-          x: parseFloat('106') + parseFloat('0.@integer(1,3)'),
-          y: Mock.Random.float(29, 29, 1, 1),
-        },
-        {
-          x: parseFloat('106') + parseFloat('0.@integer(1,3)'),
-          y: Mock.Random.float(29, 29, 1, 1),
-        },
-      ],
+      'danger|1': ['未签到', '无GPS信息'],
       createName: '@cname',
       createTime: '@datetime',
+      shebeiname: '设备@integer(1,1000)',
+      shebeitype: '类型@integer(1,1000)',
+      shebeiluxian: '路线一',
+      shebeiquyu: '区域一',
+      shebeifenzu: '分组一',
+      shebeipeople: '张思聪',
+      shebeipeople2: '张思聪',
+      'shebeistatus|1': ['正常', '异常', '正常', '正常', '正常', '正常', '正常', '正常'],
     },
   ],
 });
@@ -47,6 +41,49 @@ let database = BaseInfoData.list;
 
 module.exports = {
   list(req, res) {
+    let { pageSize, pageNum, ...other } = req.body;
+    pageSize = pageSize || 10;
+    pageNum = pageNum || 1;
+    other = { ...other };
+
+    let newData = database;
+    for (const key in other) {
+      if ({}.hasOwnProperty.call(other, key)) {
+        newData = newData.filter(item => {
+          if ({}.hasOwnProperty.call(item, key)) {
+            if (key === 'address') {
+              return other[key].every(iitem => item[key].indexOf(iitem) > -1);
+            }
+            if (key === 'startTime' || key === 'endTime') {
+              const start = new Date(other.startTime).getTime();
+              const end = new Date(other.endTime).getTime();
+              const now = new Date(item[key]).getTime();
+              if (start && end) {
+                return now >= start && now <= end;
+              }
+              return true;
+            }
+            return (
+              String(item[key])
+                .trim()
+                .indexOf(decodeURI(other[key]).trim()) > -1
+            );
+          }
+          return true;
+        });
+      }
+    }
+    const list = {
+      data: newData.slice((pageNum - 1) * pageSize, pageNum * pageSize),
+      total: newData.length,
+    };
+    const data = baseData('success', '查询成功');
+    data.entity = list;
+    setTimeout(() => {
+      res.status(200).json(data);
+    }, 100);
+  },
+  abnormal(req, res) {
     let { pageSize, pageNum, ...other } = req.body;
     pageSize = pageSize || 10;
     pageNum = pageNum || 1;

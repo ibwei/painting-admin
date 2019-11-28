@@ -12,6 +12,8 @@ const line = require('./line');
 const lineType = require('./lineType');
 const inspectRoad = require('./inspectRoad');
 const inspectPlan = require('./inspectPlan');
+const task = require('./task');
+const insititution = require('./sysIntitution');
 
 module.exports = function mockInit(app) {
   app.use(bodyParser.json());
@@ -71,4 +73,9 @@ module.exports = function mockInit(app) {
   app.post('/api/inspectPlan/add', inspectPlan.add);
   app.post('/api/inspectPlan/update', inspectPlan.update);
   app.post('/api/inspectPlan/delete', inspectPlan.delete);
+
+  app.post('/api/task/list', task.list);
+  app.post('/api/task/abnormal', task.abnormal);
+
+  app.post('/api/sys/insititution', insititution.list);
 };

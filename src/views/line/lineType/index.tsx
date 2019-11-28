@@ -203,12 +203,6 @@ export default class LineType extends Vue {
           on-close={this.closeModal}
           on-success={this.success}
         />
-        <map-modal
-          on-close={this.hideMapModal}
-          position={this.position}
-          deviceName={this.facilitiesName}
-          visible={this.popoverVisible}
-        ></map-modal>
       </div>
     );
   }

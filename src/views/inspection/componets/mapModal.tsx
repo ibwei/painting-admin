@@ -107,6 +107,7 @@ export default class MapModal extends Vue {
         centered
         onCancel={this.$props.cancel}
         footer={null}
+        width="800px"
       >
         <div className="modal-wrap">
           <div id="modalmap" className="modalmap"></div>

@@ -98,6 +98,68 @@ export const asyncRouterMap: routerItem[] = [
           },
         ],
       },
+      {
+        path: 'task',
+        name: '巡检任务管理',
+        component: getComponent('inspection/task/index'),
+        permission: true,
+        meta: { key: 'task' },
+        children: [
+          {
+            path: 'list',
+            name: '巡检任务列表',
+            component: getComponent('inspection/task/list/index'),
+            permission: true,
+            meta: { key: 'list' },
+          },
+          {
+            path: 'detail',
+            name: '巡检任务详情',
+            component: getComponent('inspection/task/list/page/detail'),
+            permission: false,
+            meta: { key: 'taskDetail' },
+          },
+          {
+            path: 'abnormal',
+            name: '异常巡检列表',
+            component: getComponent('inspection/task/abnormal/index'),
+            permission: true,
+            meta: { key: 'abnormal' },
+          },
+        ],
+      },
+
+      {
+        path: 'monitor',
+        name: '巡检监控',
+        component: getComponent('inspection/monitor/index'),
+        permission: true,
+        meta: { key: 'monitor' },
+      },
+    ],
+  },
+  {
+    path: '/system',
+    name: '系统管理',
+    icon: 'dashboard',
+    component: getComponent('system/index'),
+    permission: true,
+    meta: { key: 'system' },
+    children: [
+      {
+        path: 'institution',
+        name: '组织机构管理',
+        component: getComponent('system/institution/index'),
+        permission: true,
+        meta: { key: 'institution' },
+      },
+      {
+        path: 'role',
+        name: '角色管理',
+        component: getComponent('system/role/index'),
+        permission: true,
+        meta: { key: 'role' },
+      },
     ],
   },
   {

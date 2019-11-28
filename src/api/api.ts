@@ -161,7 +161,6 @@ export default class Api {
       fetchType: 'json',
       method: 'post',
     },
-
     inspectPlanAdd: {
       url: '/inspectPlan/add',
       fetchType: 'json',
@@ -174,6 +173,11 @@ export default class Api {
     },
     linspectPlanDelete: {
       url: '/inspectPlan/delete',
+      fetchType: 'json',
+      method: 'post',
+    },
+    inspectRoad: {
+      url: '/inspectRoad',
       fetchType: 'json',
       method: 'post',
     },

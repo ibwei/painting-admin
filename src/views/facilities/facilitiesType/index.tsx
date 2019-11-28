@@ -168,7 +168,7 @@ export default class facilitiesType extends Vue {
     this.editData = {};
   }
 
-  popoverVisible: boolean = true;
+  popoverVisible: boolean = false;
 
   hideMapModal() {
     this.popoverVisible = false;
@@ -221,7 +221,8 @@ export default class facilitiesType extends Vue {
           on-close={this.closeModal}
           on-success={this.success}
         />
-        <map-modal on-close={this.hideMapModal} position={this.position} deviceName={this.facilitiesName} visible={this.popoverVisible}></map-modal>
+        {this.popoverVisible ? (<map-modal on-close={this.hideMapModal} position={this.position} deviceName={this.facilitiesName} visible={this.popoverVisible}></map-modal>) : ''}
+
       </div>
     );
   }
