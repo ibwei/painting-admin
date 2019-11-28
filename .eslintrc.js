@@ -6,6 +6,7 @@ module.exports = {
   extends: ['plugin:vue/essential', '@vue/airbnb', '@vue/typescript'],
   rules: {
     'max-len': 'off',
+    'function-paren-newline': 'off',
     'new-cap': 'off',
     'no-continue': 'off',
     experimentalDecorators: 'off',

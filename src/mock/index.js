@@ -12,6 +12,7 @@ const line = require('./line');
 const lineType = require('./lineType');
 const inspectRoad = require('./inspectRoad');
 const inspectPlan = require('./inspectPlan');
+const dangerMessage = require('./dangerMessage');
 const task = require('./task');
 const insititution = require('./sysIntitution');
 
@@ -77,5 +78,9 @@ module.exports = function mockInit(app) {
   app.post('/api/task/list', task.list);
   app.post('/api/task/abnormal', task.abnormal);
 
+  app.post('/api/dangerMessage/list', dangerMessage.list);
+  app.post('/api/dangerMessage/add', dangerMessage.add);
+  app.post('/api/dangerMessage/update', dangerMessage.update);
+  app.post('/api/dangerMessage/delete', dangerMessage.delete);
   app.post('/api/sys/insititution', insititution.list);
 };
