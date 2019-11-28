@@ -161,6 +161,22 @@ export default class Api {
       fetchType: 'json',
       method: 'post',
     },
+
+    inspectPlanAdd: {
+      url: '/inspectPlan/add',
+      fetchType: 'json',
+      method: 'post',
+    },
+    inspectPlanUpdate: {
+      url: '/inspectPlan/update',
+      fetchType: 'json',
+      method: 'post',
+    },
+    linspectPlanDelete: {
+      url: '/inspectPlan/delete',
+      fetchType: 'json',
+      method: 'post',
+    },
   };
 
   // 对外暴露方法
