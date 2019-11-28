@@ -148,7 +148,7 @@ export const asyncRouterMap: routerItem[] = [
     children: [
       {
         path: 'institution',
-        name: '组织机构管理',
+        name: '组织管理',
         component: getComponent('system/institution/index'),
         permission: true,
         meta: { key: 'institution' },
