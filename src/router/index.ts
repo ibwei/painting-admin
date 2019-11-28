@@ -128,12 +128,37 @@ export const asyncRouterMap: routerItem[] = [
           },
         ],
       },
+
       {
         path: 'monitor',
         name: '巡检监控',
         component: getComponent('inspection/monitor/index'),
         permission: true,
         meta: { key: 'monitor' },
+      },
+    ],
+  },
+  {
+    path: '/system',
+    name: '系统管理',
+    icon: 'dashboard',
+    component: getComponent('system/index'),
+    permission: true,
+    meta: { key: 'system' },
+    children: [
+      {
+        path: 'institution',
+        name: '组织机构管理',
+        component: getComponent('system/institution/index'),
+        permission: true,
+        meta: { key: 'institution' },
+      },
+      {
+        path: 'role',
+        name: '角色管理',
+        component: getComponent('system/role/index'),
+        permission: true,
+        meta: { key: 'role' },
       },
     ],
   },
