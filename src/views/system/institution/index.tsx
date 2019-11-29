@@ -23,7 +23,7 @@ export default class Insititution extends Vue {
 
   tableList: tableList[] = [
     {
-      title: '部门名称',
+      title: '机构名称',
       dataIndex: 'name',
       align: 'center',
     },
@@ -32,11 +32,6 @@ export default class Insititution extends Vue {
       dataIndex: 'status',
       align: 'center',
       customRender: this.statusRender,
-    },
-    {
-      title: '所属组织',
-      dataIndex: 'type',
-      align: 'center',
     },
     {
       title: '组织类型',
@@ -53,15 +48,9 @@ export default class Insititution extends Vue {
   filterList: FilterFormList[] = [
     {
       key: 'name',
-      label: '部门名称',
+      label: '机构名称',
       type: 'input',
-      placeholder: '请输入部门名称',
-    },
-    {
-      key: 'renwu',
-      label: '所属组织',
-      type: 'input',
-      placeholder: '请输入所属组织',
+      placeholder: '请输入机构名称',
     },
     {
       key: 'type',
@@ -156,9 +145,9 @@ export default class Insititution extends Vue {
 
   typeRender(data: string) {
     if (data === '临时任务') {
-      return <a-tag color="blue">{data}</a-tag>;
+      return <a-tag color='blue'>{data}</a-tag>;
     }
-    return <a-tag color="green">{data}</a-tag>;
+    return <a-tag color='green'>{data}</a-tag>;
   }
 
   statusRender(data: number) {
@@ -175,7 +164,7 @@ export default class Insititution extends Vue {
     return (
       <div>
         <filter-table
-          ref="task"
+          ref='task'
           tableList={this.tableList}
           filterList={this.filterList}
           filterGrade={this.filterGrade}
@@ -199,7 +188,7 @@ export default class Insititution extends Vue {
             handleOk={this.success}
             handkeCancel={this.closeModal}
             title={this.modelType}
-            width="800px"
+            width='800px'
             data={this.editData}
           ></a-add-modal>
         )}
