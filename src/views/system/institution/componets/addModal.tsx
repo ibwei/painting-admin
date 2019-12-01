@@ -1,5 +1,15 @@
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
-import { Modal, Form, Select, Input, Button, DatePicker, Table, TreeSelect } from 'ant-design-vue';
+import {
+  Modal,
+  Form,
+  Select,
+  Input,
+  Button,
+  DatePicker,
+  Table,
+  TreeSelect,
+  Tree,
+} from 'ant-design-vue';
 @Component({
   name: 'ChangeModal',
   components: {
@@ -14,6 +24,7 @@ import { Modal, Form, Select, Input, Button, DatePicker, Table, TreeSelect } fro
     'a-table': Table,
     'a-tree-select': TreeSelect,
     'a-tree-select-node': TreeSelect.TreeNode,
+    'a-tree': Tree,
   },
   props: {
     Form,
@@ -37,6 +48,33 @@ class ChangeModal extends Vue {
   dataSource: any = [];
 
   column: any = [];
+
+  treeData: any = [
+    {
+      title: '权限1',
+      key: '1',
+      children: [
+        {
+          title: '权限1-1',
+          key: '1-1',
+          children: [
+            { title: '权限1-1-1', key: '1-1-1' },
+            { title: '权限1-1-2', key: '1-1-2' },
+            { title: '权限1-1-3', key: '1-1-3' },
+          ],
+        },
+        {
+          title: '权限1-2',
+          key: '1-2',
+          children: [
+            { title: '权限1-2-1', key: '1-2-1' },
+            { title: '权限1-2-2', key: '1-2-2' },
+            { title: '权限1-2-3', key: '1-2-3' },
+          ],
+        },
+      ],
+    },
+  ];
 
   handleSelectDetail(data: string[], e?: any) {
     const tmp: any = [];
@@ -91,64 +129,67 @@ class ChangeModal extends Vue {
           onOk={this.$props.handleOk}
           onCancel={this.$props.handkeCancel}
           width={this.$props.width}
-          title="新建临时任务"
+          title='新建临时任务'
         >
           <div Style={{ padding: '15px' }}>
             <a-Form>
-              <a-form-item props={{ ...this.formItemLayout }} label="部门名称">
+              <a-form-item props={{ ...this.formItemLayout }} label='机构名称'>
                 {getFieldDecorator('name', {
                   initialValue: this.$props.data.name ? this.$props.data.name : undefined,
-                  rules: [{ required: true, message: '请输入部门名称' }],
-                })(<a-input placeholder="请输入部门名称" />)}
+                  rules: [{ required: true, message: '请输入机构名称' }],
+                })(<a-input placeholder='请输入机构名称' />)}
               </a-form-item>
-              <a-form-item props={{ ...this.formItemLayout }} label="类型">
+              <a-form-item props={{ ...this.formItemLayout }} label='所属类型'>
                 {getFieldDecorator('type1', {
                   initialValue: this.$props.data.type1 ? this.$props.data.type1 : undefined,
-                  rules: [{ required: true, message: '请选择类型' }],
+                  rules: [{ required: true, message: '请选择所属类型' }],
                 })(
-                  <a-select placeholder="请选择类型">
-                    <a-select-option value="jack">类型1</a-select-option>
-                    <a-select-option value="lucy">类型2</a-select-option>
-                    <a-select-option value="lucy">类型3</a-select-option>
-                    <a-select-option value="lucy">类型4</a-select-option>
-                    <a-select-option value="lucy">类型5</a-select-option>
+                  <a-select placeholder='请选择所属类型'>
+                    <a-select-option value='jack'>类型1</a-select-option>
+                    <a-select-option value='lucy'>类型2</a-select-option>
+                    <a-select-option value='lucy'>类型3</a-select-option>
+                    <a-select-option value='lucy'>类型4</a-select-option>
+                    <a-select-option value='lucy'>类型5</a-select-option>
                   </a-select>,
                 )}
               </a-form-item>
-              <a-form-item props={{ ...this.formItemLayout }} label="组织">
+              <a-form-item props={{ ...this.formItemLayout }} label='所属组织'>
                 {getFieldDecorator('type', {
                   initialValue: this.$props.data.type ? this.$props.data.type : undefined,
-                  rules: [{ required: true, message: '请选择组织' }],
+                  rules: [{ required: true, message: '请选择所属组织' }],
                 })(
                   <a-tree-select
                     showSearch
-                    style="width: 300px"
-                    value="value"
                     dropdownStyle={{ maxHeight: '400px', overflow: 'auto' }}
-                    placeholder="请选择组织"
+                    placeholder='请选择所属组织'
                     allowClear
                     treeDefaultExpandAll
                   >
-                    <a-tree-select-node value="parent 1" title="组织1" key="0-1">
-                      <a-tree-select-node value="parent 1-0" title="部门1" key="0-1-1">
+                    <a-tree-select-node value='parent 1' title='部门1' key='0-1'>
+                      <a-tree-select-node value='parent 1-0' title='部门1-1' key='0-1-1'>
                         <a-tree-select-node
-                          selectable="false"
-                          value="leaf1"
-                          title="部门1-1"
-                          key="random"
+                          selectable='false'
+                          value='leaf1'
+                          title='部门1-1'
+                          key='random'
                         />
-                        <a-tree-select-node value="leaf2" title="部门1-2" key="random1" />
+                        <a-tree-select-node value='leaf2' title='部门1-2' key='random1' />
                       </a-tree-select-node>
-                      <a-tree-select-node value="parent 1-1" title="组织2" key="random2">
+                      <a-tree-select-node value='parent 1-1' title='部门2' key='random2'>
                         <a-tree-select-node
-                          value="组织2-1"
-                          title="组织2-1"
-                          key="random3"
+                          value='组织2-1'
+                          title='组织2-1'
+                          key='random3'
                         ></a-tree-select-node>
                       </a-tree-select-node>
                     </a-tree-select-node>
                   </a-tree-select>,
                 )}
+              </a-form-item>
+              <a-form-item props={{ ...this.formItemLayout }} label='所属权限'>
+                {getFieldDecorator('type', {
+                  rules: [{ required: true, message: '请选择所属权限' }],
+                })(<a-tree checkable treeData={this.treeData} />)}
               </a-form-item>
             </a-Form>
           </div>
@@ -159,13 +200,13 @@ class ChangeModal extends Vue {
             visible={this.detailVis}
             onOk={this.handleConfirm}
             onCancel={this.handleModalCancel}
-            width="800px"
+            width='800px'
           >
             <div Style={{ padding: '15px' }}>
               <a-table
                 columns={this.column}
                 dataSource={this.dataSource}
-                rowKey="name"
+                rowKey='name'
                 rowSelection={{
                   selectedRowKeys: [1, 2, 3],
                   onChange: () => {},

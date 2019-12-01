@@ -11,32 +11,52 @@ const BaseInfoData = Mock.mock({
   // 关联设备
   // 创建人
   // 创建时间
-  'list|100': [
+  list: [
     {
-      id: '@increment',
-      name: '路线@integer(1,100)',
-      'sheshi|100-500': ['设施@integer(1,1000)'],
-      'shebei|100-500': ['设备@integer(1,1000)'],
-      'guandao|100-500': ['管道@integer(1,1000)'],
-      'xuanjianfangshi|1': ['车巡', '步巡'],
-      'xianlu|100-500': ['路线@integer(1,1000)'],
-      'people|100-500': ['@cname'],
-      thumbnail: "@image('150x80', '@color()','@color()', 'png', '设施'+'@integer(1,100)')",
-      pointer: [
-        { x: 106.515537, y: 29.538454 },
-        { x: 106.515172, y: 29.539117 },
-        { x: 106.51261, y: 29.539757 },
-        { x: 106.513997, y: 29.540039 },
-        { x: 106.514448, y: 29.538433 },
+      key: 0,
+      name: '总系统管理员',
+      status: 1,
+      type: '部门',
+      time: '@datetime',
+      type1: '类型@integer(1,100)',
+      children: [
+        {
+          key: 1,
+          name: '一级系统管理员',
+          status: 1,
+          type: '部门1',
+          time: '@datetime',
+          type1: '类型@integer(1,100)',
+          children: [
+            {
+              key: 11,
+              name: '二级系统管理员',
+              status: 1,
+              type: '部门1',
+              time: '@datetime',
+              type1: '类型@integer(1,100)',
+              children: [
+                {
+                  key: 121,
+                  name: '三级级系统管理员',
+                  status: 1,
+                  type: '部门1-3',
+                  time: '@datetime',
+                  type1: '类型@integer(1,100)',
+                },
+              ],
+            },
+          ],
+        },
+        {
+          key: 2,
+          name: '一级巡检管理员',
+          status: 0,
+          type: '部门2',
+          time: '@datetime',
+          type1: '类型@integer(1,100)',
+        },
       ],
-      luxian: [
-        { x: 106.515537, y: 29.538454 },
-        { x: 106.515172, y: 29.539117 },
-        { x: 106.51261, y: 29.539757 },
-        { x: 106.513997, y: 29.540039 },
-      ],
-      createName: '@cname',
-      createTime: '@datetime',
     },
   ],
 });
@@ -45,6 +65,49 @@ let database = BaseInfoData.list;
 
 module.exports = {
   list(req, res) {
+    let { pageSize, pageNum, ...other } = req.body;
+    pageSize = pageSize || 10;
+    pageNum = pageNum || 1;
+    other = { ...other };
+
+    let newData = database;
+    for (const key in other) {
+      if ({}.hasOwnProperty.call(other, key)) {
+        newData = newData.filter(item => {
+          if ({}.hasOwnProperty.call(item, key)) {
+            if (key === 'address') {
+              return other[key].every(iitem => item[key].indexOf(iitem) > -1);
+            }
+            if (key === 'startTime' || key === 'endTime') {
+              const start = new Date(other.startTime).getTime();
+              const end = new Date(other.endTime).getTime();
+              const now = new Date(item[key]).getTime();
+              if (start && end) {
+                return now >= start && now <= end;
+              }
+              return true;
+            }
+            return (
+              String(item[key])
+                .trim()
+                .indexOf(decodeURI(other[key]).trim()) > -1
+            );
+          }
+          return true;
+        });
+      }
+    }
+    const list = {
+      data: newData.slice((pageNum - 1) * pageSize, pageNum * pageSize),
+      total: newData.length,
+    };
+    const data = baseData('success', '查询成功');
+    data.entity = list;
+    setTimeout(() => {
+      res.status(200).json(data);
+    }, 100);
+  },
+  abnormal(req, res) {
     let { pageSize, pageNum, ...other } = req.body;
     pageSize = pageSize || 10;
     pageNum = pageNum || 1;

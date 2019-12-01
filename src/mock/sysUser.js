@@ -13,30 +13,21 @@ const BaseInfoData = Mock.mock({
   // 创建时间
   'list|100': [
     {
-      id: '@increment',
-      name: '路线@integer(1,100)',
-      'sheshi|100-500': ['设施@integer(1,1000)'],
-      'shebei|100-500': ['设备@integer(1,1000)'],
-      'guandao|100-500': ['管道@integer(1,1000)'],
-      'xuanjianfangshi|1': ['车巡', '步巡'],
-      'xianlu|100-500': ['路线@integer(1,1000)'],
-      'people|100-500': ['@cname'],
-      thumbnail: "@image('150x80', '@color()','@color()', 'png', '设施'+'@integer(1,100)')",
-      pointer: [
-        { x: 106.515537, y: 29.538454 },
-        { x: 106.515172, y: 29.539117 },
-        { x: 106.51261, y: 29.539757 },
-        { x: 106.513997, y: 29.540039 },
-        { x: 106.514448, y: 29.538433 },
+      id1: '@increment',
+      name: '用户@integer(1,100)',
+      'juese|1': [
+        '总系统管理员',
+        '一级系统管理员',
+        '二级系统管理员',
+        '三级系统管理员',
+        '一级巡检管理员',
+        '二级巡检管理员',
       ],
-      luxian: [
-        { x: 106.515537, y: 29.538454 },
-        { x: 106.515172, y: 29.539117 },
-        { x: 106.51261, y: 29.539757 },
-        { x: 106.513997, y: 29.540039 },
-      ],
-      createName: '@cname',
-      createTime: '@datetime',
+      'status|1': ['正常', '冻结', '正常', '正常', '正常'],
+      'sex|1': ['男', '女'],
+      idCard: '@id',
+      time: '@datetime',
+      type: '类型@integer(1,100)',
     },
   ],
 });
@@ -45,6 +36,49 @@ let database = BaseInfoData.list;
 
 module.exports = {
   list(req, res) {
+    let { pageSize, pageNum, ...other } = req.body;
+    pageSize = pageSize || 10;
+    pageNum = pageNum || 1;
+    other = { ...other };
+
+    let newData = database;
+    for (const key in other) {
+      if ({}.hasOwnProperty.call(other, key)) {
+        newData = newData.filter(item => {
+          if ({}.hasOwnProperty.call(item, key)) {
+            if (key === 'address') {
+              return other[key].every(iitem => item[key].indexOf(iitem) > -1);
+            }
+            if (key === 'startTime' || key === 'endTime') {
+              const start = new Date(other.startTime).getTime();
+              const end = new Date(other.endTime).getTime();
+              const now = new Date(item[key]).getTime();
+              if (start && end) {
+                return now >= start && now <= end;
+              }
+              return true;
+            }
+            return (
+              String(item[key])
+                .trim()
+                .indexOf(decodeURI(other[key]).trim()) > -1
+            );
+          }
+          return true;
+        });
+      }
+    }
+    const list = {
+      data: newData.slice((pageNum - 1) * pageSize, pageNum * pageSize),
+      total: newData.length,
+    };
+    const data = baseData('success', '查询成功');
+    data.entity = list;
+    setTimeout(() => {
+      res.status(200).json(data);
+    }, 100);
+  },
+  abnormal(req, res) {
     let { pageSize, pageNum, ...other } = req.body;
     pageSize = pageSize || 10;
     pageNum = pageNum || 1;

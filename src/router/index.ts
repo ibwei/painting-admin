@@ -160,6 +160,52 @@ export const asyncRouterMap: routerItem[] = [
         permission: true,
         meta: { key: 'role' },
       },
+      {
+        path: 'user',
+        name: '用户管理',
+        component: getComponent('system/user/index'),
+        permission: true,
+        meta: { key: 'role' },
+      },
+      {
+        path: 'servicemanage',
+        name: '服务管理',
+        component: getComponent('system/servicemanage/index'),
+        permission: true,
+        meta: { key: 'role' },
+        children: [
+          {
+            path: 'infomation',
+            name: '信息服务',
+            component: getComponent('system/servicemanage/infomation/index'),
+            permission: true,
+            meta: { key: 'role' },
+            children: [
+              {
+                path: 'message',
+                name: '短信服务',
+                component: getComponent('system/servicemanage/infomation/message/index'),
+                permission: true,
+                meta: { key: 'role' },
+              },
+              {
+                path: 'wechat',
+                name: '微信公众号服务',
+                component: getComponent('system/servicemanage/infomation/wechat/index'),
+                permission: true,
+                meta: { key: 'role' },
+              },
+              {
+                path: 'email',
+                name: '邮箱服务',
+                component: getComponent('system/servicemanage/infomation/email/index'),
+                permission: true,
+                meta: { key: 'role' },
+              },
+            ],
+          },
+        ],
+      },
     ],
   },
   {
