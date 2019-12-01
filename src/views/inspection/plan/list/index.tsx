@@ -193,10 +193,11 @@ export default class inspectionPlanList extends Vue {
           filterParams={this.filterParams}
           outParams={this.outParams}
           addBtn={true}
-          exportBtn={false}
+          exportBtn={true}
           dataType={'json'}
           rowKey={'id'}
           opreat={this.opreat}
+          localName='inspectionPlanList'
           fetchType={'post'}
           backParams={this.BackParams}
           on-menuClick={this.tableClick}

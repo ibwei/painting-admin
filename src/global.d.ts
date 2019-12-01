@@ -1,7 +1,7 @@
 interface Window {
   api: {
     [key: string]: (
-      data: any
+      data: any,
     ) => Promise<{
       success: boolean;
       message: string;
@@ -12,6 +12,7 @@ interface Window {
   ajax: any;
   ApexCharts: any;
   BMap: any;
+  i18n: any;
   BMapLib: any;
   wangEditor: any;
   CanvasLayer: any;
@@ -35,4 +36,4 @@ interface returnData {
   data: any;
 }
 
-declare module "*.json";
+declare module '*.json';

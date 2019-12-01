@@ -71,13 +71,13 @@ class Login extends Vue {
     return (
       <div class='loginWrap'>
         <h2 class='loginTxt'>
-          WELCOME
+          欢迎使用
           <br />
-          VUE-TS-ADMIN
+          信驰云巡检管理平台
         </h2>
         <div class='loginForm'>
           <div class='logo'>
-            <img alt='logo' src={require('../../assets/logo.png')} />
+            {/* <img alt='logo' src={require('../../assets/logo.png')} /> */}
             <span>{config.name}</span>
           </div>
           <a-form ref='loginForm' on-submit={this.submitForm}>
