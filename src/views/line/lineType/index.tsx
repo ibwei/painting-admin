@@ -58,6 +58,11 @@ export default class LineType extends Vue {
       dataIndex: 'name',
     },
     {
+      title: '管道类型图片',
+      dataIndex: 'image',
+      customRender: this.imageRender,
+    },
+    {
       title: '基本属性',
       dataIndex: 'property1',
     },
@@ -89,7 +94,7 @@ export default class LineType extends Vue {
     },
   ];
 
-  title: string = '新增类型';
+  title: string = '新增管道类型';
 
   visible: boolean = false;
 
@@ -105,12 +110,8 @@ export default class LineType extends Vue {
     );
   }
 
-  wrongImageRender(url: string) {
-    return <img src={url} alt="告警图标" />;
-  }
-
-  warnImageRender(url: string) {
-    return <img src={url} alt="告警图标" />;
+  imageRender(url: string) {
+    return <img src={url} alt="管道类型图片" />;
   }
 
   tableClick(key: string, row: any) {
@@ -119,7 +120,7 @@ export default class LineType extends Vue {
       case 'edit':
         this.editData = data;
         this.visible = true;
-        this.title = '修改类型';
+        this.title = '修改管道类型';
         this.modelType = 'edit';
         break;
       case 'delete':
@@ -139,7 +140,7 @@ export default class LineType extends Vue {
   }
 
   add() {
-    this.title = '添加类型';
+    this.title = '新增管道类型';
     this.modelType = 'add';
     this.visible = true;
     this.editData = {};
@@ -189,6 +190,7 @@ export default class LineType extends Vue {
           exportBtn={false}
           dataType={'json'}
           rowKey={'id'}
+          localName={'lineType'}
           opreat={this.opreat}
           fetchType={'post'}
           backParams={this.BackParams}

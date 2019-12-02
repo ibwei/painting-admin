@@ -1,12 +1,20 @@
 /* eslint-disable */
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import {
-  Modal, Form, Input, Radio, DatePicker, InputNumber, Cascader, Select, Upload, Icon
+  Modal,
+  Form,
+  Input,
+  Radio,
+  DatePicker,
+  InputNumber,
+  Cascader,
+  Select,
+  Upload,
+  Icon,
 } from 'ant-design-vue';
 
 import './index.less';
-
-
+import treeSelect from '../../../components/Form/treeSelect';
 
 @Component({
   components: {
@@ -23,6 +31,7 @@ import './index.less';
     'a-cascader': Cascader,
     'a-upload': Upload,
     'a-icon': Icon,
+    'a-tree-select': treeSelect,
   },
   props: {
     Form,
@@ -38,13 +47,10 @@ class InfoModal extends Vue {
   @Prop() data!: any;
 
   @Watch('visible')
-
   protected valueWatch(newV: any, oldV: any) {
     if (newV === true) {
-
     }
   }
-
 
   formItemLayout = {
     labelCol: {
@@ -55,29 +61,41 @@ class InfoModal extends Vue {
       xs: { span: 24 },
       sm: { span: 18 },
     },
-  }
+  };
 
-
-  propertyArray: Array<string> = ['供配电设施', '照明设施', '动力设施', '弱电设施', '空调与通风设施', '运输设施'];
-
+  propertyArray: Array<string> = [
+    '供配电设施',
+    '照明设施',
+    '动力设施',
+    '弱电设施',
+    '空调与通风设施',
+    '运输设施',
+  ];
 
   submit() {
     this.$props.Form.validateFields((err: any, values: any) => {
       if (!err) {
         if (this.type === 'edit') {
-          window.api.facilitiesTypeBaseInfoUpdate({ id: this.data.id, ...values }).then((res: any) => {
-            const { result: { resultCode, resultMessage } } = res.data;
-            if (!resultCode) {
-              this.$message.success(resultMessage);
-              this.Form.resetFields();
-              this.$emit('success');
-            } else {
-              this.$message.error(resultMessage);
-            }
-          });
+          window.api
+            .facilitiesTypeBaseInfoUpdate({ id: this.data.id, ...values })
+            .then((res: any) => {
+              const {
+                result: { resultCode, resultMessage },
+              } = res.data;
+              if (!resultCode) {
+                this.$message.success(resultMessage);
+                this.Form.resetFields();
+                this.$emit('success');
+              } else {
+                this.$message.error(resultMessage);
+              }
+            });
         } else if (this.type === 'add') {
           window.api.facilitiesTypeBaseInfoAdd({ ...values }).then((res: any) => {
-            const { err_code, result: { resultMessage } } = res.data;
+            const {
+              err_code,
+              result: { resultMessage },
+            } = res.data;
             if (!err_code) {
               this.$message.success(resultMessage);
               this.Form.resetFields();
@@ -95,8 +113,6 @@ class InfoModal extends Vue {
     this.$emit('close');
   }
 
-
-
   previewVisible: boolean = true;
   previewImage: string = '';
   fileList: any = [
@@ -104,7 +120,8 @@ class InfoModal extends Vue {
       uid: '-1',
       name: 'xxx.png',
       status: 'done',
-      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+      url:
+        'https://gss1.bdstatic.com/9vo3dSag_xI4khGkpoWK1HF6hhy/baike/w%3D268%3Bg%3D0/sign=3b5ef52cb07eca8012053ee1a918f0e0/ac4bd11373f08202d3e0c2304bfbfbedab641b4a.jpg',
     },
   ];
 
@@ -121,7 +138,6 @@ class InfoModal extends Vue {
     this.fileList = fileList;
   }
 
-
   render() {
     const { getFieldDecorator } = this.Form;
 
@@ -132,7 +148,7 @@ class InfoModal extends Vue {
           <div class="ant-upload-text">上传图片</div>
         </div>
       );
-    }
+    };
 
     return (
       <a-modal
@@ -142,50 +158,32 @@ class InfoModal extends Vue {
         on-cancel={this.cancel}
       >
         <a-form>
-          <a-form-item
-            {...{ props: this.formItemLayout }}
-            label="设施类型名称"
-          >
+          <a-form-item {...{ props: this.formItemLayout }} label="设施类型名称">
             {getFieldDecorator('name', {
               initialValue: this.data.name,
-              rules: [
-                { required: true, message: '请输入设施类型名称' },
-              ],
-            })(
-              <a-input placeholder="请输入设施类型名称"></a-input>
-            )}
+              rules: [{ required: true, message: '请输入设施类型名称' }],
+            })(<a-input placeholder="请输入设施类型名"></a-input>)}
+          </a-form-item>
+          <a-form-item {...{ props: this.formItemLayout }} label="所属设施类型">
+            {getFieldDecorator('type', {
+              initialValue: this.data.name,
+              rules: [{ required: true, message: '请选择设施所属类型名称' }],
+            })(<a-tree-select></a-tree-select>)}
           </a-form-item>
 
-
-          <a-form-item
-            {...{ props: this.formItemLayout }}
-            label="自定义属性1"
-          >
+          <a-form-item {...{ props: this.formItemLayout }} label="自定义属性1">
             {getFieldDecorator('property1', {
               initialValue: this.data.property1,
-              rules: [
-                { required: false, message: '请输入属性1' },
-              ],
-            })(
-              <a-input placeholder="请输入属性1"></a-input>
-            )}
+              rules: [{ required: false, message: '请输入属性1' }],
+            })(<a-input placeholder="请输入属性1"></a-input>)}
           </a-form-item>
-          <a-form-item
-            {...{ props: this.formItemLayout }}
-            label="自定义属性2"
-          >
+          <a-form-item {...{ props: this.formItemLayout }} label="自定义属性2">
             {getFieldDecorator('property2', {
               initialValue: this.data.property2,
-              rules: [
-                { required: false, message: '请输入属性2' },
-              ],
-            })(
-              <a-input placeholder="请输入属性2"></a-input>
-            )}
+              rules: [{ required: false, message: '请输入属性2' }],
+            })(<a-input placeholder="请输入属性2"></a-input>)}
           </a-form-item>
-          <a-form-item
-            {...{ props: this.formItemLayout }}
-            label="告警样式">
+          <a-form-item {...{ props: this.formItemLayout }} label="设施类型图标">
             <div>
               <a-upload
                 name="avatar"
@@ -198,27 +196,7 @@ class InfoModal extends Vue {
               >
                 {plus}
                 <a-modal visible={this.previewVisible} footer={null} onCancel={this.hideThumbnail}>
-                  <img alt="example" style={{ width: "100%" }} src={this.previewImage} />
-                </a-modal>
-              </a-upload>
-            </div>
-          </a-form-item>
-          <a-form-item
-            {...{ props: this.formItemLayout }}
-            label="危险样式">
-            <div>
-              <a-upload
-                name="avatar"
-                listType="picture-card"
-                class="avatar-uploader"
-                showUploadList={true}
-                fileList={this.fileList}
-                action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                onChange={this.handleChange}
-              >
-                {plus}
-                <a-modal visible={this.previewVisible} footer={null} onCancel={this.hideThumbnail}>
-                  <img alt="example" style={{ width: "100%" }} src={this.previewImage} />
+                  <img alt="example" style={{ width: '100%' }} src={this.previewImage} />
                 </a-modal>
               </a-upload>
             </div>

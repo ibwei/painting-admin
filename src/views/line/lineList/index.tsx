@@ -16,7 +16,6 @@ import './index.less';
   },
 })
 export default class LineList extends Vue {
-
   filterParams: any = {
     name: '',
     startTime: '',
@@ -59,7 +58,7 @@ export default class LineList extends Vue {
       dataIndex: 'name',
     },
     {
-      title: '管道类型',
+      title: '所属管道类型',
       dataIndex: 'type',
     },
     {
@@ -71,10 +70,6 @@ export default class LineList extends Vue {
       dataIndex: 'property2',
     },
     {
-      title: '创建时间',
-      dataIndex: 'createTime',
-    },
-    {
       title: '最新巡检记录',
       dataIndex: 'xjlist',
       customRender: this.recordRender,
@@ -83,6 +78,10 @@ export default class LineList extends Vue {
       title: '查看管道详情',
       dataIndex: 'detail',
       customRender: this.openLineDetail,
+    },
+    {
+      title: '创建时间',
+      dataIndex: 'createTime',
     },
   ];
 
@@ -104,7 +103,7 @@ export default class LineList extends Vue {
     },
   ];
 
-  title: string = '新增类型';
+  title: string = '新增管道';
 
   visible: boolean = false;
 
@@ -136,7 +135,6 @@ export default class LineList extends Vue {
     );
   }
 
-
   info() {
     const h = this.$createElement;
     Modal.info({
@@ -146,7 +144,7 @@ export default class LineList extends Vue {
         h('p', '2019年11月21日15:49:22 发现1个设备故障'),
         h('p', '2019年11月16日16:49:22 暂无异常'),
       ]),
-      onOk() { },
+      onOk() {},
     });
   }
 
@@ -156,7 +154,7 @@ export default class LineList extends Vue {
       case 'edit':
         this.editData = data;
         this.visible = true;
-        this.title = '修改类型';
+        this.title = '修改管道';
         this.modelType = 'edit';
         break;
       case 'delete':
@@ -176,7 +174,7 @@ export default class LineList extends Vue {
   }
 
   add() {
-    this.title = '添加类型';
+    this.title = '新增管道类型';
     this.modelType = 'add';
     this.visible = true;
     this.editData = {};
@@ -223,6 +221,7 @@ export default class LineList extends Vue {
           outParams={this.outParams}
           addBtn={true}
           exportBtn={false}
+          localName={'lineList'}
           dataType={'json'}
           rowKey={'id'}
           opreat={this.opreat}
@@ -239,14 +238,15 @@ export default class LineList extends Vue {
           on-close={this.closeModal}
           on-success={this.success}
         />
-        {this.mapVisible ?
-          (<map-modal
+        {this.mapVisible ? (
+          <map-modal
             visible={this.mapVisible}
             on-close={this.hideMapModal}
             position={{ x: 106.55, y: 34.66 }}
-          ></map-modal>)
-          : ''
-        }
+          ></map-modal>
+        ) : (
+          ''
+        )}
       </div>
     );
   }

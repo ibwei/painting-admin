@@ -21,14 +21,16 @@ const BaseInfoData = Mock.mock({
       thumbnail: "@image('150x80', '@color()','@color()', 'png', '设施'+'@integer(1,100)')",
       property1: '自定义属性' + '@integer(1,100)',
       property2: '自定义属性' + '@integer(1,100)',
+      type: '设施类型' + '@integer(1,100)',
       'relativeDevice|2-8': [
         {
-          'name|+1': ['设备1', '设备2', '设备3', '设备4', '设备5', '设备6', '设备7', '设备8',],
+          'name|+1': ['设备1', '设备2', '设备3', '设备4', '设备5', '设备6', '设备7', '设备8'],
         },
       ],
       createName: '@cname',
       createTime: '@datetime',
-    }]
+    },
+  ],
 });
 
 let database = BaseInfoData.list;
@@ -43,11 +45,12 @@ module.exports = {
     let newData = database;
     for (const key in other) {
       if ({}.hasOwnProperty.call(other, key)) {
-        newData = newData.filter((item) => {
+        newData = newData.filter(item => {
           if ({}.hasOwnProperty.call(item, key)) {
             if (key === 'address') {
               return other[key].every(iitem => item[key].indexOf(iitem) > -1);
-            } if (key === 'startTime' || key === 'endTime') {
+            }
+            if (key === 'startTime' || key === 'endTime') {
               const start = new Date(other.startTime).getTime();
               const end = new Date(other.endTime).getTime();
               const now = new Date(item[key]).getTime();
@@ -56,7 +59,11 @@ module.exports = {
               }
               return true;
             }
-            return String(item[key]).trim().indexOf(decodeURI(other[key]).trim()) > -1;
+            return (
+              String(item[key])
+                .trim()
+                .indexOf(decodeURI(other[key]).trim()) > -1
+            );
           }
           return true;
         });
@@ -74,14 +81,14 @@ module.exports = {
   },
   delete(req, res) {
     const { id } = req.body;
-    database = database.filter((item) => item.id != id);
+    database = database.filter(item => item.id != id);
     res.status(200).json(baseData('success', '删除成功'));
   },
   update(req, res) {
     const editItem = req.body;
     let isExist = false;
 
-    database = database.map((item) => {
+    database = database.map(item => {
       if (item.id === editItem.id) {
         isExist = true;
         return Object.assign({}, item, editItem);
@@ -100,7 +107,9 @@ module.exports = {
     newData.createTime = Mock.mock('@now');
     newData.id = Mock.mock('@increment');
     newData.createName = Mock.mock('@cname');
-    newData.thumbnail = Mock.mock("@image('150x80', '@color()','@color()', 'png', '设施'+'@integer(1,100)')");
+    newData.thumbnail = Mock.mock(
+      "@image('150x80', '@color()','@color()', 'png', '设施'+'@integer(1,100)')",
+    );
     database.unshift(newData);
     res.json(baseData('success', '新增成功！'));
   },

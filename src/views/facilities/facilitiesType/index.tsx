@@ -5,7 +5,6 @@ import InfoModal from './infoModal';
 import MapModal from '../components/mapModal';
 import './index.less';
 
-
 @Component({
   name: 'facilitiesType',
   components: {
@@ -36,7 +35,7 @@ export default class facilitiesType extends Vue {
   filterList: FilterFormList[] = [
     {
       key: 'name',
-      label: '类型名称',
+      label: '设施类型名称',
       type: 'input',
       placeholder: '请输入设施类型名',
     },
@@ -51,11 +50,11 @@ export default class facilitiesType extends Vue {
 
   tableList: tableList[] = [
     {
-      title: '设施ID',
+      title: '设施类型ID',
       dataIndex: 'facilitiesId',
     },
     {
-      title: '设施类型',
+      title: '设施类型名称',
       dataIndex: 'name',
     },
     {
@@ -67,19 +66,9 @@ export default class facilitiesType extends Vue {
       dataIndex: 'property2',
     },
     {
-      title: '告警样式',
-      dataIndex: 'warnImage',
+      title: '设施类型图标',
+      dataIndex: 'image',
       customRender: this.warnImageRender,
-    },
-    {
-      title: '错误样式',
-      dataIndex: 'wrongImage',
-      customRender: this.wrongImageRender,
-    },
-    {
-      title: '所在地理地址',
-      dataIndex: 'address',
-      customRender: this.positionRender,
     },
     {
       title: '创建时间',
@@ -105,7 +94,7 @@ export default class facilitiesType extends Vue {
     },
   ];
 
-  title: string = '新增类型';
+  title: string = '新增设施类型';
 
   visible: boolean = false;
 
@@ -115,20 +104,18 @@ export default class facilitiesType extends Vue {
 
   positionRender(address: string, others: any) {
     return (
-      <a-button type="default" onClick={this.showMapModal.bind(this, others)}>点击查看</a-button>
-    )
+      <a-button type="default" onClick={this.showMapModal.bind(this, others)}>
+        点击查看
+      </a-button>
+    );
   }
 
   wrongImageRender(url: string) {
-    return (
-      <img src={url} alt='告警图标' />
-    )
+    return <img src={url} alt="告警图标" />;
   }
 
   warnImageRender(url: string) {
-    return (
-      <img src={url} alt='告警图标' />
-    )
+    return <img src={url} alt="告警图标" />;
   }
 
   tableClick(key: string, row: any) {
@@ -137,7 +124,7 @@ export default class facilitiesType extends Vue {
       case 'edit':
         this.editData = data;
         this.visible = true;
-        this.title = '修改类型';
+        this.title = '修改设施类型';
         this.modelType = 'edit';
         break;
       case 'delete':
@@ -157,7 +144,7 @@ export default class facilitiesType extends Vue {
   }
 
   add() {
-    this.title = '添加类型';
+    this.title = '新增设施类型';
     this.modelType = 'add';
     this.visible = true;
     this.editData = {};
@@ -221,8 +208,16 @@ export default class facilitiesType extends Vue {
           on-close={this.closeModal}
           on-success={this.success}
         />
-        {this.popoverVisible ? (<map-modal on-close={this.hideMapModal} position={this.position} deviceName={this.facilitiesName} visible={this.popoverVisible}></map-modal>) : ''}
-
+        {this.popoverVisible ? (
+          <map-modal
+            on-close={this.hideMapModal}
+            position={this.position}
+            deviceName={this.facilitiesName}
+            visible={this.popoverVisible}
+          ></map-modal>
+        ) : (
+          ''
+        )}
       </div>
     );
   }

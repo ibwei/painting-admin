@@ -196,14 +196,14 @@ export const asyncRouterMap: routerItem[] = [
     children: [
       {
         path: 'facilitiesList',
-        name: '设施类型',
+        name: '设施列表',
         component: getComponent('facilities/facilitiesList/index'),
         permission: true,
         meta: { key: 'facilitiesList' },
       },
       {
         path: 'facilitiesTypeList',
-        name: '设施列表',
+        name: '设施类型',
         component: getComponent('facilities/facilitiesType/index'),
         permission: true,
         meta: { key: 'facilitiesTypeList' },

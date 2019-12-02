@@ -3,8 +3,7 @@ import { Tag, Popover, Button } from 'ant-design-vue';
 import { tableList, FilterFormList, Opreat } from '@/interface';
 import city from '@/utils/city';
 import InfoModal from './infoModal';
-import MapModal from '../components/mapModal'
-
+import MapModal from '../components/mapModal';
 
 import './index.less';
 
@@ -78,7 +77,7 @@ export default class Device extends Vue {
       dataIndex: 'belongToFacilities',
     },
     {
-      title: '类型',
+      title: '所属类型',
       dataIndex: 'type',
       customRender: this.typeRender,
     },
@@ -121,16 +120,16 @@ export default class Device extends Vue {
 
   positionRender(address: string, others: any) {
     return (
-      <a-button type="default" onClick={this.showMapModal.bind(this, others)}>点击查看</a-button>
-    )
+      <a-button type="default" onClick={this.showMapModal.bind(this, others)}>
+        点击查看
+      </a-button>
+    );
   }
 
   typeRender(type: string) {
     const colorArray: Array<string> = ['pink', 'red', 'orange', 'green', 'cyan', 'blue', 'purple'];
     const index = Math.floor(Math.random() * 7);
-    return (
-      <a-tag color={colorArray[index]}>{type}</a-tag>
-    )
+    return <a-tag color={colorArray[index]}>{type}</a-tag>;
   }
 
   tableClick(key: string, row: any) {
@@ -166,7 +165,6 @@ export default class Device extends Vue {
   }
 
   closeModal() {
-
     this.visible = false;
     this.editData = {};
   }
@@ -180,7 +178,6 @@ export default class Device extends Vue {
   position: any;
 
   deviceName: string = '设备';
-
 
   showMapModal(others: any) {
     this.position = others.position;
@@ -217,18 +214,30 @@ export default class Device extends Vue {
           on-menuClick={this.tableClick}
           on-add={this.add}
         />
-        {this.visible ? (<info-modal
-          title={this.title}
-          position={this.position}
-          visible={this.visible}
-          deviceName={this.deviceName}
-          type={this.modelType}
-          data={this.editData}
-          on-close={this.closeModal}
-          on-success={this.success}
-        />) : ''}
-        {this.popoverVisible ? (<map-modal on-close={this.hideMapModal} position={this.position} deviceName={this.deviceName} visible={this.popoverVisible}></map-modal>) : ''}
-
+        {this.visible ? (
+          <info-modal
+            title={this.title}
+            position={this.position}
+            visible={this.visible}
+            deviceName={this.deviceName}
+            type={this.modelType}
+            data={this.editData}
+            on-close={this.closeModal}
+            on-success={this.success}
+          />
+        ) : (
+          ''
+        )}
+        {this.popoverVisible ? (
+          <map-modal
+            on-close={this.hideMapModal}
+            position={this.position}
+            deviceName={this.deviceName}
+            visible={this.popoverVisible}
+          ></map-modal>
+        ) : (
+          ''
+        )}
       </div>
     );
   }
