@@ -34,11 +34,6 @@ export default class Insititution extends Vue {
       customRender: this.statusRender,
     },
     {
-      title: '角色类型',
-      dataIndex: 'type1',
-      align: 'center',
-    },
-    {
       title: '所属组织机构',
       dataIndex: 'type',
       align: 'center',
@@ -56,12 +51,6 @@ export default class Insititution extends Vue {
       label: '角色名称',
       type: 'input',
       placeholder: '请输入角色名称',
-    },
-    {
-      key: 'name',
-      label: '角色类型',
-      type: 'input',
-      placeholder: '请输入角色类型',
     },
     {
       key: 'type',

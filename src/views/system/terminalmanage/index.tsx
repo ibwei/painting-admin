@@ -1,16 +1,17 @@
 import { Component, Vue } from 'vue-property-decorator';
-import { Tag, Card, Row, Col, Modal } from 'ant-design-vue';
+import { Tag, Card, Row, Col, Modal, Popconfirm } from 'ant-design-vue';
 import { tableList, FilterFormList, Opreat } from '@/interface';
-import AddModal from './components/addModal';
+import AddModal from './componets/addModal';
 
 @Component({
-  name: 'user',
+  name: 'businessmanage',
   components: {
     'a-tag': Tag,
     'a-add-modal': AddModal,
+    'a-popconfirm': Popconfirm,
   },
 })
-export default class User extends Vue {
+export default class Businessmanage extends Vue {
   visible: boolean = false;
 
   modelType: string = 'add';
@@ -23,34 +24,23 @@ export default class User extends Vue {
 
   tableList: tableList[] = [
     {
-      title: '用户编号',
-      dataIndex: 'id1',
+      title: '终端编号',
+      dataIndex: 'id',
       align: 'center',
     },
     {
-      title: '用户名称',
+      title: '终端名称',
       dataIndex: 'name',
       align: 'center',
     },
     {
-      title: '性别',
-      dataIndex: 'sex',
+      title: '终端类型',
+      dataIndex: 'type',
       align: 'center',
     },
     {
-      title: '状态',
-      dataIndex: 'status',
-      align: 'center',
-      customRender: this.statusRender,
-    },
-    {
-      title: '身份证号',
-      dataIndex: 'idCard',
-      align: 'center',
-    },
-    {
-      title: '用户角色',
-      dataIndex: 'juese',
+      title: '创建人',
+      dataIndex: 'people',
       align: 'center',
     },
     {
@@ -63,30 +53,20 @@ export default class User extends Vue {
   filterList: FilterFormList[] = [
     {
       key: 'name',
-      label: '机构名称',
+      label: '终端名称',
       type: 'input',
-      placeholder: '请输入机构名称',
+      placeholder: '请输入终端名称',
     },
     {
       key: 'renwu',
-      label: '所属组织',
-      type: 'input',
-      placeholder: '请输入所属组织',
-    },
-    {
-      key: 'type',
-      label: '组织类型',
-      type: 'input',
-      placeholder: '请输入组织类型',
-    },
-    {
-      key: 'renwu',
-      label: '状态',
+      label: '终端类型',
       type: 'select',
-      placeholder: '请选择状态',
+      placeholder: '请选择终端类型',
       options: [
-        { value: 0, label: '正常' },
-        { value: 1, label: '冻结' },
+        { value: 0, label: '类型1' },
+        { value: 1, label: '类型2' },
+        { value: 1, label: '类型3' },
+        { value: 1, label: '类型4' },
       ],
     },
   ];
@@ -109,17 +89,9 @@ export default class User extends Vue {
       key: 'delete',
       rowKey: 'id',
       color: 'red',
-      text: '冻结',
-      roles: true,
-      msg: '确定冻结用户？',
-    },
-    {
-      key: 'delete',
-      rowKey: 'id',
-      color: 'red',
       text: '删除',
       roles: true,
-      msg: '确定删除用户？',
+      msg: '确定删除?',
     },
   ];
 
@@ -181,7 +153,7 @@ export default class User extends Vue {
 
   statusRender(data: string) {
     let color: string = 'green';
-    if (data === '冻结') {
+    if (data === '异常') {
       color = 'red';
     } else {
       color = 'green';
@@ -198,7 +170,7 @@ export default class User extends Vue {
           filterList={this.filterList}
           filterGrade={this.filterGrade}
           scroll={{ x: 900 }}
-          url={'/sys/user'}
+          url={'/terminal'}
           filterParams={this.filterParams}
           outParams={this.outParams}
           exportBtn={false}
@@ -210,7 +182,6 @@ export default class User extends Vue {
           on-menuClick={this.tableClick}
           on-add={this.add}
           addBtn={true}
-          opreatWidth='120px'
         />
         {this.visible && (
           <a-add-modal

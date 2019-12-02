@@ -14,7 +14,15 @@ import { ScopedSlot } from 'vue/types/vnode';
  * @param change 表单的change事件
  * @param disabledTime 时间范围选择的不可选日期，
  */
-type FilterType = 'input' | 'select' | 'cascader' | 'levelcode' | 'datetime' | 'date' | 'datetimerange' | 'checkboxButton';
+type FilterType =
+  | 'input'
+  | 'select'
+  | 'cascader'
+  | 'levelcode'
+  | 'datetime'
+  | 'date'
+  | 'datetimerange'
+  | 'checkboxButton';
 export interface FilterFormList {
   key: string;
   type: FilterType;
@@ -22,14 +30,14 @@ export interface FilterFormList {
   placeholder: string | string[];
   value?: string[];
   fieldNames?: any;
-  options?: Array<{ value: any, label: string }>;
+  options?: Array<{ value: any; label: string }>;
   change?: Function;
-  disabledTime?: (dates: [object, object], partial: 'start'|'end') => any;
+  disabledTime?: (dates: [object, object], partial: 'start' | 'end') => any;
 }
 
 export interface TableColumnFilter {
-  text: string,
-  value: any
+  text: string;
+  value: any;
 }
 
 export interface ColumnFilterItem {
@@ -228,69 +236,70 @@ export interface tableList {
  * @param {Function/string} roles 可以动态返回权限，控制是否展示
  */
 export interface Opreat {
-  key: string,
-  rowKey: string,
-  color: Function | string,
-  text: Function | string,
+  key: string;
+  rowKey: string;
+  color: Function | string;
+  text: Function | string;
   disabled?: Function;
-  roles: Function | boolean,
-  msg?: Function | string,
+  roles: Function | boolean;
+  msg?: Function | string;
+  popconfirm?: boolean;
 }
 /**
  * @interface 表格tag设置
  * @param {} key
  */
 export interface tableTag {
-  key: number,
-  color: string,
-  value: number,
-  label: string,
+  key: number;
+  color: string;
+  value: number;
+  label: string;
 }
 
 export interface menuItem {
-  id: number,
-  title: string,
-  url?: string,
-  icon?: string,
-  permission: string | Array<string> | boolean,
-  children?: Array<menuItem>,
+  id: number;
+  title: string;
+  url?: string;
+  icon?: string;
+  permission: string | Array<string> | boolean;
+  children?: Array<menuItem>;
 }
 
 export interface MockConfig {
-  url: string,
-  headers: any,
-  body: string,
+  url: string;
+  headers: any;
+  body: string;
 }
 
 export interface routerItem {
-  name?: string,
-  component?: any,
-  path: string,
-  icon?: string,
-  hidden?: boolean,
-  permission?: string | string[] | boolean,
-  redirect?: string | object,
-  children?: routerItem[],
-  meta?: any,
+  name?: string;
+  component?: any;
+  path: string;
+  icon?: string;
+  hidden?: boolean;
+  permission?: string | string[] | boolean;
+  redirect?: string | object;
+  children?: routerItem[];
+  meta?: any;
 }
 
 export interface Directives {
-  name: string,
-  value: any,
-  modifiers: object,
+  name: string;
+  value: any;
+  modifiers: object;
 }
 type CoordinateSystem = 'bd09ll' | 'gcj02ll';
 export interface MapCarData {
-  id: string,
-  direction: number,
-  lat: number,
-  lng: number,
-  plateNum: string,
-  speed: number,
-  coordinateSystem: CoordinateSystem,
+  id: string;
+  direction: number;
+  lat: number;
+  lng: number;
+  plateNum: string;
+  speed: number;
+  coordinateSystem: CoordinateSystem;
 }
 // 坐标
 export interface Point {
-  lng: number,
-  lat: number,
+  lng: number;
+  lat: number;
 }

@@ -1,7 +1,18 @@
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
-import { Modal, Form, Select, Input, Button, DatePicker, Table, TreeSelect } from 'ant-design-vue';
+import {
+  Modal,
+  Form,
+  Select,
+  Input,
+  Button,
+  DatePicker,
+  Table,
+  TreeSelect,
+  Tree,
+} from 'ant-design-vue';
+
 @Component({
-  name: 'ChangeModal',
+  name: 'terminalManage',
   components: {
     'a-Form': Form,
     'a-form-item': Form.Item,
@@ -14,12 +25,13 @@ import { Modal, Form, Select, Input, Button, DatePicker, Table, TreeSelect } fro
     'a-table': Table,
     'a-tree-select': TreeSelect,
     'a-tree-select-node': TreeSelect.TreeNode,
+    'a-tree': Tree,
   },
   props: {
     Form,
   },
 })
-class ChangeModal extends Vue {
+class TerminalManage extends Vue {
   @Prop() visible!: boolean;
 
   @Prop() title?: string;
@@ -91,60 +103,29 @@ class ChangeModal extends Vue {
           onOk={this.$props.handleOk}
           onCancel={this.$props.handkeCancel}
           width={this.$props.width}
-          title={this.$props.title === 'edit' ? '修改用户' : '新增用户'}
+          title={this.$props.title === 'edit' ? '修改终端' : '新增终端'}
         >
           <div Style={{ padding: '15px' }}>
             <a-Form>
-              <a-form-item props={{ ...this.formItemLayout }} label='用户名称'>
+              <a-form-item props={{ ...this.formItemLayout }} label='终端名称'>
                 {getFieldDecorator('name', {
                   initialValue: this.$props.data.name ? this.$props.data.name : undefined,
-                  rules: [{ required: true, message: '请输入用户名称' }],
-                })(<a-input placeholder='请输入用户名称' />)}
+                  rules: [{ required: true, message: '请输入终端名称' }],
+                })(<a-input placeholder='请输入终端名称' />)}
               </a-form-item>
-              <a-form-item props={{ ...this.formItemLayout }} label='用户角色'>
-                {getFieldDecorator('type1', {
-                  initialValue: this.$props.data.type1 ? this.$props.data.type1 : undefined,
-                  rules: [{ required: true, message: '请选择用户角色' }],
+              <a-form-item props={{ ...this.formItemLayout }} label='终端类型'>
+                {getFieldDecorator('type', {
+                  initialValue: this.$props.data.type ? this.$props.data.type : undefined,
+                  rules: [{ required: true, message: '请选择终端类型' }],
                 })(
-                  <a-select placeholder='请选择用户类型'>
-                    <a-select-option value='总系统管理员'>总系统管理员</a-select-option>
-                    <a-select-option value='一级系统管理员'>一级系统管理员</a-select-option>
-                    <a-select-option value='二级系统管理员'>二级系统管理员</a-select-option>
-                    <a-select-option value='三级系统管理员'>三级系统管理员</a-select-option>
-                    <a-select-option value='一级巡检管理员'>一级巡检管理员</a-select-option>
+                  <a-select placeholder='请选择终端类型'>
+                    <a-select-option value='1'>类型1</a-select-option>
+                    <a-select-option value='2'>类型2</a-select-option>
+                    <a-select-option value='3'>类型3</a-select-option>
+                    <a-select-option value='4'>类型4</a-select-option>
+                    <a-select-option value='5'>类型5</a-select-option>
                   </a-select>,
                 )}
-              </a-form-item>
-              <a-form-item props={{ ...this.formItemLayout }} label='用户类型'>
-                {getFieldDecorator('type1', {
-                  initialValue: this.$props.data.type1 ? this.$props.data.type1 : undefined,
-                  rules: [{ required: true, message: '请选择用户类型' }],
-                })(
-                  <a-select placeholder='请选择用户类型'>
-                    <a-select-option value='jack'>类型1</a-select-option>
-                    <a-select-option value='lucy'>类型2</a-select-option>
-                    <a-select-option value='lucy'>类型3</a-select-option>
-                    <a-select-option value='lucy'>类型4</a-select-option>
-                    <a-select-option value='lucy'>类型5</a-select-option>
-                  </a-select>,
-                )}
-              </a-form-item>
-              <a-form-item props={{ ...this.formItemLayout }} label='性别'>
-                {getFieldDecorator('sex', {
-                  initialValue: this.$props.data.sex ? this.$props.data.sex : undefined,
-                  rules: [{ required: true, message: '请选择性别' }],
-                })(
-                  <a-select placeholder='请选择性别'>
-                    <a-select-option value='男'>男</a-select-option>
-                    <a-select-option value='女'>女</a-select-option>
-                  </a-select>,
-                )}
-              </a-form-item>
-              <a-form-item props={{ ...this.formItemLayout }} label='身份证号'>
-                {getFieldDecorator('name', {
-                  initialValue: this.$props.data.name ? this.$props.data.name : undefined,
-                  rules: [{ required: true, message: '请输入身份证号' }],
-                })(<a-input placeholder='请输入身份证号' />)}
               </a-form-item>
             </a-Form>
           </div>
@@ -186,4 +167,4 @@ export default Form.create({
     handleOk: Function,
     handkeCancel: Function,
   },
-})(ChangeModal);
+})(TerminalManage);

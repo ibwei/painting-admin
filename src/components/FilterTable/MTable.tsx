@@ -1,9 +1,5 @@
-import {
-  Component, Prop, Emit, Vue, Inject, Provide,
-} from 'vue-property-decorator';
-import {
-  Popconfirm, Table, Dropdown, Menu, Button, Icon,
-} from 'ant-design-vue';
+import { Component, Prop, Emit, Vue, Inject, Provide } from 'vue-property-decorator';
+import { Popconfirm, Table, Dropdown, Menu, Button, Icon } from 'ant-design-vue';
 import { tableList, Opreat, Directives } from '@/interface';
 import Spin from '@/components/Spin';
 import './MTable.less';
@@ -35,12 +31,13 @@ export default class MTable extends Vue {
       data: 'entity.data',
       total: 'entity.count',
     }),
-  }) private backParams!: {
-    code: string,
-    message: string,
-    data: string,
-    codeOK: string | number,
-    total: string
+  })
+  private backParams!: {
+    code: string;
+    message: string;
+    data: string;
+    codeOK: string | number;
+    total: string;
   };
 
   // 外部参数
@@ -75,15 +72,15 @@ export default class MTable extends Vue {
 
   @Prop() private highlightCurrentRow!: boolean;
 
-  @Prop({ default: null }) private scroll!: {x: number, y: number};
+  @Prop({ default: null }) private scroll!: { x: number; y: number };
 
   // data
   tableData: any = [];
 
   pageParams: {
-    pageSize: number,
-    pageNum: number,
-    page: boolean,
+    pageSize: number;
+    pageNum: number;
+    page: boolean;
   } = {
     pageSize: this.defaultPageSize,
     pageNum: 1,
@@ -114,26 +111,29 @@ export default class MTable extends Vue {
    */
   getData() {
     this.loading = true;
-    window.ajax.request({
-      url: this.url,
-      method: this.fetchType,
-      fetchType: this.dataType,
-      data: Object.assign(
-        this.tableParams ? this.tableParams : {},
-        this.pageParams,
-        this.outParams,
-      ),
-    }).then((res: any) => {
-      this.loading = false;
-      const code = this.getValue(this.backParams.code, res);
-      if (code === this.backParams.codeOK) {
-        this.tableData = this.getValue(this.backParams.data, res);
-        this.dataTotal = this.getValue(this.backParams.total, res)
-          ? this.getValue(this.backParams.total, res) : 0;
-      } else {
-        this.$message.error(this.getValue(this.backParams.message, res));
-      }
-    });
+    window.ajax
+      .request({
+        url: this.url,
+        method: this.fetchType,
+        fetchType: this.dataType,
+        data: Object.assign(
+          this.tableParams ? this.tableParams : {},
+          this.pageParams,
+          this.outParams,
+        ),
+      })
+      .then((res: any) => {
+        this.loading = false;
+        const code = this.getValue(this.backParams.code, res);
+        if (code === this.backParams.codeOK) {
+          this.tableData = this.getValue(this.backParams.data, res);
+          this.dataTotal = this.getValue(this.backParams.total, res)
+            ? this.getValue(this.backParams.total, res)
+            : 0;
+        } else {
+          this.$message.error(this.getValue(this.backParams.message, res));
+        }
+      });
   }
 
   /**
@@ -167,7 +167,7 @@ export default class MTable extends Vue {
   }
 
   render() {
-    if (this.opreat.length && this.tableList[this.tableList.length -1].title !== '操作') {
+    if (this.opreat.length && this.tableList[this.tableList.length - 1].title !== '操作') {
       this.tableList.push({
         title: '操作',
         dataIndex: 'action',
@@ -176,7 +176,7 @@ export default class MTable extends Vue {
       });
     }
     return (
-      <div class="m-table" >
+      <div class='m-table'>
         <a-table
           bordered
           loading={this.loading}
@@ -194,8 +194,7 @@ export default class MTable extends Vue {
           }}
           columns={this.tableList}
           on-change={this.tableChange}
-        >
-        </a-table>
+        ></a-table>
       </div>
     );
   }
@@ -209,45 +208,89 @@ export default class MTable extends Vue {
   opreatJSX(text: any, record: any, index: number) {
     // 操作超过4个，就用下拉菜单方式
     if (this.opreat.length > 4) {
-      return <a-dropdown on-command={(command: string) => this.menuClick(command, record)}>
-        <a-button type="dashed" size="small" style="margin-left: 8px">
-          操作栏 <a-icon type="down" />
-        </a-button>
-        <a-menu slot="overlay">
-          {
-            this.opreat.map((item, indexs) => <a-menu-item
-              key={indexs}
-              command={item.key}
-              disabled={item.disabled && item.disabled(record)}
-            >
-              {typeof item.text === 'function' ? item.text(record) : item.text}
-            </a-menu-item>)
-          }
-        </a-menu>
-      </a-dropdown>;
+      return (
+        <a-dropdown on-command={(command: string) => this.menuClick(command, record)}>
+          <a-button type='dashed' size='small' style='margin-left: 8px'>
+            操作栏 <a-icon type='down' />
+          </a-button>
+          <a-menu slot='overlay'>
+            {this.opreat.map((item, indexs) => (
+              <a-menu-item
+                key={indexs}
+                command={item.key}
+                disabled={item.disabled && item.disabled(record)}
+              >
+                {typeof item.text === 'function' ? item.text(record) : item.text}
+              </a-menu-item>
+            ))}
+          </a-menu>
+        </a-dropdown>
+      );
     }
     // 普通模式
-    return <div class="table-opreat">
-      {
-        this.opreat.map((item, indexs) => {
+    return (
+      <div class='table-opreat'>
+        {this.opreat.map((item, indexs) => {
           const whiteList = ['red', 'orange'];
-          if (item.disabled && item.disabled(record)) {
-            return <a id={`${item.key}-${record[item.rowKey]}`} key={indexs} class="btn disabled">
-              { typeof item.text === 'function' ? item.text(record) : item.text }
-            </a>;
-          } if (whiteList.indexOf(typeof item.color === 'function' ? item.color(record) : item.color) >= 0) {
-            return <a-popconfirm
-              on-confirm={() => this.menuClick(item.key, record)}
-              title={typeof item.msg === 'function' ? item.msg(record) : item.msg}>
-              <a id={`${item.key}-${record[item.rowKey]}`} key={indexs} class={`link-${typeof item.color === 'function' ? item.color(record) : item.color}`}>
-                { typeof item.text === 'function' ? item.text(record) : item.text }
-              </a>
-            </a-popconfirm>;
+          if (item.popconfirm) {
+            return (
+              <a-popconfirm
+                on-confirm={() => this.menuClick(item.key, record)}
+                title={typeof item.msg === 'function' ? item.msg(record) : item.msg}
+              >
+                <a
+                  id={`${item.key}-${record[item.rowKey]}`}
+                  key={indexs}
+                  class={`link-${
+                    typeof item.color === 'function' ? item.color(record) : item.color
+                  }`}
+                >
+                  {typeof item.text === 'function' ? item.text(record) : item.text}
+                </a>
+              </a-popconfirm>
+            );
           }
-          return <a id={`${item.key}-${record[item.rowKey]}`} class={`link-${typeof item.color === 'function' ? item.color(record) : item.color}`} key={indexs} on-click={() => this.menuClick(item.key, record)}>{typeof item.text === 'function' ? item.text(record) : item.text}</a>;
-        })
-      }
-    </div>;
+          if (item.disabled && item.disabled(record)) {
+            return (
+              <a id={`${item.key}-${record[item.rowKey]}`} key={indexs} class='btn disabled'>
+                {typeof item.text === 'function' ? item.text(record) : item.text}
+              </a>
+            );
+          }
+          if (
+            whiteList.indexOf(typeof item.color === 'function' ? item.color(record) : item.color) >=
+            0
+          ) {
+            return (
+              <a-popconfirm
+                on-confirm={() => this.menuClick(item.key, record)}
+                title={typeof item.msg === 'function' ? item.msg(record) : item.msg}
+              >
+                <a
+                  id={`${item.key}-${record[item.rowKey]}`}
+                  key={indexs}
+                  class={`link-${
+                    typeof item.color === 'function' ? item.color(record) : item.color
+                  }`}
+                >
+                  {typeof item.text === 'function' ? item.text(record) : item.text}
+                </a>
+              </a-popconfirm>
+            );
+          }
+          return (
+            <a
+              id={`${item.key}-${record[item.rowKey]}`}
+              class={`link-${typeof item.color === 'function' ? item.color(record) : item.color}`}
+              key={indexs}
+              on-click={() => this.menuClick(item.key, record)}
+            >
+              {typeof item.text === 'function' ? item.text(record) : item.text}
+            </a>
+          );
+        })}
+      </div>
+    );
   }
 
   tableChange(pagination: any, filters: any, sorter: any) {

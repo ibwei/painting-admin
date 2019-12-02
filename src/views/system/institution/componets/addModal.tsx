@@ -129,7 +129,7 @@ class ChangeModal extends Vue {
           onOk={this.$props.handleOk}
           onCancel={this.$props.handkeCancel}
           width={this.$props.width}
-          title='新建临时任务'
+          title={this.$props.title === 'edit' ? '修改组织机构' : '新增组织机构'}
         >
           <div Style={{ padding: '15px' }}>
             <a-Form>
