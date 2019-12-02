@@ -46,6 +46,12 @@ export default class inspectionPlanList extends Vue {
       type: 'input',
       placeholder: '请输入巡检路线',
     },
+    {
+      key: 'person',
+      label: '巡检人',
+      type: 'input',
+      placeholder: '请输入巡检人',
+    },
   ];
 
   tableList: tableList[] = [
@@ -72,10 +78,7 @@ export default class inspectionPlanList extends Vue {
     {
       title: '周期频率',
       dataIndex: 'cycleNum',
-    },
-    {
-      title: '周期单位',
-      dataIndex: 'cycleUnit',
+      customRender: this.cycleReander,
     },
     {
       title: '创建人',
@@ -105,13 +108,26 @@ export default class inspectionPlanList extends Vue {
     },
   ];
 
-  title: string = 'add customer';
+  cycleReander(txt: any, data: any) {
+    return txt + data.cycleUnit;
+  }
 
-  visible: boolean = false;
-
-  modelType: string = 'add';
-
-  editData: object = {};
+  // 新增、编辑参数
+  infoProps: {
+    props: {
+      title: string;
+      visible: boolean;
+      type: 'add' | 'edit';
+      data: any;
+    };
+  } = {
+    props: {
+      title: '新增巡检计划',
+      visible: false,
+      type: 'add',
+      data: {},
+    },
+  };
 
   genderRender(text: any) {
     return <a-tag color={text ? 'blue' : 'purple'}>{text ? 'Male' : 'Female'}</a-tag>;
@@ -119,13 +135,17 @@ export default class inspectionPlanList extends Vue {
 
   tableClick(key: string, row: any) {
     const data = JSON.parse(JSON.stringify(row));
-    data.address = data.address.split(' ');
-    data.birthDate = moment(data.birthDate, 'YYYY-MM-DD HH:mm:ss');
+    data.startTime = moment(data.startTime, 'YYYY-MM-DD HH:mm:ss');
     switch (key) {
       case 'edit':
-        this.editData = data;
-        this.visible = true;
-        this.modelType = 'edit';
+        this.infoProps = {
+          props: {
+            title: '编辑巡检计划',
+            visible: true,
+            type: 'edit',
+            data,
+          },
+        };
         break;
       default:
         break;
@@ -133,29 +153,38 @@ export default class inspectionPlanList extends Vue {
   }
 
   add() {
-    this.title = 'Add customer';
-    this.modelType = 'add';
-    this.visible = true;
-    this.editData = {};
+    this.infoProps = {
+      props: {
+        title: '新增巡检计划',
+        visible: true,
+        type: 'add',
+        data: {},
+      },
+    };
   }
 
   closeModal() {
-    this.visible = false;
-    this.editData = {};
+    this.infoProps = {
+      props: {
+        title: '新增巡检计划',
+        visible: false,
+        type: 'add',
+        data: {},
+      },
+    };
   }
 
   success() {
-    this.visible = false;
+    this.closeModal();
     const Table: any = this.$refs.baseInfoTable;
-    this.editData = {};
     Table.reloadTable();
   }
 
   render() {
     return (
-      <div class="baseInfo-wrap">
+      <div class='baseInfo-wrap'>
         <filter-table
-          ref="baseInfoTable"
+          ref='baseInfoTable'
           tableList={this.tableList}
           filterList={this.filterList}
           filterGrade={[]}
@@ -164,23 +193,17 @@ export default class inspectionPlanList extends Vue {
           filterParams={this.filterParams}
           outParams={this.outParams}
           addBtn={true}
-          exportBtn={false}
+          exportBtn={true}
           dataType={'json'}
           rowKey={'id'}
           opreat={this.opreat}
+          localName='inspectionPlanList'
           fetchType={'post'}
           backParams={this.BackParams}
           on-menuClick={this.tableClick}
           on-add={this.add}
         />
-        <info-modal
-          title={this.title}
-          visible={this.visible}
-          type={this.modelType}
-          data={this.editData}
-          on-close={this.closeModal}
-          on-success={this.success}
-        />
+        <info-modal {...this.infoProps} on-close={this.closeModal} on-success={this.success} />
       </div>
     );
   }

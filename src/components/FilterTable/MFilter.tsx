@@ -1,8 +1,17 @@
+import { Component, Prop, Emit, Vue } from 'vue-property-decorator';
 import {
-  Component, Prop, Emit, Vue,
-} from 'vue-property-decorator';
-import {
-  Input, Select, Form, TimePicker, DatePicker, Cascader, Row, Col, Button, Modal, Checkbox, Radio,
+  Input,
+  Select,
+  Form,
+  TimePicker,
+  DatePicker,
+  Cascader,
+  Row,
+  Col,
+  Button,
+  Modal,
+  Checkbox,
+  Radio,
 } from 'ant-design-vue';
 import { FilterFormList, tableList } from '@/interface';
 
@@ -32,7 +41,6 @@ import './MFilter.less';
     Form,
   },
 })
-
 class MFilterClass extends Vue {
   // 筛选表单生成参数
   @Prop({ default: [] })
@@ -52,7 +60,7 @@ class MFilterClass extends Vue {
   @Prop({ default: false }) private exportBtn!: boolean;
 
   // 导出按钮回调事件
-  @Prop({ default: () => { } }) private exportFun!: Function;
+  @Prop({ default: () => {} }) private exportFun!: Function;
 
   // tablelist 参数
   @Prop({ default: [] }) private tableList!: tableList[];
@@ -67,11 +75,11 @@ class MFilterClass extends Vue {
   // 初始化表格筛选参数
   initParams: any = JSON.parse(JSON.stringify(this.filterParams));
 
-  btnXl: number = 24 - (this.filterList.length * 3);
+  btnXl: number = 24 - this.filterList.length * 3;
 
-  btnlg: number = 24 - (this.filterList.length * 3);
+  btnlg: number = 24 - this.filterList.length * 3;
 
-  btnmd: number = 24 - (this.filterList.length * 4);
+  btnmd: number = 24 - this.filterList.length * 4;
 
   // 弹出窗开关
   setModel: boolean = false;
@@ -96,7 +104,7 @@ class MFilterClass extends Vue {
 
   created() {
     if (!this.checkList.length) {
-      this.tableList.map((item) => {
+      this.tableList.map(item => {
         if (item.dataIndex) {
           this.checkList.push(item.dataIndex);
         }
@@ -153,83 +161,94 @@ class MFilterClass extends Vue {
     let itemDom = null;
     switch (item.type) {
       case 'input':
-        itemDom = <a-input id={item.key}
-          placeholder={item.placeholder}></a-input>;
+        itemDom = <a-input id={item.key} placeholder={item.placeholder}></a-input>;
         break;
       case 'select':
-        itemDom = <a-select
-          style="width: 100%;"
-          id={item.key}
-          placeholder={item.placeholder}>
-          {
-            item.options && item.options.map((items: any, indexs: number) => <a-option
-              key={indexs} value={items.value}>{items.label}</a-option>)
-          }
-        </a-select>;
+        itemDom = (
+          <a-select style='width: 100%;' id={item.key} placeholder={item.placeholder}>
+            {item.options &&
+              item.options.map((items: any, indexs: number) => (
+                <a-option key={indexs} value={items.value}>
+                  {items.label}
+                </a-option>
+              ))}
+          </a-select>
+        );
         break;
       case 'cascader':
-        itemDom = <a-cascader style="width: 100%;"
-          id={item.key}
-          allowClear
-          changeOnSelect
-          fieldNames={item.fieldNames}
-          options={item.options}
-          placeholder={item.placeholder}
-          on-change={item.change}></a-cascader>;
+        itemDom = (
+          <a-cascader
+            style='width: 100%;'
+            id={item.key}
+            allowClear
+            changeOnSelect
+            fieldNames={item.fieldNames}
+            options={item.options}
+            placeholder={item.placeholder}
+            on-change={item.change}
+          ></a-cascader>
+        );
         break;
       case 'levelcode':
-        itemDom = <a-cascader style="width: 100%;"
-          id={item.key}
-          allowClear
-          changeOnSelect
-          fieldNames={item.fieldNames}
-          options={item.options}
-          placeholder={item.placeholder}
-          on-change={(e: Array<string>) => this.levelcodeChange(e, item.key)}></a-cascader>;
+        itemDom = (
+          <a-cascader
+            style='width: 100%;'
+            id={item.key}
+            allowClear
+            changeOnSelect
+            fieldNames={item.fieldNames}
+            options={item.options}
+            placeholder={item.placeholder}
+            on-change={(e: Array<string>) => this.levelcodeChange(e, item.key)}
+          ></a-cascader>
+        );
         break;
       case 'datetime':
-        itemDom = <a-date-picker
-          id={item.key}
-          showTime
-          format="YYYY-MM-DD HH:mm:ss"
-          placeholder={item.placeholder}>
-        </a-date-picker>;
+        itemDom = (
+          <a-date-picker
+            id={item.key}
+            showTime
+            format='YYYY-MM-DD HH:mm:ss'
+            placeholder={item.placeholder}
+          ></a-date-picker>
+        );
         break;
       case 'date':
-        itemDom = <a-date-picker
-          id={item.key}
-          format="YYYY-MM-DD"
-          placeholder={item.placeholder}>
-        </a-date-picker>;
+        itemDom = (
+          <a-date-picker
+            id={item.key}
+            format='YYYY-MM-DD'
+            placeholder={item.placeholder}
+          ></a-date-picker>
+        );
         break;
       case 'datetimerange':
-        itemDom = <a-range-picker
-          style="width: 100%"
-          id={item.key}
-          showTime
-          format="YYYY-MM-DD HH:mm:ss"
-          disabledTime={item.disabledTime}
-          on-change={(e: Array<Date>) => this.rangeChange(e, item.value ? item.value : [])}
-          placeholder={item.placeholder}>
-        </a-range-picker>;
+        itemDom = (
+          <a-range-picker
+            style='width: 100%'
+            id={item.key}
+            showTime
+            format='YYYY-MM-DD HH:mm:ss'
+            disabledTime={item.disabledTime}
+            on-change={(e: Array<Date>) => this.rangeChange(e, item.value ? item.value : [])}
+            placeholder={item.placeholder}
+          ></a-range-picker>
+        );
         break;
       case 'checkboxButton':
-        itemDom = <el-radio-group
-          on-change={item.change}
-          size="small">
-          {
-            item.options && item.options.map((
-              items,
-              indexs: number,
-            ) => <a-radio-button
-              value={items.value}
-              key={indexs}>
-                {items.label}
-              </a-radio-button>)
-          }
-        </el-radio-group>;
+        itemDom = (
+          <el-radio-group on-change={item.change} size='small'>
+            {item.options &&
+              item.options.map((items, indexs: number) => (
+                <a-radio-button value={items.value} key={indexs}>
+                  {items.label}
+                </a-radio-button>
+              ))}
+          </el-radio-group>
+        );
         break;
-      default: break;
+      default:
+        break;
     }
     if (grade) {
       return (
@@ -242,11 +261,7 @@ class MFilterClass extends Vue {
     }
     return (
       <a-col {...{ props: this.nomalLayout }} key={index}>
-        <a-form-item>
-          {
-            getFieldDecorator(item.key)(itemDom)
-          }
-        </a-form-item>
+        <a-form-item>{getFieldDecorator(item.key)(itemDom)}</a-form-item>
       </a-col>
     );
   }
@@ -258,7 +273,7 @@ class MFilterClass extends Vue {
     md: 4,
     sm: 8,
     xs: 12,
-  }
+  };
 
   gradeLayout = {
     span: 8,
@@ -267,7 +282,7 @@ class MFilterClass extends Vue {
     md: 12,
     sm: 12,
     xs: 12,
-  }
+  };
 
   formItemLayout = {
     labelCol: {
@@ -284,7 +299,7 @@ class MFilterClass extends Vue {
       lg: { span: 18 },
       xl: { span: 18 },
     },
-  }
+  };
 
   // 时间区间赋值操作
   rangeChange(data: any, value: string[]) {
@@ -297,39 +312,51 @@ class MFilterClass extends Vue {
     const { isMobile } = this.$store.state.app;
     return (
       <div class={`filter-wrap ${this.showGrade ? 'showGrade' : ''}`}>
-        <div class="filter-mormal" ref="filterNormal">
-          <a-form layout="inline">
+        <div class='filter-mormal' ref='filterNormal'>
+          <a-form layout='inline'>
             <a-row gutter={20}>
-              {
-                this.filterList.map((item, index) => this.formItem(getFieldDecorator, item, index))
-              }
-              <a-col class="btn-wrap" xl={this.btnXl} lg={this.btnlg} md={this.btnmd ? this.btnmd : 24} sm={24} xs={24}>
+              {this.filterList.map((item, index) => this.formItem(getFieldDecorator, item, index))}
+              <a-col
+                class='btn-wrap'
+                xl={this.btnXl}
+                lg={this.btnlg}
+                md={this.btnmd ? this.btnmd : 24}
+                sm={24}
+                xs={24}
+              >
                 {this.btnElement(true)}
               </a-col>
             </a-row>
           </a-form>
         </div>
-        {
-          this.filterGrade.length
-            ? <div class="filter-grade" ref="filterGrade" id="filter-grade">
-              <a-form>
-                <a-row gutter={20}>
-                  {
-                    this.filterGrade.map((item, index) => this.formItem(getFieldDecorator, item, index, true))
-                  }
-                  <a-col class="btn-wrap" span={24} sm={24} xs={24}>
-                    {this.btnElement(false)}
-                  </a-col>
-                </a-row>
-              </a-form>
-            </div> : null
-        }
-        <a-modal id="tableSet" width="500px" title="Table Setting" visible={this.setModel} on-ok={this.setTable} on-cancel={this.closeModal}>
-          <a-checkbox-group class="checkbox-list" v-model={this.checkList}>
-            {
-              this.tableList.map((item, index) => <a-checkbox key={index} value={item.dataIndex}>
-                {item.title}</a-checkbox>)
-            }
+        {this.filterGrade.length ? (
+          <div class='filter-grade' ref='filterGrade' id='filter-grade'>
+            <a-form>
+              <a-row gutter={20}>
+                {this.filterGrade.map((item, index) =>
+                  this.formItem(getFieldDecorator, item, index, true),
+                )}
+                <a-col class='btn-wrap' span={24} sm={24} xs={24}>
+                  {this.btnElement(false)}
+                </a-col>
+              </a-row>
+            </a-form>
+          </div>
+        ) : null}
+        <a-modal
+          id='tableSet'
+          width='500px'
+          title='Table Setting'
+          visible={this.setModel}
+          on-ok={this.setTable}
+          on-cancel={this.closeModal}
+        >
+          <a-checkbox-group class='checkbox-list' v-model={this.checkList}>
+            {this.tableList.map((item, index) => (
+              <a-checkbox key={index} value={item.dataIndex}>
+                {item.title}
+              </a-checkbox>
+            ))}
           </a-checkbox-group>
         </a-modal>
       </div>
@@ -349,19 +376,38 @@ class MFilterClass extends Vue {
   btnElement(isNormal: boolean): JSX.Element {
     return (
       <div>
-        <a-button type="primary" on-click={this.onSearch} id="tableSearch" icon="search">搜索</a-button>
-        <a-button type="primary" on-click={this.reset} id="tableReset" icon="reload">重置</a-button>
-        {
-          this.filterGrade.length ? <a on-click={() => this.gradeSwitch(isNormal)} class="grade-btn">{isNormal ? 'Common' : 'Senior'} Search{isNormal ? <i class="iconfont-down"></i> : <i class="iconfont-up"></i>}</a> : null
-        }
-        <div class="right-btn">
-          {
-            this.addBtn ? <a-button on-click={this.addFun} id={isNormal ? 'tableAdd' : 'tableAdd2'} icon="plus">新增</a-button> : null
-          }
-          {
-            this.exportBtn ? <a-button on-click={this.addFun} id={isNormal ? 'tableExport' : 'tableExport2'} icon="download" shape="circle"></a-button> : null
-          }
-          <a-button on-click={this.openSetting} id="tableSet" icon="setting" shape="circle"></a-button>
+        <a-button type='primary' on-click={this.onSearch} id='tableSearch' icon='search'>
+          搜索
+        </a-button>
+        <a-button type='primary' on-click={this.reset} id='tableReset' icon='reload'>
+          重置
+        </a-button>
+        {this.filterGrade.length ? (
+          <a on-click={() => this.gradeSwitch(isNormal)} class='grade-btn'>
+            {isNormal ? '普通' : '高级'}搜索
+            {isNormal ? <i class='iconfont-down'></i> : <i class='iconfont-up'></i>}
+          </a>
+        ) : null}
+        <div class='right-btn'>
+          {this.addBtn ? (
+            <a-button on-click={this.addFun} id={isNormal ? 'tableAdd' : 'tableAdd2'} icon='plus'>
+              新增
+            </a-button>
+          ) : null}
+          {this.exportBtn ? (
+            <a-button
+              on-click={this.addFun}
+              id={isNormal ? 'tableExport' : 'tableExport2'}
+              icon='download'
+              shape='circle'
+            ></a-button>
+          ) : null}
+          <a-button
+            on-click={this.openSetting}
+            id='tableSet'
+            icon='setting'
+            shape='circle'
+          ></a-button>
         </div>
       </div>
     );

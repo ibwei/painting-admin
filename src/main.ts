@@ -9,6 +9,8 @@ import store from '@/store';
 import config from '@/utils/config';
 import Api from '@/api/api';
 
+import i18n from './locales/index';
+
 import './styles/global.less';
 
 const Apis = new Api({ baseUrl: process.env.NODE_ENV === 'production' ? '/api' : '/api' });
@@ -89,5 +91,6 @@ router.beforeEach((to, from, next) => {
 new Vue({
   router,
   store,
+  i18n,
   render: h => h(App),
 }).$mount('#app');

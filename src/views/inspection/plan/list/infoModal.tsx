@@ -1,6 +1,13 @@
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import {
-  Modal, Form, Input, Radio, DatePicker, InputNumber, Cascader,
+  Modal,
+  Form,
+  Input,
+  Radio,
+  DatePicker,
+  InputNumber,
+  Cascader,
+  Select,
 } from 'ant-design-vue';
 import moment from 'moment';
 import city from '@/utils/city';
@@ -11,8 +18,12 @@ import city from '@/utils/city';
     'a-form': Form,
     'a-form-item': Form.Item,
     'a-input': Input,
+    'a-input-group': Input.Group,
     'a-input-number': InputNumber,
     'a-radio': Radio,
+    'a-select': Select,
+    'a-select-optGroup': Select.OptGroup,
+    'a-select-option': Select.Option,
     'a-radio-group': Radio.Group,
     'a-date-picker': DatePicker,
     'a-cascader': Cascader,
@@ -30,6 +41,67 @@ class InfoModal extends Vue {
 
   @Prop() data!: any;
 
+  private areaList: { id: number; name: string }[] = [
+    {
+      id: 1,
+      name: '巡检区域1',
+    },
+    {
+      id: 2,
+      name: '巡检区域2',
+    },
+    {
+      id: 3,
+      name: '巡检区域3',
+    },
+    {
+      id: 4,
+      name: '巡检区域4',
+    },
+  ];
+
+  private roadList: { id: number; name: string }[] = [
+    {
+      id: 1,
+      name: '巡检路线1',
+    },
+    {
+      id: 2,
+      name: '巡检路线2',
+    },
+    {
+      id: 3,
+      name: '巡检路线3',
+    },
+    {
+      id: 4,
+      name: '巡检路线4',
+    },
+  ];
+
+  private unitList: { id: number; name: string }[] = [
+    {
+      id: 1,
+      name: '天',
+    },
+    {
+      id: 2,
+      name: '周',
+    },
+    {
+      id: 3,
+      name: '月',
+    },
+    {
+      id: 4,
+      name: '季度',
+    },
+    {
+      id: 5,
+      name: '年',
+    },
+  ];
+
   formItemLayout = {
     labelCol: {
       xs: { span: 24 },
@@ -39,14 +111,16 @@ class InfoModal extends Vue {
       xs: { span: 24 },
       sm: { span: 20 },
     },
-  }
+  };
 
   submit() {
     this.Form.validateFields([], {}, (err: any, values: any) => {
       if (!err) {
         if (this.type === 'add') {
           window.api.baseInfoAdd(values).then((res: any) => {
-            const { result: { resultCode, resultMessage } } = res.data;
+            const {
+              result: { resultCode, resultMessage },
+            } = res.data;
             if (!resultCode) {
               this.$message.success(resultMessage);
               this.Form.resetFields();
@@ -57,7 +131,9 @@ class InfoModal extends Vue {
           });
         } else {
           window.api.baseInfoUpdate(values).then((res: any) => {
-            const { result: { resultCode, resultMessage } } = res.data;
+            const {
+              result: { resultCode, resultMessage },
+            } = res.data;
             if (!resultCode) {
               this.$message.success(resultMessage);
               this.Form.resetFields();
@@ -85,120 +161,77 @@ class InfoModal extends Vue {
         on-cancel={this.cancel}
       >
         <a-form>
-          <a-form-item
-          {...{ props: this.formItemLayout }}
-          label="name"
-          >
+          <a-form-item {...{ props: this.formItemLayout }} label='计划名称'>
             {getFieldDecorator('name', {
               initialValue: this.data.name,
-              rules: [
-                { required: true, message: 'please enter the name' },
-              ],
-            })(<a-input placeholder="name"></a-input>)}
+              rules: [{ required: true, message: '请输入巡检计划名称' }],
+            })(<a-input placeholder='请输入巡检计划名称'></a-input>)}
           </a-form-item>
-          <a-form-item
-          {...{ props: this.formItemLayout }}
-          label="nickName"
-          >
-            {getFieldDecorator('nickName', {
-              initialValue: this.data.nickName,
-              rules: [
-                { required: true, message: 'please enter the nickName' },
-              ],
-            })(<a-input placeholder="nickName"></a-input>)}
+          <a-form-item {...{ props: this.formItemLayout }} label='巡检区域'>
+            {getFieldDecorator('area', {
+              initialValue: this.data.area,
+              rules: [{ required: true, message: '请选择所属巡检区域' }],
+            })(
+              <a-select placeholder='请选择所属巡检区域'>
+                {this.areaList.map((item: { id: number; name: string }, i: number) => (
+                  <a-select-option key={(i + 9).toString(36) + i} value={item.id}>
+                    {item.name}
+                  </a-select-option>
+                ))}
+              </a-select>,
+            )}
           </a-form-item>
-          <a-form-item
-          {...{ props: this.formItemLayout }}
-          label="age"
-          >
-            {getFieldDecorator('age', {
-              initialValue: this.data.age,
-              rules: [
-                { required: true, message: 'please enter the age' },
-              ],
-            })(<a-input-number style="width: 100%" placeholder="age"></a-input-number>)}
+          <a-form-item {...{ props: this.formItemLayout }} label='巡检路线'>
+            {getFieldDecorator('road', {
+              initialValue: this.data.road,
+              rules: [{ required: true, message: '请选择巡检路线' }],
+            })(
+              <a-select placeholder='请选择巡检路线'>
+                {this.roadList.map((item: { id: number; name: string }, i: number) => (
+                  <a-select-option key={(i + 9).toString(36) + i} value={item.id}>
+                    {item.name}
+                  </a-select-option>
+                ))}
+              </a-select>,
+            )}
           </a-form-item>
-          <a-form-item
-          {...{ props: this.formItemLayout }}
-          label="phone"
-          >
-            {getFieldDecorator('phone', {
-              initialValue: this.data.phone,
-              rules: [
-                { required: true, message: 'please enter the phone' },
-                {
-                  pattern: /^1([358][0-9]|4[579]|66|7[0135678]|9[89])[0-9]{8}$/,
-                  message: 'Please enter the correct phone number',
-                },
-              ],
-            })(<a-input htmlType="number" placeholder="phone"></a-input>)}
+          <a-form-item {...{ props: this.formItemLayout }} label='巡检人'>
+            {getFieldDecorator('person', {
+              initialValue: this.data.person,
+              rules: [{ required: true, message: '请选择巡检人' }],
+            })(<a-input placeholder='输入搜索巡检人'></a-input>)}
           </a-form-item>
-          <a-form-item
-          {...{ props: this.formItemLayout }}
-          label="birthDate"
-          >
-            {getFieldDecorator('birthDate', {
-              initialValue: this.data.birthDate,
-              rules: [
-                { required: true, message: 'please select the birthDate' },
-              ],
-            })(<a-date-picker
-              format="YYYY-MM-DD HH:mm:ss"
-              style="width: 100%"
-              showTime={ { defaultValue: moment('00:00:00', 'HH:mm:ss') } }
-            />)}
+          <a-form-item {...{ props: this.formItemLayout }} label='开始时间'>
+            {getFieldDecorator('startTime', {
+              initialValue: this.data.startTime,
+              rules: [{ required: true, message: '请选择巡检开始时间' }],
+            })(
+              <a-date-picker
+                format='YYYY-MM-DD HH:mm:ss'
+                style='width: 100%'
+                showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
+              />,
+            )}
           </a-form-item>
-          <a-form-item
-          {...{ props: this.formItemLayout }}
-          label="isMale"
-          >
-            {getFieldDecorator('isMale', {
-              initialValue: this.data.isMale,
-              rules: [
-                { required: true, message: 'please select the birthDate' },
-              ],
-            })(<a-radio-group>
-                <a-radio value={true}>Male</a-radio>
-                <a-radio value={false}>Female</a-radio>
-              </a-radio-group>)}
-          </a-form-item>
-          <a-form-item
-          {...{ props: this.formItemLayout }}
-          label="id Number"
-          >
-            {getFieldDecorator('id', {
-              initialValue: this.data.id,
-              rules: [
-                { required: true, message: 'please enter the id Number' },
-              ],
-            })(<a-input placeholder="id Number"></a-input>)}
-          </a-form-item>
-          <a-form-item
-          {...{ props: this.formItemLayout }}
-          label="email"
-          >
-            {getFieldDecorator('email', {
-              initialValue: this.data.email,
-              rules: [
-                { required: true, message: 'please enter the id email' },
-              ],
-            })(<a-input placeholder="email"></a-input>)}
-          </a-form-item>
-          <a-form-item
-          {...{ props: this.formItemLayout }}
-          label="address"
-          >
-            {getFieldDecorator('address', {
-              initialValue: this.data.address,
-              rules: [
-                { required: true, message: 'please select the address' },
-              ],
-            })(<a-cascader
-              allowClear
-              options={city}
-              placeholder="please select the address"
-              >
-              </a-cascader>)}
+          <a-form-item {...{ props: this.formItemLayout }} label='巡检周期'>
+            <a-input-group compact>
+              {getFieldDecorator('cycleNum', {
+                initialValue: this.data.cycleNum,
+                rules: [{ required: true, message: '请输入周期频率' }],
+              })(<a-input style='width:40%' defaultValue='请输入周期频率'></a-input>)}
+              {getFieldDecorator('cycleUnit', {
+                initialValue: this.data.cycleUnit,
+                rules: [{ required: true, message: '请选择周期单位' }],
+              })(
+                <a-select style='width: 150px' placeholder='请选择周期单位'>
+                  {this.unitList.map((item: { id: number; name: string }, i: number) => (
+                    <a-select-option key={(i + 9).toString(36) + i} value={item.id}>
+                      {item.name}
+                    </a-select-option>
+                  ))}
+                </a-select>,
+              )}
+            </a-input-group>
           </a-form-item>
         </a-form>
       </a-modal>

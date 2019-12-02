@@ -1,16 +1,16 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { Tag, Card, Row, Col, Modal } from 'ant-design-vue';
 import { tableList, FilterFormList, Opreat } from '@/interface';
-import AddModal from './componets/addModal';
+import AddModal from './components/addModal';
 
 @Component({
-  name: 'insititution',
+  name: 'user',
   components: {
     'a-tag': Tag,
     'a-add-modal': AddModal,
   },
 })
-export default class Insititution extends Vue {
+export default class User extends Vue {
   visible: boolean = false;
 
   modelType: string = 'add';
@@ -23,8 +23,18 @@ export default class Insititution extends Vue {
 
   tableList: tableList[] = [
     {
-      title: '角色名称',
+      title: '用户编号',
+      dataIndex: 'id1',
+      align: 'center',
+    },
+    {
+      title: '用户名称',
       dataIndex: 'name',
+      align: 'center',
+    },
+    {
+      title: '性别',
+      dataIndex: 'sex',
       align: 'center',
     },
     {
@@ -34,12 +44,17 @@ export default class Insititution extends Vue {
       customRender: this.statusRender,
     },
     {
-      title: '角色类型',
-      dataIndex: 'type1',
+      title: '身份证号',
+      dataIndex: 'idCard',
       align: 'center',
     },
     {
-      title: '所属组织机构',
+      title: '用户角色',
+      dataIndex: 'juese',
+      align: 'center',
+    },
+    {
+      title: '用户类型',
       dataIndex: 'type',
       align: 'center',
     },
@@ -53,21 +68,21 @@ export default class Insititution extends Vue {
   filterList: FilterFormList[] = [
     {
       key: 'name',
-      label: '角色名称',
+      label: '机构名称',
       type: 'input',
-      placeholder: '请输入角色名称',
+      placeholder: '请输入机构名称',
     },
     {
-      key: 'name',
-      label: '角色类型',
+      key: 'renwu',
+      label: '所属组织',
       type: 'input',
-      placeholder: '请输入角色类型',
+      placeholder: '请输入所属组织',
     },
     {
       key: 'type',
-      label: '所属组织机构',
+      label: '组织类型',
       type: 'input',
-      placeholder: '请输入所属组织机构',
+      placeholder: '请输入组织类型',
     },
     {
       key: 'renwu',
@@ -76,7 +91,7 @@ export default class Insititution extends Vue {
       placeholder: '请选择状态',
       options: [
         { value: 0, label: '正常' },
-        { value: 1, label: '异常' },
+        { value: 1, label: '冻结' },
       ],
     },
   ];
@@ -94,6 +109,14 @@ export default class Insititution extends Vue {
       color: 'blue',
       text: '修改',
       roles: true,
+    },
+    {
+      key: 'delete',
+      rowKey: 'id',
+      color: 'red',
+      text: '冻结',
+      roles: true,
+      msg: '确定冻结？',
     },
     {
       key: 'delete',
@@ -161,14 +184,14 @@ export default class Insititution extends Vue {
     return <a-tag color='green'>{data}</a-tag>;
   }
 
-  statusRender(data: number) {
+  statusRender(data: string) {
     let color: string = 'green';
-    if (data === 0) {
+    if (data === '冻结') {
       color = 'red';
     } else {
       color = 'green';
     }
-    return <a-tag color={color}>{data === 1 ? '正常' : '异常'}</a-tag>;
+    return <a-tag color={color}>{data}</a-tag>;
   }
 
   render() {
@@ -180,7 +203,7 @@ export default class Insititution extends Vue {
           filterList={this.filterList}
           filterGrade={this.filterGrade}
           scroll={{ x: 900 }}
-          url={'/sys/role'}
+          url={'/sys/user'}
           filterParams={this.filterParams}
           outParams={this.outParams}
           exportBtn={false}
@@ -192,6 +215,7 @@ export default class Insititution extends Vue {
           on-menuClick={this.tableClick}
           on-add={this.add}
           addBtn={true}
+          opreatWidth='120px'
         />
         {this.visible && (
           <a-add-modal

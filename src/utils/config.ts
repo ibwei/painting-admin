@@ -1,10 +1,10 @@
-const Logo = require('../assets/logo.svg');
+const Logo = require('../assets/logo.png');
 
 const API = process.env.NODE_ENV === 'production' ? '' : '/api';
 
 const config = {
-  name: 'vue-ts-admin',
-  footerText: 'vue-ts-admin  © 2018 xiaoyang',
+  name: '信驰云巡检管理平台',
+  footerText: '信驰云巡检管理平台  2018 - 2019 © CQXC.allright reserved.ICP',
   logo: Logo,
   icon: '/favicon.ico',
   API,

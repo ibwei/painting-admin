@@ -1,7 +1,5 @@
 import { Component, Emit, Vue } from 'vue-property-decorator';
-import {
-  Form, Button, Input, Icon,
-} from 'ant-design-vue';
+import { Form, Button, Input, Icon } from 'ant-design-vue';
 import config from '@/utils/config';
 
 import './login.less';
@@ -30,7 +28,7 @@ class Login extends Vue {
 
   loading = false;
 
-  created() { }
+  created() {}
 
   @Emit()
   submitForm() {
@@ -39,7 +37,7 @@ class Login extends Vue {
         this.loading = true;
         window.api
           .login({ ...values })
-          .then((res) => {
+          .then(res => {
             this.loading = false;
             const {
               result: { resultCode, resultMessage },
@@ -53,7 +51,7 @@ class Login extends Vue {
                 .then(() => {
                   this.$router.push('/');
                 })
-                .catch((error) => {
+                .catch(error => {
                   this.$message.error(error);
                 });
             }
@@ -71,28 +69,28 @@ class Login extends Vue {
   render() {
     const { getFieldDecorator } = this.Form;
     return (
-      <div class="loginWrap">
-        <h2 class="loginTxt">
-          WELCOME
+      <div class='loginWrap'>
+        <h2 class='loginTxt'>
+          欢迎使用
           <br />
-          VUE-TS-ADMIN
+          信驰云巡检管理平台
         </h2>
-        <div class="loginForm">
-          <div class="logo">
-            <img alt="logo" src={require('../../assets/logo.svg')} />
+        <div class='loginForm'>
+          <div class='logo'>
+            {/* <img alt='logo' src={require('../../assets/logo.png')} /> */}
             <span>{config.name}</span>
           </div>
-          <a-form ref="loginForm" on-submit={this.submitForm}>
+          <a-form ref='loginForm' on-submit={this.submitForm}>
             <a-form-item>
               {getFieldDecorator('username', {
                 rules: [{ required: true, message: 'Please enter a user name' }],
               })(
                 <a-input
-                  id="username"
-                  prefix-icon="iconfont-user"
-                  placeholder="Please enter a user name"
+                  id='username'
+                  prefix-icon='iconfont-user'
+                  placeholder='Please enter a user name'
                 >
-                  <a-icon slot="prefix" type="user" />
+                  <a-icon slot='prefix' type='user' />
                 </a-input>,
               )}
             </a-form-item>
@@ -101,25 +99,25 @@ class Login extends Vue {
                 rules: [{ required: true, message: 'Please enter a password' }],
               })(
                 <a-input
-                  id="password"
-                  prefix-icon="iconfont-lock"
-                  type="password"
+                  id='password'
+                  prefix-icon='iconfont-lock'
+                  type='password'
                   on-pressEnter={this.submitForm}
-                  placeholder="Please enter a user name"
+                  placeholder='Please enter a user name'
                 >
-                  <a-icon slot="prefix" type="lock" />
+                  <a-icon slot='prefix' type='lock' />
                 </a-input>,
               )}
             </a-form-item>
             <a-form-item>
-              <a-button loading={this.loading} type="primary" on-click={this.submitForm}>
+              <a-button loading={this.loading} type='primary' on-click={this.submitForm}>
                 Login
               </a-button>
             </a-form-item>
           </a-form>
-          <div class="tips">
+          <div class='tips'>
             <span>username：admin</span>
-            <span class="right">password：admin</span>
+            <span class='right'>password：admin</span>
           </div>
         </div>
       </div>

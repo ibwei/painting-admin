@@ -75,13 +75,13 @@ export default class MapModal extends Vue {
     return (
       <a-modal
         visible={this.$props.visible}
-        onOkText="确定"
+        onOkText='确定'
         centered
         onCancel={this.handleOk}
         footer={null}
       >
-        <div className="modal-wrap">
-          <div id="modalmap" className="modalmap"></div>
+        <div className='modal-wrap'>
+          <div id='modalmap' className='modalmap'></div>
         </div>
       </a-modal>
     );
