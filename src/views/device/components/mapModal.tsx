@@ -47,9 +47,9 @@ export default class MapModal extends Vue {
     lat: number;
     lng: number;
   } = {
-    lat: 29.563694,
-    lng: 106.560421,
-  };
+      lat: 29.563694,
+      lng: 106.560421,
+    };
 
   // 地图方法类
   mounted() {
@@ -62,8 +62,6 @@ export default class MapModal extends Vue {
       this.map.enableScrollWheelZoom(true);
       this.marker = new BMap.Marker(new BMap.Point(this.$props.position.x, this.$props.position.y)); // 创建标注
       this.map.addOverlay(this.marker);
-      // @ts-ignore
-      this.marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
     });
   }
 

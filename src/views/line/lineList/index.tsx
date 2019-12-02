@@ -3,6 +3,7 @@ import { Tag, Popover, Button, Modal } from 'ant-design-vue';
 import { tableList, FilterFormList, Opreat } from '@/interface';
 import InfoModal from './infoModal';
 import MapModal from '../components/mapModal';
+import areaModal from '../../area/components/mapModal';
 import './index.less';
 
 @Component({
@@ -13,6 +14,7 @@ import './index.less';
     'a-popover': Popover,
     'a-button': Button,
     'map-modal': MapModal,
+    'area-modal': areaModal,
   },
 })
 export default class LineList extends Vue {
@@ -32,12 +34,27 @@ export default class LineList extends Vue {
 
   outParams: any = {};
 
+  areaModalShow: boolean = false;
+
+  showAreaModal() {
+    this.areaModalShow = true;
+  }
+
+  hideAreaModal() {
+    this.areaModalShow = false;
+  }
+
+  type: string = '';
+
+  openType = 'edit';
+
+
   filterList: FilterFormList[] = [
     {
       key: 'name',
       label: '管道名称',
       type: 'input',
-      placeholder: '请输入管道类型名',
+      placeholder: '请输入管道类型名称',
     },
     {
       key: 'createtime',
@@ -62,17 +79,12 @@ export default class LineList extends Vue {
       dataIndex: 'type',
     },
     {
-      title: '基础属性1',
-      dataIndex: 'property1',
+      title: '基本属性1',
+      dataIndex: 'basicProperty1',
     },
     {
-      title: '基础属性2',
-      dataIndex: 'property2',
-    },
-    {
-      title: '最新巡检记录',
-      dataIndex: 'xjlist',
-      customRender: this.recordRender,
+      title: '基本属性2',
+      dataIndex: 'basicProperty2',
     },
     {
       title: '查看管道详情',
@@ -144,8 +156,21 @@ export default class LineList extends Vue {
         h('p', '2019年11月21日15:49:22 发现1个设备故障'),
         h('p', '2019年11月16日16:49:22 暂无异常'),
       ]),
-      onOk() {},
+      onOk() { },
     });
+  }
+
+  expandedRowRender(record: any) {
+    return (
+      <div>
+        <div>
+          管道自定义属性1：{record.ownProperty1}
+        </div>
+        <div>
+          管道自定义属性2：{record.ownProperty2}
+        </div>
+      </div>
+    );
   }
 
   tableClick(key: string, row: any) {
@@ -229,11 +254,13 @@ export default class LineList extends Vue {
           backParams={this.BackParams}
           on-menuClick={this.tableClick}
           on-add={this.add}
+          expandedRowRender={this.expandedRowRender}
         />
         <info-modal
           title={this.title}
           visible={this.visible}
           type={this.modelType}
+          on-show={this.showAreaModal}
           data={this.editData}
           on-close={this.closeModal}
           on-success={this.success}
@@ -245,8 +272,20 @@ export default class LineList extends Vue {
             position={{ x: 106.55, y: 34.66 }}
           ></map-modal>
         ) : (
-          ''
-        )}
+            ''
+          )}
+        {this.areaModalShow ? (
+          <area-modal
+            visible={this.areaModalShow}
+            on-close={this.hideAreaModal}
+            openType={this.openType}
+            type={this.type}
+            position={{ x: 106.55, y: 34.66 }}
+          ></area-modal>
+        ) : (
+            ''
+          )}
+
       </div>
     );
   }

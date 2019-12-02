@@ -54,18 +54,28 @@ export default class DeviceType extends Vue {
       dataIndex: 'id',
     },
     {
-      title: '设备类型',
+      title: '设备类型名称',
       dataIndex: 'name',
     },
     {
-      title: '属性',
-      dataIndex: 'property',
+      title: '类型图标',
+      dataIndex: 'image',
+      customRender: this.imageRender,
+    },
+    {
+      title: '基础属性1',
+      dataIndex: 'basicProperty1',
+    },
+    {
+      title: '基础属性2',
+      dataIndex: 'basicProperty2',
     },
     {
       title: '创建时间',
       dataIndex: 'createTime',
     },
   ];
+
 
   opreat: Opreat[] = [
     {
@@ -98,6 +108,11 @@ export default class DeviceType extends Vue {
     const index = Math.floor(Math.random() * 7);
     return <a-tag color={colorArray[index]}>{type}</a-tag>;
   }
+
+  imageRender(type: string) {
+    return <img src={type} alt='设备类型图片' />;
+  }
+
 
   tableClick(key: string, row: any) {
     const data = JSON.parse(JSON.stringify(row));
@@ -145,6 +160,20 @@ export default class DeviceType extends Vue {
     Table.reloadTable();
   }
 
+
+  expandedRowRender(record: any) {
+    return (
+      <div>
+        <div>
+          设备类型自定义属性1：{record.ownProperty1}
+        </div>
+        <div>
+          设备类型自定义属性2：{record.ownProperty2}
+        </div>
+      </div>
+    );
+  }
+
   render() {
     return (
       <div class="baseInfo-wrap">
@@ -166,6 +195,7 @@ export default class DeviceType extends Vue {
           backParams={this.BackParams}
           on-menuClick={this.tableClick}
           on-add={this.add}
+          expandedRowRender={this.expandedRowRender}
         />
         <info-modal
           title={this.title}

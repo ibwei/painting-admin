@@ -54,8 +54,6 @@ class InfoModal extends Vue {
       this.map.removeOverlay(this.marker);
       this.marker = new this.BMap.Marker(point, { offset: new this.BMap.Size(200, 100) });
       this.map.addOverlay(this.marker);
-      // @ts-ignore
-      this.marker.setAnimation(BMAP_ANIMATION_BOUNCE);
       this.map.setCenter(point);
     }
   }
@@ -92,8 +90,6 @@ class InfoModal extends Vue {
         }); // 创建标注
         this.map.addOverlay(this.marker);
         this.map.addEventListener('click', this.mapClick);
-        // @ts-ignore
-        this.marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
       });
     });
   }
@@ -104,8 +100,6 @@ class InfoModal extends Vue {
     this.map.removeOverlay(this.marker);
     this.marker = new this.BMap.Marker(point, { offset: new this.BMap.Size(10, 10) });
     this.map.addOverlay(this.marker);
-    // @ts-ignore
-    this.marker.setAnimation(BMAP_ANIMATION_BOUNCE);
     this.map.setCenter(point);
     this.data.position = { x: e.point.lng, y: e.point.lat };
   }
@@ -211,6 +205,30 @@ class InfoModal extends Vue {
                 {facilities}
               </a-select>,
             )}
+          </a-form-item>
+          <a-form-item {...{ props: this.formItemLayout }} label="基础属性1">
+            {getFieldDecorator('basicProperty1', {
+              initialValue: this.data.basicProperty1,
+              rules: [{ required: true, message: '请输入基础属性1' }],
+            })(<a-input placeholder="请输入基础属性1"></a-input>)}
+          </a-form-item>
+          <a-form-item {...{ props: this.formItemLayout }} label="基础属性2">
+            {getFieldDecorator('basicProperty2', {
+              initialValue: this.data.basicProperty1,
+              rules: [{ required: true, message: '请输入基础属性2' }],
+            })(<a-input placeholder="请输入基础属性2"></a-input>)}
+          </a-form-item>
+          <a-form-item {...{ props: this.formItemLayout }} label="自定义属性1">
+            {getFieldDecorator('basicProperty1', {
+              initialValue: this.data.ownProperty1,
+              rules: [{ required: true, message: '请输入自定义属性1' }],
+            })(<a-input placeholder="请输入自定义属性1"></a-input>)}
+          </a-form-item>
+          <a-form-item {...{ props: this.formItemLayout }} label="自定义属性2">
+            {getFieldDecorator('ownProperty2', {
+              initialValue: this.data.basicProperty1,
+              rules: [{ required: true, message: '请输入自定义属性2' }],
+            })(<a-input placeholder="请输入自定义属性2"></a-input>)}
           </a-form-item>
           <a-form-item label="地理位置" {...{ props: this.formItemLayout }}>
             <div id="editmap" className="map"></div>

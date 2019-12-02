@@ -57,11 +57,11 @@ class InfoModal extends Vue {
   formItemLayout = {
     labelCol: {
       xs: { span: 24 },
-      sm: { span: 4 },
+      sm: { span: 6 },
     },
     wrapperCol: {
       xs: { span: 24 },
-      sm: { span: 20 },
+      sm: { span: 18 },
     },
   };
 
@@ -167,6 +167,10 @@ class InfoModal extends Vue {
   }
   typeArray: Array<string> = ['设施类型1', '设施类型2', '设施类型3', '设施类型4'];
 
+  showMap() {
+    this.$emit('showMap')
+  }
+
   render() {
     const { getFieldDecorator } = this.Form;
     const area = this.areaArray.map((item, index) => {
@@ -231,17 +235,29 @@ class InfoModal extends Vue {
             })(<a-tree-select></a-tree-select>)}
           </a-form-item>
 
+          <a-form-item {...{ props: this.formItemLayout }} label="基础属性1">
+            {getFieldDecorator('basicProperty1', {
+              initialValue: this.data.basicProperty1,
+              rules: [{ required: true, message: '请输入基础属性1' }],
+            })(<a-input placeholder="请输入基础属性1"></a-input>)}
+          </a-form-item>
+          <a-form-item {...{ props: this.formItemLayout }} label="基础属性2">
+            {getFieldDecorator('basicProperty2', {
+              initialValue: this.data.basicProperty1,
+              rules: [{ required: true, message: '请输入基础属性2' }],
+            })(<a-input placeholder="请输入基础属性2"></a-input>)}
+          </a-form-item>
           <a-form-item {...{ props: this.formItemLayout }} label="自定义属性1">
-            {getFieldDecorator('property1', {
-              initialValue: this.data.property1,
-              rules: [{ required: false, message: '请输入属性1' }],
-            })(<a-input placeholder="请输入属性1"></a-input>)}
+            {getFieldDecorator('basicProperty1', {
+              initialValue: this.data.ownProperty1,
+              rules: [{ required: true, message: '请输入自定义属性1' }],
+            })(<a-input placeholder="请输入自定义属性1"></a-input>)}
           </a-form-item>
           <a-form-item {...{ props: this.formItemLayout }} label="自定义属性2">
-            {getFieldDecorator('property2', {
-              initialValue: this.data.property2,
-              rules: [{ required: false, message: '请输入属性2' }],
-            })(<a-input placeholder="请输入属性2"></a-input>)}
+            {getFieldDecorator('ownProperty2', {
+              initialValue: this.data.basicProperty1,
+              rules: [{ required: true, message: '请输入自定义属性2' }],
+            })(<a-input placeholder="请输入自定义属性2"></a-input>)}
           </a-form-item>
           <a-form-item {...{ props: this.formItemLayout }} label="关联设备">
             <a-select
@@ -271,6 +287,13 @@ class InfoModal extends Vue {
               </a-upload>
             </div>
           </a-form-item>
+          <a-form-item {...{ props: this.formItemLayout }} label="区域范围">
+            {getFieldDecorator('type', {
+              initialValue: this.data.type,
+              rules: [{ required: true, message: '请选择类型' }],
+            })(<a-button onClick={this.showMap.bind(null, 'edit')}>选取区域范围</a-button>)}
+          </a-form-item>
+
         </a-form>
       </a-modal>
     );

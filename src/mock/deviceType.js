@@ -18,7 +18,10 @@ const BaseInfoData = Mock.mock({
     {
       id: '@increment',
       'name|1': ['供配电设备', '照明设备', '动力设备', '弱电设备', '空调与通风设备', '运输设备'],
-      property: '属性' + '@integer(1,100)',
+      basicProperty2: '属性' + '@integer(1,100)',
+      basicProperty1: '属性' + '@integer(1,100)',
+      ownProperty1: '属性' + '@integer(1,100)',
+      ownProperty2: '属性' + '@integer(1,100)',
       image: Mock.Random.image('120x80', '@color()', '#FFF', '设备' + '@integer(1,100)'),
       belongType: '设备类型' + '@integer(100,1000)',
       createName: '@cname',

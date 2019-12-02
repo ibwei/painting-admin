@@ -174,17 +174,29 @@ class InfoModal extends Vue {
               rules: [{ required: true, message: '请选择类型' }],
             })(<i-tree-select></i-tree-select>)}
           </a-form-item>
-          <a-form-item {...{ props: this.formItemLayout }} label="基本属性">
-            {getFieldDecorator('property1', {
-              initialValue: this.data.property1,
-              rules: [{ required: false, message: '请输入基本属性' }],
-            })(<a-input placeholder="请输入基本属性"></a-input>)}
+          <a-form-item {...{ props: this.formItemLayout }} label="基础属性1">
+            {getFieldDecorator('basicProperty1', {
+              initialValue: this.data.basicProperty1,
+              rules: [{ required: true, message: '请输入基础属性1' }],
+            })(<a-input placeholder="请输入基础属性1"></a-input>)}
           </a-form-item>
-          <a-form-item {...{ props: this.formItemLayout }} label="自定义属性">
-            {getFieldDecorator('property2', {
-              initialValue: this.data.property2,
-              rules: [{ required: false, message: '请输入自定义属性' }],
-            })(<a-input placeholder="请输入自定义属性"></a-input>)}
+          <a-form-item {...{ props: this.formItemLayout }} label="基础属性2">
+            {getFieldDecorator('basicProperty2', {
+              initialValue: this.data.basicProperty1,
+              rules: [{ required: true, message: '请输入基础属性2' }],
+            })(<a-input placeholder="请输入基础属性2"></a-input>)}
+          </a-form-item>
+          <a-form-item {...{ props: this.formItemLayout }} label="自定义属性1">
+            {getFieldDecorator('basicProperty1', {
+              initialValue: this.data.ownProperty1,
+              rules: [{ required: true, message: '请输入自定义属性1' }],
+            })(<a-input placeholder="请输入自定义属性1"></a-input>)}
+          </a-form-item>
+          <a-form-item {...{ props: this.formItemLayout }} label="自定义属性2">
+            {getFieldDecorator('ownProperty2', {
+              initialValue: this.data.basicProperty1,
+              rules: [{ required: true, message: '请输入自定义属性2' }],
+            })(<a-input placeholder="请输入自定义属性2"></a-input>)}
           </a-form-item>
           <a-form-item {...{ props: this.formItemLayout }} label="类型图片">
             <div>

@@ -23,6 +23,8 @@ export default class MTable extends Vue {
 
   @Prop() private dataType!: string;
 
+  @Prop() private expandedRowRender!: (record: any) => void;
+
   @Prop({
     default: () => ({
       code: 'result.resultCode',
@@ -194,6 +196,9 @@ export default class MTable extends Vue {
           }}
           columns={this.tableList}
           on-change={this.tableChange}
+          scopedSlots={{
+            expandedRowRender: this.expandedRowRender,
+          }}
         ></a-table>
       </div>
     );

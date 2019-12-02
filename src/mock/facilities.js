@@ -19,13 +19,21 @@ const BaseInfoData = Mock.mock({
       'name|1': ['供配电设施', '照明设施', '动力设施', '弱电设施', '空调与通风设施', '运输设施'],
       belongToArea: '区域' + '@integer(1,100)',
       thumbnail: "@image('150x80', '@color()','@color()', 'png', '设施'+'@integer(1,100)')",
-      property1: '自定义属性' + '@integer(1,100)',
-      property2: '自定义属性' + '@integer(1,100)',
+      basicProperty2: '属性' + '@integer(1,100)',
+      basicProperty1: '属性' + '@integer(1,100)',
+      ownProperty1: '属性' + '@integer(1,100)',
+      ownProperty2: '属性' + '@integer(1,100)',
       type: '设施类型' + '@integer(1,100)',
       'relativeDevice|2-8': [
         {
           'name|+1': ['设备1', '设备2', '设备3', '设备4', '设备5', '设备6', '设备7', '设备8'],
         },
+      ],
+      'position|1': [
+        { x: "106.55", y: "29.57" },
+        { x: "106.45", y: "29.97" },
+        { x: "106.75", y: "29.67" },
+        { x: "106.65", y: "29.47" },
       ],
       createName: '@cname',
       createTime: '@datetime',

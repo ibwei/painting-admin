@@ -34,6 +34,7 @@
       :default-page-size="defaultPageSize"
       :highlight-current-row="highlightCurrentRow"
       :scroll="scroll"
+      :expanded-row-render="expandedRowRender"
       @tableClick="tableClick"
       @selectChange="selectChange"
       @currentChange="currentChange"
@@ -114,6 +115,10 @@ export default class FilterTable extends Vue {
   @Prop({ default: false }) private highlightCurrentRow!: boolean;
 
   @Prop({ default: null }) private scroll!: { x: number; y: number };
+
+  @Prop({ default: (record: any) => null }) private expandedRowRender!: (
+    record: any,
+  ) => void;
 
   // 初始化请求参数
   tableParams: any = Object.assign(this.filterParams, this.outParams);
