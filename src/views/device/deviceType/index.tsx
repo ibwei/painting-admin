@@ -3,7 +3,6 @@ import { Tag, Popover, Button } from 'ant-design-vue';
 import { tableList, FilterFormList, Opreat } from '@/interface';
 import InfoModal from './infoModal';
 
-
 import './index.less';
 import Device from '../index';
 
@@ -86,7 +85,7 @@ export default class DeviceType extends Vue {
     },
   ];
 
-  title: string = '新增类型';
+  title: string = '新增设备类型';
 
   visible: boolean = false;
 
@@ -97,9 +96,7 @@ export default class DeviceType extends Vue {
   typeRender(type: string) {
     const colorArray: Array<string> = ['pink', 'red', 'orange', 'green', 'cyan', 'blue', 'purple'];
     const index = Math.floor(Math.random() * 7);
-    return (
-      <a-tag color={colorArray[index]}>{type}</a-tag>
-    )
+    return <a-tag color={colorArray[index]}>{type}</a-tag>;
   }
 
   tableClick(key: string, row: any) {
@@ -108,7 +105,7 @@ export default class DeviceType extends Vue {
       case 'edit':
         this.editData = data;
         this.visible = true;
-        this.title = '修改类型';
+        this.title = '修改设备类型';
         this.modelType = 'edit';
         break;
       case 'delete':
@@ -128,7 +125,7 @@ export default class DeviceType extends Vue {
   }
 
   add() {
-    this.title = '添加类型';
+    this.title = '添加设备类型';
     this.modelType = 'add';
     this.visible = true;
     this.editData = {};

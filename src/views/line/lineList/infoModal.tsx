@@ -1,12 +1,19 @@
 /* eslint-disable */
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import {
-  Modal, Form, Input, Radio, DatePicker, InputNumber, Cascader, Select, Upload,Icon
+  Modal,
+  Form,
+  Input,
+  Radio,
+  DatePicker,
+  InputNumber,
+  Cascader,
+  Select,
+  Upload,
+  Icon,
 } from 'ant-design-vue';
 
 import './index.less';
-
-
 
 @Component({
   components: {
@@ -22,7 +29,7 @@ import './index.less';
     'a-date-picker': DatePicker,
     'a-cascader': Cascader,
     'a-upload': Upload,
-    'a-icon':Icon,
+    'a-icon': Icon,
   },
   props: {
     Form,
@@ -38,15 +45,13 @@ class InfoModal extends Vue {
   @Prop() data!: any;
 
   @Watch('visible')
-
   protected valueWatch(newV: any, oldV: any) {
     if (newV === true) {
       this.deviceArray = this.data.relativeDevice.map((item: any) => {
-        return item.name
+        return item.name;
       });
     }
   }
-
 
   formItemLayout = {
     labelCol: {
@@ -57,41 +62,68 @@ class InfoModal extends Vue {
       xs: { span: 24 },
       sm: { span: 20 },
     },
-  }
-
+  };
 
   areaArray: Array<string> = ['区域1', '区域2', '区域3', '区域4'];
   deviceArray: Array<any> = [];
   relativeResult: Array<any> = [];
-  deviceArrayList: Array<any> = ['设备1', '设备2', '设备3', '设备4', '设备5', '设备6', '设备7', '设备8',];
-  propertyArray: Array<string> = ['供配电设备', '照明设备', '动力设备', '弱电设备', '空调与通风设备', '运输设备'];
-
+  deviceArrayList: Array<any> = [
+    '设备1',
+    '设备2',
+    '设备3',
+    '设备4',
+    '设备5',
+    '设备6',
+    '设备7',
+    '设备8',
+  ];
+  propertyArray: Array<string> = [
+    '供配电设备',
+    '照明设备',
+    '动力设备',
+    '弱电设备',
+    '空调与通风设备',
+    '运输设备',
+  ];
 
   submit() {
     this.$props.Form.validateFields((err: any, values: any) => {
       if (!err) {
         if (this.type === 'edit') {
-          window.api.facilitiesBaseInfoUpdate({ id: this.data.id, relativeDevice: this.relativeResult, ...values }).then((res: any) => {
-            const { result: { resultCode, resultMessage } } = res.data;
-            if (!resultCode) {
-              this.$message.success(resultMessage);
-              this.Form.resetFields();
-              this.$emit('success');
-            } else {
-              this.$message.error(resultMessage);
-            }
-          });
+          window.api
+            .facilitiesBaseInfoUpdate({
+              id: this.data.id,
+              relativeDevice: this.relativeResult,
+              ...values,
+            })
+            .then((res: any) => {
+              const {
+                result: { resultCode, resultMessage },
+              } = res.data;
+              if (!resultCode) {
+                this.$message.success(resultMessage);
+                this.Form.resetFields();
+                this.$emit('success');
+              } else {
+                this.$message.error(resultMessage);
+              }
+            });
         } else if (this.type === 'add') {
-          window.api.facilitiesBaseInfoAdd({relativeDevice: this.relativeResult,...values}).then((res: any) => {
-            const { err_code, result: { resultMessage } } = res.data;
-            if (!err_code) {
-              this.$message.success(resultMessage);
-              this.Form.resetFields();
-              this.$emit('success');
-            } else {
-              this.$message.error(resultMessage);
-            }
-          });
+          window.api
+            .facilitiesBaseInfoAdd({ relativeDevice: this.relativeResult, ...values })
+            .then((res: any) => {
+              const {
+                err_code,
+                result: { resultMessage },
+              } = res.data;
+              if (!err_code) {
+                this.$message.success(resultMessage);
+                this.Form.resetFields();
+                this.$emit('success');
+              } else {
+                this.$message.error(resultMessage);
+              }
+            });
         }
       }
     });
@@ -104,8 +136,8 @@ class InfoModal extends Vue {
   relativeDeviceChange(e: any) {
     this.relativeResult = [];
     e.map((item: any) => {
-      this.relativeResult.push({ name: item })
-    })
+      this.relativeResult.push({ name: item });
+    });
     console.log(this.relativeResult);
   }
 
@@ -116,7 +148,7 @@ class InfoModal extends Vue {
       uid: '-1',
       name: 'xxx.png',
       status: 'done',
-      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+      url: 'http://i0.sinaimg.cn/dy/c/sd/2012-04-01/U7815P1T1D24212000F21DT20120401172319.jpg',
     },
   ];
 
@@ -132,32 +164,30 @@ class InfoModal extends Vue {
   handleChange({ fileList }) {
     this.fileList = fileList;
   }
-
-
+  typeArray: Array<string> = ['管道类型1', '管道类型2', '管道类型3', '管道类型4'];
   render() {
+    const selectType = this.typeArray.map((item, index) => (
+      <a-select-option key={index} value={item}>
+        {item}
+      </a-select-option>
+    ));
     const { getFieldDecorator } = this.Form;
     const area = this.areaArray.map((item, index) => {
       return (
         <a-select-option key={(index + 9).toString(36) + index} value={item}>
           {item}
-        </a-select-option>);
-    });
-
-    const device = this.deviceArrayList.map((item, index) => {
-      return (
-        <a-select-option key={(index + 9).toString(36) + index} value={item}>
-          {item}
-        </a-select-option>);
+        </a-select-option>
+      );
     });
 
     const plus = () => {
-        return (
-          <div>
-            <a-icon type="picture" />
-            <div class="ant-upload-text">上传图片</div>
-          </div>
-        );
-    }
+      return (
+        <div>
+          <a-icon type="picture" />
+          <div class="ant-upload-text">上传图片</div>
+        </div>
+      );
+    };
 
     return (
       <a-modal
@@ -167,72 +197,46 @@ class InfoModal extends Vue {
         on-cancel={this.cancel}
       >
         <a-form>
-          <a-form-item
-            {...{ props: this.formItemLayout }}
-            label="设施名称"
-          >
+          <a-form-item {...{ props: this.formItemLayout }} label="管道名称">
             {getFieldDecorator('name', {
               initialValue: this.data.name,
-              rules: [
-                { required: true, message: '请输入设施名称' },
-              ],
-            })(
-              <a-input placeholder="请输入设施名称"></a-input>
-            )}
+              rules: [{ required: true, message: '请输入管道名称' }],
+            })(<a-input placeholder="请输入管道名称"></a-input>)}
           </a-form-item>
-          <a-form-item
-            {...{ props: this.formItemLayout }}
-            label="所属区域"
-          >
+          <a-form-item {...{ props: this.formItemLayout }} label="所属区域">
             {getFieldDecorator('belongToArea', {
               initialValue: this.data.belongToArea,
-              rules: [
-                { required: true, message: '请输入选择区域' },
-              ],
+              rules: [{ required: true, message: '请选择所属区域' }],
             })(
               <a-select size="default" style="width: 200px">
                 {area}
-              </a-select>
+              </a-select>,
+            )}
+          </a-form-item>
+          <a-form-item {...{ props: this.formItemLayout }} label="管道类型">
+            {getFieldDecorator('type', {
+              initialValue: this.data.type,
+              rules: [{ required: true, message: '请选择管道类型' }],
+            })(
+              <a-select size="default" style="width: 200px">
+                {selectType}
+              </a-select>,
             )}
           </a-form-item>
 
-          <a-form-item
-            {...{ props: this.formItemLayout }}
-            label="自定义属性1"
-          >
+          <a-form-item {...{ props: this.formItemLayout }} label="自定义属性1">
             {getFieldDecorator('property1', {
               initialValue: this.data.property1,
-              rules: [
-                { required: false, message: '请输入属性1' },
-              ],
-            })(
-              <a-input placeholder="请输入属性1"></a-input>
-            )}
+              rules: [{ required: false, message: '请输入属性' }],
+            })(<a-input placeholder="请输入属性1"></a-input>)}
           </a-form-item>
-          <a-form-item
-            {...{ props: this.formItemLayout }}
-            label="自定义属性2"
-          >
+          <a-form-item {...{ props: this.formItemLayout }} label="自定义属性2">
             {getFieldDecorator('property2', {
               initialValue: this.data.property2,
-              rules: [
-                { required: false, message: '请输入属性2' },
-              ],
-            })(
-              <a-input placeholder="请输入属性2"></a-input>
-            )}
+              rules: [{ required: false, message: '请输入属性2' }],
+            })(<a-input placeholder="请输入属性2"></a-input>)}
           </a-form-item>
-          <a-form-item
-            {...{ props: this.formItemLayout }}
-            label="关联设备"
-          >
-            <a-select mode="multiple" size="default" defaultValue={this.deviceArray} onChange={this.relativeDeviceChange}>
-              {device}
-            </a-select>
-          </a-form-item>
-          <a-form-item
-            {...{ props: this.formItemLayout }}
-            label="设施图片">
+          <a-form-item {...{ props: this.formItemLayout }} label="管道图片">
             <div>
               <a-upload
                 name="avatar"
@@ -245,7 +249,7 @@ class InfoModal extends Vue {
               >
                 {plus}
                 <a-modal visible={this.previewVisible} footer={null} onCancel={this.hideThumbnail}>
-                  <img alt="example" style={{width:"100%"}} src={this.previewImage} />
+                  <img alt="example" style={{ width: '100%' }} src={this.previewImage} />
                 </a-modal>
               </a-upload>
             </div>

@@ -17,7 +17,6 @@ export default class MapModal extends Vue {
 
   @Prop() position?: any;
 
-
   map: any = null;
 
   BMap: any = null;
@@ -48,13 +47,13 @@ export default class MapModal extends Vue {
     lat: number;
     lng: number;
   } = {
-      lat: 29.563694,
-      lng: 106.560421,
-    };
+    lat: 29.563694,
+    lng: 106.560421,
+  };
 
   // 地图方法类
   mounted() {
-    console.log(this.$props.position)
+    console.log(this.$props.position);
     loadBmap().then((BMap: any) => {
       this.BMap = BMap;
       this.map = new BMap.Map('modalmap'); // 创建Map实例

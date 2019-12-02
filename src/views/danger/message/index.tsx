@@ -1,9 +1,8 @@
 import { Component, Vue } from 'vue-property-decorator';
-import { Tag, Popover, Button } from 'ant-design-vue';
+import { Tag, Popover, Button, Modal } from 'ant-design-vue';
 import { tableList, FilterFormList, Opreat } from '@/interface';
 import city from '@/utils/city';
 import InfoModal from './infoModal';
-
 
 import './index.less';
 
@@ -74,7 +73,7 @@ export default class Message extends Vue {
       customRender: this.imageRender,
     },
     {
-      title: '状态',
+      title: '处理结果',
       dataIndex: 'status',
       customRender: this.typeRender,
     },
@@ -111,27 +110,36 @@ export default class Message extends Vue {
   editData: object = {};
 
   imageRender(url: string) {
-    return (
-      <img src={url}></img>
-    )
+    return <img src={url}></img>;
   }
 
-  typeRender(type: number) {
+  typeRender(type: number, others: any) {
     const colorArray: Array<string> = ['pink', 'red', 'orange', 'green', 'cyan', 'blue', 'purple'];
-    let obj: any = null;
+    let render: any = null;
     if (type === 0) {
-      obj = { color: 'blue', text: '未处理' };
+      render = (
+        <a-tag color="blue" onClick={this.showSuccesResult.bind(this, others)}>
+          去处理
+        </a-tag>
+      );
     } else if (type === 1) {
-      obj = { color: 'red', text: '处理失败' };
-
+      render = <a-tag color="green">查看处理结果</a-tag>;
     } else {
-      obj = { color: 'green', text: '处理成功' };
-
+      render = <a-tag color="red">处理失败原因</a-tag>;
     }
-    return (
-      <a-tag color={obj.color}>{obj.text}</a-tag>
-    )
+    return render;
+  }
 
+  showSuccesResult(data: any) {
+    const h = this.$createElement;
+    Modal.info({
+      title: 'This is a notification message',
+      content: h('div', {}, [
+        h('p', 'some messages...some messages...'),
+        h('p', 'some messages...some messages...'),
+      ]),
+      onOk() {},
+    });
   }
 
   tableClick(key: string, row: any) {
@@ -167,7 +175,6 @@ export default class Message extends Vue {
   }
 
   closeModal() {
-
     this.visible = false;
     this.editData = {};
   }
@@ -181,7 +188,6 @@ export default class Message extends Vue {
   position: any;
 
   deviceName: string = '设备';
-
 
   showMapModal(others: any) {
     this.position = others.position;
@@ -218,17 +224,20 @@ export default class Message extends Vue {
           on-menuClick={this.tableClick}
           on-add={this.add}
         />
-        {this.visible ? (<info-modal
-          title={this.title}
-          position={this.position}
-          visible={this.visible}
-          deviceName={this.deviceName}
-          type={this.modelType}
-          data={this.editData}
-          on-close={this.closeModal}
-          on-success={this.success}
-        />) : ''}
-
+        {this.visible ? (
+          <info-modal
+            title={this.title}
+            position={this.position}
+            visible={this.visible}
+            deviceName={this.deviceName}
+            type={this.modelType}
+            data={this.editData}
+            on-close={this.closeModal}
+            on-success={this.success}
+          />
+        ) : (
+          ''
+        )}
       </div>
     );
   }

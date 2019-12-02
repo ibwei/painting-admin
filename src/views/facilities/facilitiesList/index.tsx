@@ -68,25 +68,29 @@ export default class Facilities extends Vue {
       dataIndex: 'name',
     },
     {
-      title: '所属区域',
+      title: '设施所属区域',
       dataIndex: 'belongToArea',
     },
     {
-      title: '属性1',
+      title: '设施所属类型',
+      dataIndex: 'type',
+    },
+    {
+      title: '自定义属性1',
       dataIndex: 'property1',
     },
     {
-      title: '属性2',
+      title: '自定义属性2',
       dataIndex: 'property2',
     },
     {
       title: '关联设备',
       dataIndex: 'relativeDevice',
       customRender: this.deviceRender,
-      width: "300px",
+      width: '300px',
     },
     {
-      title: '设施图标',
+      title: '设施图片',
       dataIndex: 'thumbnail',
       customRender: this.thumbnailRender,
     },
@@ -123,22 +127,21 @@ export default class Facilities extends Vue {
   editData: object = {};
 
   deviceRender(relativeDevice: Array<any>, others: any) {
-
     const colorArray: Array<string> = ['pink', 'red', 'orange', 'green', 'cyan', 'blue', 'purple'];
 
     const list = relativeDevice.map(item => {
       const index = Math.floor(Math.random() * 7);
       return (
-        <a-tag color={colorArray[index]} style={{ marginTop: "10px" }}>{item.name}</a-tag>
+        <a-tag color={colorArray[index]} style={{ marginTop: '10px' }}>
+          {item.name}
+        </a-tag>
       );
-    })
+    });
     return list;
   }
 
   thumbnailRender(url: string) {
-    return (
-      <img src={url} alt="设施缩略图" />
-    )
+    return <img src={url} alt="设施缩略图" />;
   }
 
   tableClick(key: string, row: any) {
@@ -167,7 +170,7 @@ export default class Facilities extends Vue {
   }
 
   add() {
-    this.title = '添加设施';
+    this.title = '新增设施';
     this.modelType = 'add';
     this.visible = true;
     this.editData = {};
@@ -185,7 +188,6 @@ export default class Facilities extends Vue {
   }
 
   position: any;
-
 
   success() {
     this.visible = false;
@@ -208,6 +210,7 @@ export default class Facilities extends Vue {
           outParams={this.outParams}
           addBtn={true}
           exportBtn={false}
+          localName={'facilitiesList'}
           dataType={'json'}
           rowKey={'id'}
           opreat={this.opreat}
