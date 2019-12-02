@@ -41,20 +41,20 @@ export default class Device extends Vue {
       key: 'name',
       label: 'name',
       type: 'input',
-      placeholder: 'Seach Name',
+      placeholder: '请搜索设备名字',
     },
     {
       key: 'address',
       label: 'address',
       type: 'cascader',
-      placeholder: 'Seach address',
+      placeholder: '设备所在位置',
       options: city,
     },
     {
       key: 'createtime',
       label: 'Createtime',
       type: 'datetimerange',
-      placeholder: ['start date', 'end date'],
+      placeholder: ['开始时间', '结束时间'],
       value: ['startTime', 'endTime'],
     },
   ];
@@ -80,6 +80,14 @@ export default class Device extends Vue {
       title: '所属类型',
       dataIndex: 'type',
       customRender: this.typeRender,
+    },
+    {
+      title: '基础属性1',
+      dataIndex: 'ownProperty1',
+    },
+    {
+      title: '基础属性2',
+      dataIndex: 'ownProperty2',
     },
     {
       title: '所在地理地址',
@@ -192,6 +200,19 @@ export default class Device extends Vue {
     Table.reloadTable();
   }
 
+  expandedRowRender(record: any) {
+    return (
+      <div>
+        <div>
+          设备自定义属性1：{record.ownProperty1}
+        </div>
+        <div>
+          设备自定义属性2：{record.ownProperty2}
+        </div>
+      </div>
+    );
+  }
+
   render() {
     return (
       <div class="baseInfo-wrap">
@@ -213,6 +234,7 @@ export default class Device extends Vue {
           backParams={this.BackParams}
           on-menuClick={this.tableClick}
           on-add={this.add}
+          expandedRowRender={this.expandedRowRender}
         />
         {this.visible ? (
           <info-modal
@@ -226,8 +248,8 @@ export default class Device extends Vue {
             on-success={this.success}
           />
         ) : (
-          ''
-        )}
+            ''
+          )}
         {this.popoverVisible ? (
           <map-modal
             on-close={this.hideMapModal}
@@ -236,8 +258,8 @@ export default class Device extends Vue {
             visible={this.popoverVisible}
           ></map-modal>
         ) : (
-          ''
-        )}
+            ''
+          )}
       </div>
     );
   }

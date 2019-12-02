@@ -11,6 +11,7 @@ import {
   Select,
   Upload,
   Icon,
+  Button,
 } from 'ant-design-vue';
 
 import './index.less';
@@ -30,6 +31,7 @@ import './index.less';
     'a-cascader': Cascader,
     'a-upload': Upload,
     'a-icon': Icon,
+    'a-button': Button,
   },
   props: {
     Form,
@@ -56,11 +58,11 @@ class InfoModal extends Vue {
   formItemLayout = {
     labelCol: {
       xs: { span: 24 },
-      sm: { span: 4 },
+      sm: { span: 6 },
     },
     wrapperCol: {
       xs: { span: 24 },
-      sm: { span: 20 },
+      sm: { span: 18 },
     },
   };
 
@@ -165,6 +167,12 @@ class InfoModal extends Vue {
     this.fileList = fileList;
   }
   typeArray: Array<string> = ['管道类型1', '管道类型2', '管道类型3', '管道类型4'];
+
+  showAreaMap() {
+    console.log('hahah')
+    this.$emit('show')
+  }
+
   render() {
     const selectType = this.typeArray.map((item, index) => (
       <a-select-option key={index} value={item}>
@@ -224,36 +232,37 @@ class InfoModal extends Vue {
             )}
           </a-form-item>
 
+          <a-form-item {...{ props: this.formItemLayout }} label="基础属性1">
+            {getFieldDecorator('basicProperty1', {
+              initialValue: this.data.basicProperty1,
+              rules: [{ required: true, message: '请输入基础属性1' }],
+            })(<a-input placeholder="请输入基础属性1"></a-input>)}
+          </a-form-item>
+          <a-form-item {...{ props: this.formItemLayout }} label="基础属性2">
+            {getFieldDecorator('basicProperty2', {
+              initialValue: this.data.basicProperty1,
+              rules: [{ required: true, message: '请输入基础属性2' }],
+            })(<a-input placeholder="请输入基础属性2"></a-input>)}
+          </a-form-item>
           <a-form-item {...{ props: this.formItemLayout }} label="自定义属性1">
-            {getFieldDecorator('property1', {
-              initialValue: this.data.property1,
-              rules: [{ required: false, message: '请输入属性' }],
-            })(<a-input placeholder="请输入属性1"></a-input>)}
+            {getFieldDecorator('basicProperty1', {
+              initialValue: this.data.ownProperty1,
+              rules: [{ required: true, message: '请输入自定义属性1' }],
+            })(<a-input placeholder="请输入自定义属性1"></a-input>)}
           </a-form-item>
           <a-form-item {...{ props: this.formItemLayout }} label="自定义属性2">
-            {getFieldDecorator('property2', {
-              initialValue: this.data.property2,
-              rules: [{ required: false, message: '请输入属性2' }],
-            })(<a-input placeholder="请输入属性2"></a-input>)}
+            {getFieldDecorator('ownProperty2', {
+              initialValue: this.data.basicProperty1,
+              rules: [{ required: true, message: '请输入自定义属性2' }],
+            })(<a-input placeholder="请输入自定义属性2"></a-input>)}
           </a-form-item>
-          <a-form-item {...{ props: this.formItemLayout }} label="管道图片">
-            <div>
-              <a-upload
-                name="avatar"
-                listType="picture-card"
-                class="avatar-uploader"
-                showUploadList={true}
-                fileList={this.fileList}
-                action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                onChange={this.handleChange}
-              >
-                {plus}
-                <a-modal visible={this.previewVisible} footer={null} onCancel={this.hideThumbnail}>
-                  <img alt="example" style={{ width: '100%' }} src={this.previewImage} />
-                </a-modal>
-              </a-upload>
-            </div>
+          <a-form-item {...{ props: this.formItemLayout }} label="区域范围">
+            {getFieldDecorator('type', {
+              initialValue: this.data.type,
+              rules: [{ required: true, message: '请选择类型' }],
+            })(<a-button onClick={this.showAreaMap}>选取区域范围</a-button>)}
           </a-form-item>
+
         </a-form>
       </a-modal>
     );

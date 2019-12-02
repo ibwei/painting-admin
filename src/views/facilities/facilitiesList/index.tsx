@@ -4,8 +4,8 @@ import { Tag, Popover, Button } from 'ant-design-vue';
 import { tableList, FilterFormList, Opreat } from '@/interface';
 import city from '@/utils/city';
 import InfoModal from './infoModal';
-
 import './index.less';
+import MapModal from '../components/mapModal';
 
 @Component({
   name: 'facilities',
@@ -14,6 +14,7 @@ import './index.less';
     'info-modal': InfoModal,
     'a-popover': Popover,
     'a-button': Button,
+    'map-modal': MapModal,
   },
 })
 export default class Facilities extends Vue {
@@ -40,20 +41,20 @@ export default class Facilities extends Vue {
       key: 'name',
       label: 'name',
       type: 'input',
-      placeholder: 'Seach Name',
+      placeholder: '请输入设施名称',
     },
     {
       key: 'address',
       label: 'address',
       type: 'cascader',
-      placeholder: 'Seach address',
+      placeholder: '请选择设施所在位置',
       options: city,
     },
     {
       key: 'createtime',
       label: 'Createtime',
       type: 'datetimerange',
-      placeholder: ['start date', 'end date'],
+      placeholder: ['开始时间', '结束时间'],
       value: ['startTime', 'endTime'],
     },
   ];
@@ -76,15 +77,15 @@ export default class Facilities extends Vue {
       dataIndex: 'type',
     },
     {
-      title: '自定义属性1',
-      dataIndex: 'property1',
+      title: '设施基础类型1',
+      dataIndex: 'basicProperty1',
     },
     {
-      title: '自定义属性2',
-      dataIndex: 'property2',
+      title: '设施基础类型2',
+      dataIndex: 'basicProperty2',
     },
     {
-      title: '关联设备',
+      title: '设施关联设备',
       dataIndex: 'relativeDevice',
       customRender: this.deviceRender,
       width: '300px',
@@ -93,6 +94,11 @@ export default class Facilities extends Vue {
       title: '设施图片',
       dataIndex: 'thumbnail',
       customRender: this.thumbnailRender,
+    },
+    {
+      title: '设施地理位置',
+      dataIndex: 'position',
+      customRender: this.positionRender,
     },
     {
       title: '创建时间',
@@ -143,6 +149,9 @@ export default class Facilities extends Vue {
   thumbnailRender(url: string) {
     return <img src={url} alt="设施缩略图" />;
   }
+  positionRender(position: string) {
+    return <a-button onClick={this.showMapModal.bind(this, position)}>查看地理位置</a-button>;
+  }
 
   tableClick(key: string, row: any) {
     const data = JSON.parse(JSON.stringify(row));
@@ -181,19 +190,36 @@ export default class Facilities extends Vue {
     this.editData = {};
   }
 
-  popoverVisible: boolean = true;
+  popoverVisible: boolean = false;
+  position: any = null;
 
+  showMapModal(position: any) {
+    this.position = position;
+    this.popoverVisible = true;
+  }
   hideMapModal() {
     this.popoverVisible = false;
   }
 
-  position: any;
 
   success() {
     this.visible = false;
     const Table: any = this.$refs.baseInfoTable;
     this.editData = {};
     Table.reloadTable();
+  }
+
+  expandedRowRender(record: any) {
+    return (
+      <div>
+        <div>
+          设施自定义属性1：{record.ownProperty1}
+        </div>
+        <div>
+          设施自定义属性2：{record.ownProperty2}
+        </div>
+      </div>
+    );
   }
 
   render() {
@@ -218,15 +244,29 @@ export default class Facilities extends Vue {
           backParams={this.BackParams}
           on-menuClick={this.tableClick}
           on-add={this.add}
+          expandedRowRender={this.expandedRowRender}
         />
         <info-modal
           title={this.title}
           visible={this.visible}
           type={this.modelType}
           data={this.editData}
+          on-showMap={this.showMapModal}
           on-close={this.closeModal}
           on-success={this.success}
         />
+        {
+          this.popoverVisible ? (
+            <map-modal
+              on-close={this.hideMapModal}
+              position={this.position}
+              visible={this.popoverVisible}
+            ></map-modal>
+          ) : (
+              ''
+            )
+        }
+
       </div>
     );
   }

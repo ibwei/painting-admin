@@ -37,7 +37,7 @@ export default class facilitiesType extends Vue {
       key: 'name',
       label: '设施类型名称',
       type: 'input',
-      placeholder: '请输入设施类型名',
+      placeholder: '请输入设施类型名称',
     },
     {
       key: 'createtime',
@@ -58,12 +58,12 @@ export default class facilitiesType extends Vue {
       dataIndex: 'name',
     },
     {
-      title: '自定义属性1',
-      dataIndex: 'property1',
+      title: '基础属性1',
+      dataIndex: 'basicProperty1',
     },
     {
-      title: '自定义属性2',
-      dataIndex: 'property2',
+      title: '基础属性2',
+      dataIndex: 'basicProperty2',
     },
     {
       title: '设施类型图标',
@@ -178,6 +178,19 @@ export default class facilitiesType extends Vue {
     Table.reloadTable();
   }
 
+  expandedRowRender(record: any) {
+    return (
+      <div>
+        <div>
+          设施类型自定义属性1：{record.ownProperty1}
+        </div>
+        <div>
+          设施类型自定义属性2：{record.ownProperty2}
+        </div>
+      </div>
+    );
+  }
+
   render() {
     return (
       <div class="baseInfo-wrap">
@@ -199,6 +212,7 @@ export default class facilitiesType extends Vue {
           backParams={this.BackParams}
           on-menuClick={this.tableClick}
           on-add={this.add}
+          expandedRowRender={this.expandedRowRender}
         />
         <info-modal
           title={this.title}
@@ -216,8 +230,8 @@ export default class facilitiesType extends Vue {
             visible={this.popoverVisible}
           ></map-modal>
         ) : (
-          ''
-        )}
+            ''
+          )}
       </div>
     );
   }

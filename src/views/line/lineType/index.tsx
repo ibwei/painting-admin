@@ -37,7 +37,7 @@ export default class LineType extends Vue {
       key: 'name',
       label: '管道名称',
       type: 'input',
-      placeholder: '请输入管道类型名',
+      placeholder: '请输入管道类型名称',
     },
     {
       key: 'createtime',
@@ -54,21 +54,21 @@ export default class LineType extends Vue {
       dataIndex: 'id',
     },
     {
-      title: '管道类型',
+      title: '管道类型名称',
       dataIndex: 'name',
     },
     {
-      title: '管道类型图片',
+      title: '管道类型图标',
       dataIndex: 'image',
       customRender: this.imageRender,
     },
     {
-      title: '基本属性',
-      dataIndex: 'property1',
+      title: '基本属性1',
+      dataIndex: 'basicProperty1',
     },
     {
-      title: '自定义属性',
-      dataIndex: 'property2',
+      title: '基本属性2',
+      dataIndex: 'basicProperty2',
     },
     {
       title: '创建时间',
@@ -174,6 +174,19 @@ export default class LineType extends Vue {
     Table.reloadTable();
   }
 
+  expandedRowRender(record: any) {
+    return (
+      <div>
+        <div>
+          管道类型自定义属性1：{record.ownProperty1}
+        </div>
+        <div>
+          管道类型自定义属性2：{record.ownProperty2}
+        </div>
+      </div>
+    );
+  }
+
   render() {
     return (
       <div class="baseInfo-wrap">
@@ -196,6 +209,7 @@ export default class LineType extends Vue {
           backParams={this.BackParams}
           on-menuClick={this.tableClick}
           on-add={this.add}
+          expandedRowRender={this.expandedRowRender}
         />
         <info-modal
           title={this.title}

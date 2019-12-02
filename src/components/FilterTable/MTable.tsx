@@ -27,6 +27,8 @@ export default class MTable extends Vue {
 
   @Prop() private dataType!: string;
 
+  @Prop() private expandedRowRender!: (record: any) => void;
+
   @Prop({
     default: () => ({
       code: 'result.resultCode',
@@ -75,7 +77,7 @@ export default class MTable extends Vue {
 
   @Prop() private highlightCurrentRow!: boolean;
 
-  @Prop({ default: null }) private scroll!: {x: number, y: number};
+  @Prop({ default: null }) private scroll!: { x: number, y: number };
 
   // data
   tableData: any = [];
@@ -85,10 +87,10 @@ export default class MTable extends Vue {
     pageNum: number,
     page: boolean,
   } = {
-    pageSize: this.defaultPageSize,
-    pageNum: 1,
-    page: true,
-  };
+      pageSize: this.defaultPageSize,
+      pageNum: 1,
+      page: true,
+    };
 
   loading: boolean = false;
 
@@ -167,7 +169,7 @@ export default class MTable extends Vue {
   }
 
   render() {
-    if (this.opreat.length && this.tableList[this.tableList.length -1].title !== '操作') {
+    if (this.opreat.length && this.tableList[this.tableList.length - 1].title !== '操作') {
       this.tableList.push({
         title: '操作',
         dataIndex: 'action',
@@ -194,6 +196,11 @@ export default class MTable extends Vue {
           }}
           columns={this.tableList}
           on-change={this.tableChange}
+          scopedSlots={
+            {
+              expandedRowRender: this.expandedRowRender,
+            }
+          }
         >
         </a-table>
       </div>
@@ -233,14 +240,14 @@ export default class MTable extends Vue {
           const whiteList = ['red', 'orange'];
           if (item.disabled && item.disabled(record)) {
             return <a id={`${item.key}-${record[item.rowKey]}`} key={indexs} class="btn disabled">
-              { typeof item.text === 'function' ? item.text(record) : item.text }
+              {typeof item.text === 'function' ? item.text(record) : item.text}
             </a>;
           } if (whiteList.indexOf(typeof item.color === 'function' ? item.color(record) : item.color) >= 0) {
             return <a-popconfirm
               on-confirm={() => this.menuClick(item.key, record)}
               title={typeof item.msg === 'function' ? item.msg(record) : item.msg}>
               <a id={`${item.key}-${record[item.rowKey]}`} key={indexs} class={`link-${typeof item.color === 'function' ? item.color(record) : item.color}`}>
-                { typeof item.text === 'function' ? item.text(record) : item.text }
+                {typeof item.text === 'function' ? item.text(record) : item.text}
               </a>
             </a-popconfirm>;
           }

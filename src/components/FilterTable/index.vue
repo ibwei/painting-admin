@@ -33,6 +33,7 @@
       :default-page-size="defaultPageSize"
       :highlight-current-row="highlightCurrentRow"
       :scroll="scroll"
+      :expanded-row-render="expandedRowRender"
       @tableClick="tableClick"
       @selectChange="selectChange"
       @currentChange="currentChange"
@@ -41,9 +42,7 @@
 </template>
 
 <script lang="ts">
-import {
-  Prop, Emit, Vue, Component,
-} from 'vue-property-decorator';
+import { Prop, Emit, Vue, Component } from 'vue-property-decorator';
 import { FilterFormList, tableList, Opreat } from '@/interface/index';
 import MFilter from './MFilter';
 import MTable from './MTable';
@@ -111,7 +110,11 @@ export default class FilterTable extends Vue {
 
   @Prop({ default: false }) private highlightCurrentRow!: boolean;
 
-  @Prop({ default: null }) private scroll!: {x: number, y: number};
+  @Prop({ default: null }) private scroll!: { x: number; y: number };
+
+  @Prop({ default: (record: any) => null }) private expandedRowRender!: (
+    record: any,
+  ) => void;
 
   // 初始化请求参数
   tableParams: any = Object.assign(this.filterParams, this.outParams);
@@ -126,7 +129,9 @@ export default class FilterTable extends Vue {
     const saveList = window.localStorage.getItem(this.localName);
     if (saveList) {
       const checkList = saveList.split(',');
-      const filterList = this.defalutTableList.filter((item, index) => checkList.indexOf(item.dataIndex) > -1);
+      const filterList = this.defalutTableList.filter(
+        (item, index) => checkList.indexOf(item.dataIndex) > -1,
+      );
       this.changeTableList = filterList;
     } else {
       this.changeTableList = this.tableList.filter(item => true);
@@ -175,7 +180,9 @@ export default class FilterTable extends Vue {
   @Emit()
   @Emit()
   setTable(list: Array<string>) {
-    const filterList = this.defalutTableList.filter((item, index) => list.indexOf(item.dataIndex) > -1);
+    const filterList = this.defalutTableList.filter(
+      (item, index) => list.indexOf(item.dataIndex) > -1,
+    );
     this.changeTableList = filterList;
   }
 
@@ -199,6 +206,6 @@ export default class FilterTable extends Vue {
 <style lang="less" scoped>
 .filter-table {
   overflow: hidden;
-  min-height: e("calc(100vh - 100px)");
+  min-height: e('calc(100vh - 100px)');
 }
 </style>

@@ -28,7 +28,11 @@ const BaseInfoData = Mock.mock({
       belongToFacilities: '设施' + '@integer(1,100)',
       thumnail: "@image('200x100', '@color()','@color()', 'png', '设备'+'@integer(1,100)')",
       address: '@county(true)',
-      type:'类型' + '@integer(1, 5)',
+      type: '类型' + '@integer(1, 5)',
+      basicProperty1: '@word(5)',
+      basicProperty2: '@word(5)',
+      ownProperty1: '@word(5)',
+      ownProperty2: '@word(5)',
       'position|1': [
         { x: "106.55", y: "29.57" },
         { x: "106.45", y: "29.97" },

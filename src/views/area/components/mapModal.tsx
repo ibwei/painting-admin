@@ -52,9 +52,9 @@ export default class MapModal extends Vue {
     lat: number;
     lng: number;
   } = {
-    lat: 29.563694,
-    lng: 106.560421,
-  };
+      lat: 29.563694,
+      lng: 106.560421,
+    };
 
   // 地图方法类
   mounted() {
@@ -75,7 +75,7 @@ export default class MapModal extends Vue {
               llOpacity: '0.3',
             });
             this.map.addOverlay(oval);
-          } else {
+          } else if (this.$props.type === '多边形') {
             const line = new this.BMap.Polyline(
               [
                 new this.BMap.Point(106.5566, 29.57),
@@ -94,6 +94,27 @@ export default class MapModal extends Vue {
               },
             );
             this.map.addOverlay(line);
+          } else {
+            const icon = new BMap.Icon(
+              require('../../../assets/danger.png'),
+              new BMap.Size(64, 64),
+            );
+
+            this.map.centerAndZoom(new BMap.Point(106.544, 29.578), 13);
+
+            const marker: Array<any> = [];
+            const point = [
+              new this.BMap.Point(106.56, 29.54),
+              new this.BMap.Point(106.55, 29.59),
+              new this.BMap.Point(106.52, 29.57)];
+            point.forEach((item, index) => {
+              marker[index] = new BMap.Marker(item, {
+                icon,
+              }); // 创建标注
+              this.map.addOverlay(marker[index]);
+              // @ts-ignore
+              marker[index].setAnimation(BMAP_ANIMATION_DROP);
+            })
           }
         } else {
           loadDrawingManager().then(() => {
@@ -101,7 +122,6 @@ export default class MapModal extends Vue {
             const overlaycomplete = (e: any) => {
               this.overlayList.push(e.overlay);
             };
-
             const styleOptions = {
               strokeColor: 'red', //边线颜色。
               fillColor: 'red', //填充颜色。当参数为空时，圆形将没有填充效果。
@@ -170,14 +190,16 @@ export default class MapModal extends Vue {
       >
         <div className="modal-wrap">
           <div id="line" className="line"></div>
-          <div style="margin-top:20px;" className="bottom-button">
-            <a-button type="primary" onClick={this.clearAll}>
-              清空重新选择
+          {this.$props.openType === 'edit' ? (
+            <div style="margin-top:20px;" className="bottom-button">
+              <a-button type="primary" onClick={this.clearAll}>
+                清空重新选择
             </a-button>
-            <a-button style="margin-left:20px;" type="primary">
-              确定选择
+              <a-button style="margin-left:20px;" type="primary">
+                确定选择
             </a-button>
-          </div>
+            </div>) : ''
+          }
         </div>
       </a-modal>
     );

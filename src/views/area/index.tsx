@@ -189,9 +189,13 @@ export default class Area extends Vue {
     if (typeof others === 'object') {
       this.type = others.type;
       this.openType = 'read';
+    } else if (others === '异常') {
+      this.type = '异常';
+      this.openType = 'read';
     } else {
       this.type = others;
       this.openType = 'edit';
+
     }
     this.mapVisible = true;
   }
@@ -241,7 +245,7 @@ export default class Area extends Vue {
 
   showWarnDeviceList(num: number) {
     if (num > 0) {
-      this.warnListModalShow = true;
+      this.showMap('异常');
     } else {
       this.$message.info('无设备故障');
     }
@@ -249,7 +253,6 @@ export default class Area extends Vue {
 
   //编辑框传回来的edit
   showEditMap(type: string) {
-    console.log('haha');
     this.showMap(type);
   }
 
@@ -315,8 +318,8 @@ export default class Area extends Vue {
             }}
           />
         ) : (
-          ''
-        )}
+            ''
+          )}
         {this.mapVisible ? (
           <map-modal
             visible={this.mapVisible}
@@ -326,8 +329,8 @@ export default class Area extends Vue {
             position={{ x: 106.55, y: 34.66 }}
           ></map-modal>
         ) : (
-          ''
-        )}
+            ''
+          )}
         {this.detailVis ? (
           <a-modal
             visible={this.detailVis}
@@ -346,14 +349,14 @@ export default class Area extends Vue {
                 rowKey="name"
                 rowSelection={{
                   selectedRowKeys: [1, 2, 3],
-                  onChange: () => {},
+                  onChange: () => { },
                 }}
               ></a-table>
             </div>
           </a-modal>
         ) : (
-          ''
-        )}
+            ''
+          )}
       </div>
     );
   }
