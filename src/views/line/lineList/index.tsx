@@ -54,7 +54,7 @@ export default class LineList extends Vue {
       key: 'name',
       label: '管道名称',
       type: 'input',
-      placeholder: '请输入管道类型名称',
+      placeholder: '请输入管道名称',
     },
     {
       key: 'createtime',
@@ -164,10 +164,10 @@ export default class LineList extends Vue {
     return (
       <div>
         <div>
-          管道自定义属性1：{record.ownProperty1}
+          {record.ownProperty1}
         </div>
         <div>
-          管道自定义属性2：{record.ownProperty2}
+          {record.ownProperty2}
         </div>
       </div>
     );

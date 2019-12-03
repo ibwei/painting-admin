@@ -41,12 +41,18 @@ export default class treeSelect extends Vue {
     },
   ];
 
-  value: any = null;
+  value: any = '类型1';
+
+  change(e: string) {
+    this.value = e;
+  }
+
 
   render() {
     return (
       <div>
         <a-tree-select
+          onChange={this.change}
           style="width: 300px"
           dropdownStyle={{ maxHeight: '400px', overflow: 'auto' }}
           treeData={this.treeData}

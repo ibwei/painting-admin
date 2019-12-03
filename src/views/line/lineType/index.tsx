@@ -111,7 +111,7 @@ export default class LineType extends Vue {
   }
 
   imageRender(url: string) {
-    return <img src={url} alt="管道类型图片" />;
+    return <img src={url} alt="管道类型图标" />;
   }
 
   tableClick(key: string, row: any) {
@@ -178,10 +178,10 @@ export default class LineType extends Vue {
     return (
       <div>
         <div>
-          管道类型自定义属性1：{record.ownProperty1}
+          {record.ownProperty1}
         </div>
         <div>
-          管道类型自定义属性2：{record.ownProperty2}
+          {record.ownProperty2}
         </div>
       </div>
     );

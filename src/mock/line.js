@@ -17,10 +17,10 @@ const BaseInfoData = Mock.mock({
   'list|100': [{
     id: '@increment',
     'name|1': '管道' + '@integer(1,100)',
-    basicProperty2: '属性' + '@integer(1,100)',
-    basicProperty1: '属性' + '@integer(1,100)',
-    ownProperty1: '属性' + '@integer(1,100)',
-    ownProperty2: '属性' + '@integer(1,100)',
+    basicProperty1: '管道长度：' + '@integer(100,4000)' + ' (m)',
+    basicProperty2: '管道直径:' + '@integer(10,400)' + ' (cm)',
+    'ownProperty1|1': ['管道包含线缆类型：高压线', '管道包含线缆类型：低压线'],
+    ownProperty2: '管道破损频率：' + '@integer(0,10)' + '次/年',
     'position|1': [
       { x: "106.55", y: "29.57" },
       { x: "106.45", y: "29.97" },

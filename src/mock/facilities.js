@@ -19,10 +19,10 @@ const BaseInfoData = Mock.mock({
       'name|1': ['供配电设施', '照明设施', '动力设施', '弱电设施', '空调与通风设施', '运输设施'],
       belongToArea: '区域' + '@integer(1,100)',
       thumbnail: "@image('150x80', '@color()','@color()', 'png', '设施'+'@integer(1,100)')",
-      basicProperty2: '属性' + '@integer(1,100)',
-      basicProperty1: '属性' + '@integer(1,100)',
-      ownProperty1: '属性' + '@integer(1,100)',
-      ownProperty2: '属性' + '@integer(1,100)',
+      basicProperty1: '设施规格：' + '@integer(10,3000)' + '*' + '@integer(10,3000)' + '*' + '@integer(10,3000)' + ' (cm)',
+      basicProperty2: '设施总功率：' + '@integer(400,3000)' + '(W)',
+      'ownProperty1|1': ['设施电压值：' + '@integer(100,3000)' + ' (Pa)', '设施水压值：' + '@integer(100,3000)' + ' (Pa)'],
+      'ownProperty2|1': ['设施故障频率：' + '@integer(0,10)' + '次/年', '设施包含设备限制：' + '@integer(60,300)' + ' (台)'],
       type: '设施类型' + '@integer(1,100)',
       'relativeDevice|2-8': [
         {

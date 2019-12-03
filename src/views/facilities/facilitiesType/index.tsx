@@ -182,10 +182,10 @@ export default class facilitiesType extends Vue {
     return (
       <div>
         <div>
-          设施类型自定义属性1：{record.ownProperty1}
+          {record.ownProperty1}
         </div>
         <div>
-          设施类型自定义属性2：{record.ownProperty2}
+          {record.ownProperty2}
         </div>
       </div>
     );

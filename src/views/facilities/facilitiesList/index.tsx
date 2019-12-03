@@ -213,10 +213,10 @@ export default class Facilities extends Vue {
     return (
       <div>
         <div>
-          设施自定义属性1：{record.ownProperty1}
+          {record.ownProperty1}
         </div>
         <div>
-          设施自定义属性2：{record.ownProperty2}
+          {record.ownProperty2}
         </div>
       </div>
     );

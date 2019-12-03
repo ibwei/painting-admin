@@ -52,9 +52,9 @@ export default class MapModal extends Vue {
     lat: number;
     lng: number;
   } = {
-      lat: 29.563694,
-      lng: 106.560421,
-    };
+    lat: 29.563694,
+    lng: 106.560421,
+  };
 
   // 地图方法类
   mounted() {
@@ -106,7 +106,8 @@ export default class MapModal extends Vue {
             const point = [
               new this.BMap.Point(106.56, 29.54),
               new this.BMap.Point(106.55, 29.59),
-              new this.BMap.Point(106.52, 29.57)];
+              new this.BMap.Point(106.52, 29.57),
+            ];
             point.forEach((item, index) => {
               marker[index] = new BMap.Marker(item, {
                 icon,
@@ -114,7 +115,7 @@ export default class MapModal extends Vue {
               this.map.addOverlay(marker[index]);
               // @ts-ignore
               marker[index].setAnimation(BMAP_ANIMATION_DROP);
-            })
+            });
           }
         } else {
           loadDrawingManager().then(() => {
@@ -182,24 +183,26 @@ export default class MapModal extends Vue {
     return (
       <a-modal
         visible={this.$props.visible}
-        onOkText="确定"
+        onOkText='确定'
         centered
         width={860}
         onCancel={this.handleOk}
         footer={null}
       >
-        <div className="modal-wrap">
-          <div id="line" className="line"></div>
+        <div className='modal-wrap'>
+          <div id='line' className='line'></div>
           {this.$props.openType === 'edit' ? (
-            <div style="margin-top:20px;" className="bottom-button">
-              <a-button type="primary" onClick={this.clearAll}>
+            <div style='margin-top:20px;' className='bottom-button'>
+              <a-button type='primary' onClick={this.clearAll}>
                 清空重新选择
-            </a-button>
-              <a-button style="margin-left:20px;" type="primary">
+              </a-button>
+              <a-button style='margin-left:20px;' type='primary'>
                 确定选择
-            </a-button>
-            </div>) : ''
-          }
+              </a-button>
+            </div>
+          ) : (
+            ''
+          )}
         </div>
       </a-modal>
     );

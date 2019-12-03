@@ -13,12 +13,13 @@ import {
   Icon,
   Button,
 } from 'ant-design-vue';
-
+import fourSelect from '@/components/Form/fourSelect';
 import './index.less';
 
 @Component({
   components: {
     'a-modal': Modal,
+    'a-button': Button,
     'a-form': Form,
     'a-form-item': Form.Item,
     'a-input': Input,
@@ -31,7 +32,7 @@ import './index.less';
     'a-cascader': Cascader,
     'a-upload': Upload,
     'a-icon': Icon,
-    'a-button': Button,
+    fourSelect,
   },
   props: {
     Form,
@@ -45,15 +46,6 @@ class InfoModal extends Vue {
   @Prop() type!: string;
 
   @Prop() data!: any;
-
-  @Watch('visible')
-  protected valueWatch(newV: any, oldV: any) {
-    if (newV === true) {
-      this.deviceArray = this.data.relativeDevice.map((item: any) => {
-        return item.name;
-      });
-    }
-  }
 
   formItemLayout = {
     labelCol: {
@@ -231,31 +223,8 @@ class InfoModal extends Vue {
               </a-select>,
             )}
           </a-form-item>
+          <four-select openType={'list'} formItemLayout={this.formItemLayout} data={this.data}></four-select>
 
-          <a-form-item {...{ props: this.formItemLayout }} label="基础属性1">
-            {getFieldDecorator('basicProperty1', {
-              initialValue: this.data.basicProperty1,
-              rules: [{ required: true, message: '请输入基础属性1' }],
-            })(<a-input placeholder="请输入基础属性1"></a-input>)}
-          </a-form-item>
-          <a-form-item {...{ props: this.formItemLayout }} label="基础属性2">
-            {getFieldDecorator('basicProperty2', {
-              initialValue: this.data.basicProperty1,
-              rules: [{ required: true, message: '请输入基础属性2' }],
-            })(<a-input placeholder="请输入基础属性2"></a-input>)}
-          </a-form-item>
-          <a-form-item {...{ props: this.formItemLayout }} label="自定义属性1">
-            {getFieldDecorator('basicProperty1', {
-              initialValue: this.data.ownProperty1,
-              rules: [{ required: true, message: '请输入自定义属性1' }],
-            })(<a-input placeholder="请输入自定义属性1"></a-input>)}
-          </a-form-item>
-          <a-form-item {...{ props: this.formItemLayout }} label="自定义属性2">
-            {getFieldDecorator('ownProperty2', {
-              initialValue: this.data.basicProperty1,
-              rules: [{ required: true, message: '请输入自定义属性2' }],
-            })(<a-input placeholder="请输入自定义属性2"></a-input>)}
-          </a-form-item>
           <a-form-item {...{ props: this.formItemLayout }} label="区域范围">
             {getFieldDecorator('type', {
               initialValue: this.data.type,

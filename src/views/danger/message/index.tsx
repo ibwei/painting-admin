@@ -1,7 +1,6 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { Tag, Popover, Button, Modal } from 'ant-design-vue';
 import { tableList, FilterFormList, Opreat } from '@/interface';
-import city from '@/utils/city';
 import InfoModal from './infoModal';
 
 import './index.less';
@@ -39,20 +38,13 @@ export default class Message extends Vue {
       key: 'name',
       label: 'name',
       type: 'input',
-      placeholder: 'Seach Name',
-    },
-    {
-      key: 'address',
-      label: 'address',
-      type: 'cascader',
-      placeholder: 'Seach address',
-      options: city,
+      placeholder: '请输入隐患名',
     },
     {
       key: 'createtime',
       label: 'Createtime',
       type: 'datetimerange',
-      placeholder: ['start date', 'end date'],
+      placeholder: ['开始时间', '结束时间'],
       value: ['startTime', 'endTime'],
     },
   ];
@@ -138,7 +130,7 @@ export default class Message extends Vue {
         h('p', 'some messages...some messages...'),
         h('p', 'some messages...some messages...'),
       ]),
-      onOk() {},
+      onOk() { },
     });
   }
 
@@ -236,8 +228,8 @@ export default class Message extends Vue {
             on-success={this.success}
           />
         ) : (
-          ''
-        )}
+            ''
+          )}
       </div>
     );
   }

@@ -13,7 +13,7 @@ import {
   Icon,
 } from 'ant-design-vue';
 import treeSelect from '../../../components/Form/treeSelect';
-
+import fourSelect from '@/components/Form/fourSelect';
 import './index.less';
 
 @Component({
@@ -32,6 +32,7 @@ import './index.less';
     'a-upload': Upload,
     'a-icon': Icon,
     'i-tree-select': treeSelect,
+    fourSelect,
   },
   props: {
     Form,
@@ -149,7 +150,7 @@ class InfoModal extends Vue {
       return (
         <div>
           <a-icon type="picture" />
-          <div class="ant-upload-text">上传图片</div>
+          <div class="ant-upload-text">上传图标</div>
         </div>
       );
     };
@@ -174,31 +175,9 @@ class InfoModal extends Vue {
               rules: [{ required: true, message: '请选择类型' }],
             })(<i-tree-select></i-tree-select>)}
           </a-form-item>
-          <a-form-item {...{ props: this.formItemLayout }} label="基础属性1">
-            {getFieldDecorator('basicProperty1', {
-              initialValue: this.data.basicProperty1,
-              rules: [{ required: true, message: '请输入基础属性1' }],
-            })(<a-input placeholder="请输入基础属性1"></a-input>)}
-          </a-form-item>
-          <a-form-item {...{ props: this.formItemLayout }} label="基础属性2">
-            {getFieldDecorator('basicProperty2', {
-              initialValue: this.data.basicProperty1,
-              rules: [{ required: true, message: '请输入基础属性2' }],
-            })(<a-input placeholder="请输入基础属性2"></a-input>)}
-          </a-form-item>
-          <a-form-item {...{ props: this.formItemLayout }} label="自定义属性1">
-            {getFieldDecorator('basicProperty1', {
-              initialValue: this.data.ownProperty1,
-              rules: [{ required: true, message: '请输入自定义属性1' }],
-            })(<a-input placeholder="请输入自定义属性1"></a-input>)}
-          </a-form-item>
-          <a-form-item {...{ props: this.formItemLayout }} label="自定义属性2">
-            {getFieldDecorator('ownProperty2', {
-              initialValue: this.data.basicProperty1,
-              rules: [{ required: true, message: '请输入自定义属性2' }],
-            })(<a-input placeholder="请输入自定义属性2"></a-input>)}
-          </a-form-item>
-          <a-form-item {...{ props: this.formItemLayout }} label="类型图片">
+          <four-select openType={'type'} formItemLayout={this.formItemLayout} data={this.data}></four-select>
+
+          <a-form-item {...{ props: this.formItemLayout }} label="类型图标">
             <div>
               <a-upload
                 name="avatar"

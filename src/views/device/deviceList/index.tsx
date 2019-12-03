@@ -41,7 +41,7 @@ export default class Device extends Vue {
       key: 'name',
       label: 'name',
       type: 'input',
-      placeholder: '请搜索设备名字',
+      placeholder: '请搜索设备名称',
     },
     {
       key: 'address',
@@ -83,11 +83,11 @@ export default class Device extends Vue {
     },
     {
       title: '基础属性1',
-      dataIndex: 'ownProperty1',
+      dataIndex: 'basicProperty1',
     },
     {
       title: '基础属性2',
-      dataIndex: 'ownProperty2',
+      dataIndex: 'basicProperty2',
     },
     {
       title: '所在地理地址',
@@ -204,10 +204,10 @@ export default class Device extends Vue {
     return (
       <div>
         <div>
-          设备自定义属性1：{record.ownProperty1}
+          {record.ownProperty1}
         </div>
         <div>
-          设备自定义属性2：{record.ownProperty2}
+          {record.ownProperty2}
         </div>
       </div>
     );

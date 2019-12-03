@@ -44,13 +44,13 @@ export default class Area extends Vue {
       key: 'name',
       label: 'name',
       type: 'input',
-      placeholder: 'Seach Name',
+      placeholder: '请输入区域名称',
     },
     {
       key: 'address',
       label: 'address',
       type: 'cascader',
-      placeholder: 'Seach address',
+      placeholder: '区域所在地址',
       options: city,
     },
     {

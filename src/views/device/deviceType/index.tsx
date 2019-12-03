@@ -4,7 +4,6 @@ import { tableList, FilterFormList, Opreat } from '@/interface';
 import InfoModal from './infoModal';
 
 import './index.less';
-import Device from '../index';
 
 @Component({
   name: 'deviceType',
@@ -37,7 +36,7 @@ export default class DeviceType extends Vue {
       key: 'name',
       label: '类型名称',
       type: 'input',
-      placeholder: '请输入设备类型名',
+      placeholder: '请输入设备类型名称',
     },
     {
       key: 'createtime',
@@ -165,10 +164,10 @@ export default class DeviceType extends Vue {
     return (
       <div>
         <div>
-          设备类型自定义属性1：{record.ownProperty1}
+          {record.ownProperty1}
         </div>
         <div>
-          设备类型自定义属性2：{record.ownProperty2}
+          {record.ownProperty2}
         </div>
       </div>
     );

@@ -3,7 +3,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import { Form, Upload, Icon, Modal } from 'ant-design-vue';
 
 @Component({
-  name: 'lineType',
+  name: 'ImageForm',
   components: {
     'a-form-item': Form.Item,
     'a-upload': Upload,
@@ -64,7 +64,7 @@ export default class ImageForm extends Vue {
         </div>
       );
     return (
-      <a-form-item {...{ props: this.formItemLayout }} label="类型图片">
+      <a-form-item {...{ props: this.formItemLayout }} label="类型图标">
         <div>
           <a-upload
             name="avatar"

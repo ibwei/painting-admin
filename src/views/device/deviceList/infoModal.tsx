@@ -14,6 +14,7 @@ import {
 
 import './index.less';
 import treeSelect from '../../../components/Form/treeSelect';
+import fourSelect from '@/components/Form/fourSelect';
 
 @Component({
   components: {
@@ -29,6 +30,7 @@ import treeSelect from '../../../components/Form/treeSelect';
     'a-date-picker': DatePicker,
     'a-cascader': Cascader,
     'a-tree-select': treeSelect,
+    'four-select': fourSelect,
   },
   props: {
     Form,
@@ -68,11 +70,11 @@ class InfoModal extends Vue {
   formItemLayout = {
     labelCol: {
       xs: { span: 24 },
-      sm: { span: 4 },
+      sm: { span: 6 },
     },
     wrapperCol: {
       xs: { span: 24 },
-      sm: { span: 20 },
+      sm: { span: 18 },
     },
   };
 
@@ -165,13 +167,13 @@ class InfoModal extends Vue {
         {item}
       </a-select-option>
     ));
-
     return (
       <a-modal
         title={this.title}
         visible={this.visible}
         on-ok={this.submit}
         on-cancel={this.cancel}
+        width={650}
       >
         <a-form>
           <a-form-item {...{ props: this.formItemLayout }} label="设备名称">
@@ -206,30 +208,7 @@ class InfoModal extends Vue {
               </a-select>,
             )}
           </a-form-item>
-          <a-form-item {...{ props: this.formItemLayout }} label="基础属性1">
-            {getFieldDecorator('basicProperty1', {
-              initialValue: this.data.basicProperty1,
-              rules: [{ required: true, message: '请输入基础属性1' }],
-            })(<a-input placeholder="请输入基础属性1"></a-input>)}
-          </a-form-item>
-          <a-form-item {...{ props: this.formItemLayout }} label="基础属性2">
-            {getFieldDecorator('basicProperty2', {
-              initialValue: this.data.basicProperty1,
-              rules: [{ required: true, message: '请输入基础属性2' }],
-            })(<a-input placeholder="请输入基础属性2"></a-input>)}
-          </a-form-item>
-          <a-form-item {...{ props: this.formItemLayout }} label="自定义属性1">
-            {getFieldDecorator('basicProperty1', {
-              initialValue: this.data.ownProperty1,
-              rules: [{ required: true, message: '请输入自定义属性1' }],
-            })(<a-input placeholder="请输入自定义属性1"></a-input>)}
-          </a-form-item>
-          <a-form-item {...{ props: this.formItemLayout }} label="自定义属性2">
-            {getFieldDecorator('ownProperty2', {
-              initialValue: this.data.basicProperty1,
-              rules: [{ required: true, message: '请输入自定义属性2' }],
-            })(<a-input placeholder="请输入自定义属性2"></a-input>)}
-          </a-form-item>
+          <four-select openType={'list'} formItemLayout={this.formItemLayout} data={this.data}></four-select>
           <a-form-item label="地理位置" {...{ props: this.formItemLayout }}>
             <div id="editmap" className="map"></div>
           </a-form-item>

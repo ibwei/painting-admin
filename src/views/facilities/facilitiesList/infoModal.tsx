@@ -11,7 +11,9 @@ import {
   Select,
   Upload,
   Icon,
+  Button,
 } from 'ant-design-vue';
+import fourSelect from '@/components/Form/fourSelect';
 import './index.less';
 import treeSelect from '../../../components/Form/treeSelect';
 
@@ -31,6 +33,8 @@ import treeSelect from '../../../components/Form/treeSelect';
     'a-upload': Upload,
     'a-icon': Icon,
     'a-tree-select': treeSelect,
+    'a-button': Button,
+    fourSelect,
   },
   props: {
     Form,
@@ -234,31 +238,9 @@ class InfoModal extends Vue {
               rules: [{ required: true, message: '请选择设施类型' }],
             })(<a-tree-select></a-tree-select>)}
           </a-form-item>
+          <four-select openType={'list'} formItemLayout={this.formItemLayout} data={this.data}></four-select>
 
-          <a-form-item {...{ props: this.formItemLayout }} label="基础属性1">
-            {getFieldDecorator('basicProperty1', {
-              initialValue: this.data.basicProperty1,
-              rules: [{ required: true, message: '请输入基础属性1' }],
-            })(<a-input placeholder="请输入基础属性1"></a-input>)}
-          </a-form-item>
-          <a-form-item {...{ props: this.formItemLayout }} label="基础属性2">
-            {getFieldDecorator('basicProperty2', {
-              initialValue: this.data.basicProperty1,
-              rules: [{ required: true, message: '请输入基础属性2' }],
-            })(<a-input placeholder="请输入基础属性2"></a-input>)}
-          </a-form-item>
-          <a-form-item {...{ props: this.formItemLayout }} label="自定义属性1">
-            {getFieldDecorator('basicProperty1', {
-              initialValue: this.data.ownProperty1,
-              rules: [{ required: true, message: '请输入自定义属性1' }],
-            })(<a-input placeholder="请输入自定义属性1"></a-input>)}
-          </a-form-item>
-          <a-form-item {...{ props: this.formItemLayout }} label="自定义属性2">
-            {getFieldDecorator('ownProperty2', {
-              initialValue: this.data.basicProperty1,
-              rules: [{ required: true, message: '请输入自定义属性2' }],
-            })(<a-input placeholder="请输入自定义属性2"></a-input>)}
-          </a-form-item>
+
           <a-form-item {...{ props: this.formItemLayout }} label="关联设备">
             <a-select
               mode="multiple"
@@ -287,11 +269,11 @@ class InfoModal extends Vue {
               </a-upload>
             </div>
           </a-form-item>
-          <a-form-item {...{ props: this.formItemLayout }} label="区域范围">
+          <a-form-item {...{ props: this.formItemLayout }} label="设施所在位置">
             {getFieldDecorator('type', {
               initialValue: this.data.type,
               rules: [{ required: true, message: '请选择类型' }],
-            })(<a-button onClick={this.showMap.bind(null, 'edit')}>选取区域范围</a-button>)}
+            })(<a-button onClick={this.showMap.bind(null, 'edit')}>选取地理位置</a-button>)}
           </a-form-item>
 
         </a-form>

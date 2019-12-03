@@ -5,8 +5,7 @@ import {
 } from 'ant-design-vue';
 import './index.less';
 import ImageForm from '../../../components/Form/imageForm';
-
-
+import fourSelect from '@/components/Form/fourSelect';
 
 @Component({
   components: {
@@ -22,6 +21,7 @@ import ImageForm from '../../../components/Form/imageForm';
     'a-date-picker': DatePicker,
     'a-cascader': Cascader,
     'image-form': ImageForm,
+    fourSelect,
   },
   props: {
     Form,
@@ -112,30 +112,7 @@ class InfoModal extends Vue {
               <a-input placeholder="请输入类型名称"></a-input>
             )}
           </a-form-item>
-          <a-form-item {...{ props: this.formItemLayout }} label="基础属性1">
-            {getFieldDecorator('basicProperty1', {
-              initialValue: this.data.basicProperty1,
-              rules: [{ required: true, message: '请输入基础属性1' }],
-            })(<a-input placeholder="请输入基础属性1"></a-input>)}
-          </a-form-item>
-          <a-form-item {...{ props: this.formItemLayout }} label="基础属性2">
-            {getFieldDecorator('basicProperty2', {
-              initialValue: this.data.basicProperty1,
-              rules: [{ required: true, message: '请输入基础属性2' }],
-            })(<a-input placeholder="请输入基础属性2"></a-input>)}
-          </a-form-item>
-          <a-form-item {...{ props: this.formItemLayout }} label="自定义属性1">
-            {getFieldDecorator('basicProperty1', {
-              initialValue: this.data.ownProperty1,
-              rules: [{ required: true, message: '请输入自定义属性1' }],
-            })(<a-input placeholder="请输入自定义属性1"></a-input>)}
-          </a-form-item>
-          <a-form-item {...{ props: this.formItemLayout }} label="自定义属性2">
-            {getFieldDecorator('ownProperty2', {
-              initialValue: this.data.basicProperty1,
-              rules: [{ required: true, message: '请输入自定义属性2' }],
-            })(<a-input placeholder="请输入自定义属性2"></a-input>)}
-          </a-form-item>
+          <four-select openType={'type'} formItemLayout={this.formItemLayout} data={this.data}></four-select>
           <image-form />
         </a-form>
       </a-modal>
