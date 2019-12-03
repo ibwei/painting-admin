@@ -7,6 +7,7 @@
       :filter-params="filterParams"
       :table-list="defalutTableList"
       :add-btn="addBtn"
+      :add-title="addTitle"
       :export-btn="exportBtn"
       :local-name="localName"
       @search="searchFun"
@@ -70,6 +71,9 @@ export default class FilterTable extends Vue {
 
   // 是否展示新增按钮
   @Prop({ default: false }) private addBtn!: boolean;
+
+  // 新增按钮的文本
+  @Prop({ default: '新增' }) private addTitle?: string;
 
   // 是否展示导出按钮
   @Prop({ default: false }) private exportBtn!: boolean;

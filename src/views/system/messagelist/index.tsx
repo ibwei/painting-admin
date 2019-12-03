@@ -1,16 +1,17 @@
 import { Component, Vue } from 'vue-property-decorator';
-import { Tag, Card, Row, Col, Modal } from 'ant-design-vue';
+import { Tag, Card, Row, Col, Modal, Popconfirm } from 'ant-design-vue';
 import { tableList, FilterFormList, Opreat } from '@/interface';
-import AddModal from './components/addModal';
+import AddModal from './componets/addModal';
 
 @Component({
-  name: 'user',
+  name: 'businessmanage',
   components: {
     'a-tag': Tag,
+    'a-popconfirm': Popconfirm,
     'a-add-modal': AddModal,
   },
 })
-export default class User extends Vue {
+export default class Businessmanage extends Vue {
   visible: boolean = false;
 
   modelType: string = 'add';
@@ -23,38 +24,23 @@ export default class User extends Vue {
 
   tableList: tableList[] = [
     {
-      title: '用户编号',
-      dataIndex: 'id1',
+      title: '通知标题',
+      dataIndex: 'title',
       align: 'center',
     },
     {
-      title: '用户名称',
-      dataIndex: 'name',
+      title: '接收人',
+      dataIndex: 'createName',
       align: 'center',
     },
     {
-      title: '性别',
-      dataIndex: 'sex',
-      align: 'center',
-    },
-    {
-      title: '状态',
-      dataIndex: 'status',
+      title: '通知方式',
+      dataIndex: 'fs',
       align: 'center',
       customRender: this.statusRender,
     },
     {
-      title: '身份证号',
-      dataIndex: 'idCard',
-      align: 'center',
-    },
-    {
-      title: '用户角色',
-      dataIndex: 'juese',
-      align: 'center',
-    },
-    {
-      title: '创建时间',
+      title: '通知时间',
       dataIndex: 'time',
       align: 'center',
     },
@@ -63,30 +49,20 @@ export default class User extends Vue {
   filterList: FilterFormList[] = [
     {
       key: 'name',
-      label: '机构名称',
+      label: '通知标题',
       type: 'input',
-      placeholder: '请输入机构名称',
+      placeholder: '请输入通知标题',
     },
     {
       key: 'renwu',
-      label: '所属组织',
-      type: 'input',
-      placeholder: '请输入所属组织',
-    },
-    {
-      key: 'type',
-      label: '组织类型',
-      type: 'input',
-      placeholder: '请输入组织类型',
-    },
-    {
-      key: 'renwu',
-      label: '状态',
+      label: '通知方式',
       type: 'select',
-      placeholder: '请选择状态',
+      placeholder: '请选择通知方式',
       options: [
-        { value: 0, label: '正常' },
-        { value: 1, label: '冻结' },
+        { value: 0, label: '站内' },
+        { value: 1, label: '短信' },
+        { value: 2, label: '公众号' },
+        { value: 3, label: '邮箱' },
       ],
     },
   ];
@@ -102,24 +78,8 @@ export default class User extends Vue {
       key: 'edit',
       rowKey: 'id',
       color: 'blue',
-      text: '修改',
+      text: '查看详情',
       roles: true,
-    },
-    {
-      key: 'delete',
-      rowKey: 'id',
-      color: 'red',
-      text: '冻结',
-      roles: true,
-      msg: '确定冻结用户？',
-    },
-    {
-      key: 'delete',
-      rowKey: 'id',
-      color: 'red',
-      text: '删除',
-      roles: true,
-      msg: '确定删除用户？',
     },
   ];
 
@@ -180,13 +140,13 @@ export default class User extends Vue {
   }
 
   statusRender(data: string) {
-    let color: string = 'green';
-    if (data === '冻结') {
-      color = 'red';
-    } else {
-      color = 'green';
-    }
-    return <a-tag color={color}>{data}</a-tag>;
+    const colorObj: any = {
+      短信: 'rgb(250, 84, 28)',
+      站内: 'rgb(19, 194, 194)',
+      公众号: 'rgb(82, 196, 26)',
+      邮箱: 'rgb(47, 84, 235)',
+    };
+    return <a-tag color={colorObj[data]}>{data}</a-tag>;
   }
 
   render() {
@@ -198,7 +158,7 @@ export default class User extends Vue {
           filterList={this.filterList}
           filterGrade={this.filterGrade}
           scroll={{ x: 900 }}
-          url={'/sys/user'}
+          url={'/message'}
           filterParams={this.filterParams}
           outParams={this.outParams}
           exportBtn={false}
@@ -209,8 +169,7 @@ export default class User extends Vue {
           backParams={this.BackParams}
           on-menuClick={this.tableClick}
           on-add={this.add}
-          addBtn={true}
-          opreatWidth='120px'
+          addBtn={false}
         />
         {this.visible && (
           <a-add-modal

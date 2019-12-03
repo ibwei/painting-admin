@@ -17,6 +17,9 @@ const task = require('./task');
 const insititution = require('./sysIntitution');
 const role = require('./sysRole');
 const user = require('./sysUser');
+const features = require('./features');
+const terminal = require('./terminal');
+const message = require('./message');
 
 module.exports = function mockInit(app) {
   app.use(bodyParser.json());
@@ -88,4 +91,11 @@ module.exports = function mockInit(app) {
   app.post('/api/sys/insititution', insititution.list);
   app.post('/api/sys/role', role.list);
   app.post('/api/sys/user', user.list);
+
+  app.post('/api/features', features.list);
+
+  app.post('/api/terminal', terminal.list);
+
+  app.post('/api/message', message.list);
+  app.post('/api/messagelList', message.list2);
 };

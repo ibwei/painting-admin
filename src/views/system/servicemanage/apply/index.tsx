@@ -1,16 +1,17 @@
 import { Component, Vue } from 'vue-property-decorator';
-import { Tag, Card, Row, Col, Modal } from 'ant-design-vue';
+import { Tag, Card, Row, Col, Modal, Popconfirm } from 'ant-design-vue';
 import { tableList, FilterFormList, Opreat } from '@/interface';
-import AddModal from './components/addModal';
+import AddModal from './componets/addModal';
 
 @Component({
-  name: 'user',
+  name: 'apply',
   components: {
     'a-tag': Tag,
     'a-add-modal': AddModal,
+    'a-popconfirm': Popconfirm,
   },
 })
-export default class User extends Vue {
+export default class Apply extends Vue {
   visible: boolean = false;
 
   modelType: string = 'add';
@@ -23,38 +24,33 @@ export default class User extends Vue {
 
   tableList: tableList[] = [
     {
-      title: '用户编号',
-      dataIndex: 'id1',
+      title: '公司编号',
+      dataIndex: 'id',
       align: 'center',
     },
     {
-      title: '用户名称',
-      dataIndex: 'name',
+      title: '公司名称',
+      dataIndex: 'gongsi',
       align: 'center',
     },
     {
-      title: '性别',
-      dataIndex: 'sex',
+      title: '申请服务',
+      dataIndex: 'fw',
       align: 'center',
     },
     {
-      title: '状态',
-      dataIndex: 'status',
+      title: '申请时常/条数',
+      dataIndex: 'num',
+      align: 'center',
+    },
+    {
+      title: '公司状态',
+      dataIndex: 'shebeistatus',
       align: 'center',
       customRender: this.statusRender,
     },
     {
-      title: '身份证号',
-      dataIndex: 'idCard',
-      align: 'center',
-    },
-    {
-      title: '用户角色',
-      dataIndex: 'juese',
-      align: 'center',
-    },
-    {
-      title: '创建时间',
+      title: '申请开通时间',
       dataIndex: 'time',
       align: 'center',
     },
@@ -63,21 +59,9 @@ export default class User extends Vue {
   filterList: FilterFormList[] = [
     {
       key: 'name',
-      label: '机构名称',
+      label: '公司名称',
       type: 'input',
-      placeholder: '请输入机构名称',
-    },
-    {
-      key: 'renwu',
-      label: '所属组织',
-      type: 'input',
-      placeholder: '请输入所属组织',
-    },
-    {
-      key: 'type',
-      label: '组织类型',
-      type: 'input',
-      placeholder: '请输入组织类型',
+      placeholder: '请输入公司名称',
     },
     {
       key: 'renwu',
@@ -86,7 +70,7 @@ export default class User extends Vue {
       placeholder: '请选择状态',
       options: [
         { value: 0, label: '正常' },
-        { value: 1, label: '冻结' },
+        { value: 1, label: '异常' },
       ],
     },
   ];
@@ -102,24 +86,18 @@ export default class User extends Vue {
       key: 'edit',
       rowKey: 'id',
       color: 'blue',
-      text: '修改',
+      text: '同意',
       roles: true,
+      popconfirm: true,
+      msg: '确定同意申请？',
     },
     {
       key: 'delete',
       rowKey: 'id',
       color: 'red',
-      text: '冻结',
+      text: '拒绝',
       roles: true,
-      msg: '确定冻结用户？',
-    },
-    {
-      key: 'delete',
-      rowKey: 'id',
-      color: 'red',
-      text: '删除',
-      roles: true,
-      msg: '确定删除用户？',
+      msg: '确定拒绝申请？',
     },
   ];
 
@@ -140,26 +118,26 @@ export default class User extends Vue {
   //功能弹出框
   tableClick(key: string, row: any) {
     const data = JSON.parse(JSON.stringify(row));
-    switch (key) {
-      case 'edit':
-        this.editData = { ...data, area: 'jack' };
-        this.visible = true;
-        this.modelType = 'edit';
-        break;
-      case 'delete':
-        // window.api.facilitiesBaseInfoDelete({ id: row.id }).then((res: any) => {
-        //   const { err_code } = res.data;
-        //   if (err_code === 0) {
-        //     this.$message.success('删除成功');
-        //     this.success();
-        //   } else {
-        //     this.$message.error('删除失败');
-        //   }
-        // });
-        break;
-      default:
-        break;
-    }
+    // switch (key) {
+    //   case 'edit':
+    //   // this.editData = { ...data, area: 'jack' };
+    //   // this.visible = true;
+    //   // this.modelType = 'edit';
+    //   // break;
+    //   case 'delete':
+    //     // window.api.facilitiesBaseInfoDelete({ id: row.id }).then((res: any) => {
+    //     //   const { err_code } = res.data;
+    //     //   if (err_code === 0) {
+    //     //     this.$message.success('删除成功');
+    //     //     this.success();
+    //     //   } else {
+    //     //     this.$message.error('删除失败');
+    //     //   }
+    //     // });
+    //     break;
+    //   default:
+    //     break;
+    // }
   }
 
   closeModal() {
@@ -181,7 +159,7 @@ export default class User extends Vue {
 
   statusRender(data: string) {
     let color: string = 'green';
-    if (data === '冻结') {
+    if (data === '异常') {
       color = 'red';
     } else {
       color = 'green';
@@ -198,7 +176,7 @@ export default class User extends Vue {
           filterList={this.filterList}
           filterGrade={this.filterGrade}
           scroll={{ x: 900 }}
-          url={'/sys/user'}
+          url={'/features'}
           filterParams={this.filterParams}
           outParams={this.outParams}
           exportBtn={false}
@@ -209,8 +187,7 @@ export default class User extends Vue {
           backParams={this.BackParams}
           on-menuClick={this.tableClick}
           on-add={this.add}
-          addBtn={true}
-          opreatWidth='120px'
+          addBtn={false}
         />
         {this.visible && (
           <a-add-modal

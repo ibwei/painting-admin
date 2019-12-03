@@ -56,6 +56,9 @@ class MFilterClass extends Vue {
   // 是否展示新增按钮
   @Prop({ default: false }) private addBtn!: boolean;
 
+  // 新增按钮的文本
+  @Prop({ default: '新增' }) private addTitle?: string;
+
   // 是否展示导出按钮
   @Prop({ default: false }) private exportBtn!: boolean;
 
@@ -391,7 +394,7 @@ class MFilterClass extends Vue {
         <div class='right-btn'>
           {this.addBtn ? (
             <a-button on-click={this.addFun} id={isNormal ? 'tableAdd' : 'tableAdd2'} icon='plus'>
-              新增
+              {this.addTitle && this.addTitle}
             </a-button>
           ) : null}
           {this.exportBtn ? (
@@ -423,6 +426,7 @@ const MFilter = Form.create({
     exportFun: Function,
     tableList: Array,
     labelWidth: String,
+    addTitle: String,
   },
 })(MFilterClass);
 export default MFilter;
