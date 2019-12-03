@@ -277,22 +277,6 @@ export const asyncRouterMap: routerItem[] = [
         component: getComponent('system/servicecenter/index'),
         permission: true,
         meta: { key: 'role' },
-        children: [
-          {
-            path: 'infomation',
-            name: '信息服务',
-            component: getComponent('system/servicecenter/infomation/index'),
-            permission: true,
-            meta: { key: 'role' },
-          },
-          {
-            path: 'features',
-            name: '功能服务',
-            component: getComponent('system/servicecenter/features/index'),
-            permission: true,
-            meta: { key: 'role' },
-          },
-        ],
       },
     ],
   },

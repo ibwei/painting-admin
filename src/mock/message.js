@@ -34,6 +34,7 @@ const BaseInfoData = Mock.mock({
       shebeipeople: '张思聪',
       shebeipeople2: '张思聪',
       'fs|1': ['站内', '短信', '公众号', '邮箱'],
+      'tztype|1': ['临时通知', '异常巡检通知'],
     },
   ],
   list2: [
