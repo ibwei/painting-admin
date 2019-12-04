@@ -14,7 +14,7 @@ import {
 @Component({
   name: 'ChangeModal',
   components: {
-    'a-Form': Form,
+    'a-form': Form,
     'a-form-item': Form.Item,
     'a-input': Input,
     'a-button': Button,
@@ -133,7 +133,7 @@ class ChangeModal extends Vue {
           title='新建临时任务'
         >
           <div Style={{ padding: '15px' }}>
-            <a-Form>
+            <a-form>
               <a-form-item props={{ ...this.formItemLayout }} label='角色名称'>
                 {getFieldDecorator('name', {
                   initialValue: this.$props.data.name ? this.$props.data.name : undefined,
@@ -193,7 +193,7 @@ class ChangeModal extends Vue {
                   rules: [{ required: true, message: '请选择所属权限' }],
                 })(<a-tree checkable treeData={this.treeData} />)}
               </a-form-item>
-            </a-Form>
+            </a-form>
           </div>
         </a-modal>
 

@@ -34,6 +34,11 @@ export default class Record extends Vue {
       align: 'center',
     },
     {
+      title: '开通服务',
+      dataIndex: 'fw',
+      align: 'center',
+    },
+    {
       title: '服务到期时间',
       dataIndex: 'time',
       align: 'center',

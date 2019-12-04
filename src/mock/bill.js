@@ -14,39 +14,35 @@ const BaseInfoData = Mock.mock({
   'list|100': [
     {
       id: '@increment',
-      title: '标题@integer(1,1000)',
+      gongsi: '宇宙无敌测试公司',
+      gongsi2: '公司@integer(1,1000)',
       time: '@datetime',
+      money: '@integer(1,10) 万元',
       area: '区域@integer(1,1000)',
       group: '分组@integer(1,1000)',
       people: '@cname',
-      type: '类型@integer(1,1000)',
+      'type|1': ['增值税普通发票', '增值税专用发票', '税务机打服务发票'],
       name: '终端@integer(1,1000)',
       'status|1': ['未开始', '已完成', '进行中'],
       'xuanjianfangshi|1': ['车巡', '步巡'],
-      'danger|1': ['未签到', '无GPS信息'],
-      createName: '@cname',
-      createTime: '@datetime',
-      shebeiname: '设备@integer(1,1000)',
-      shebeitype: '类型@integer(1,1000)',
-      shebeiluxian: '路线一',
-      shebeiquyu: '区域一',
-      shebeifenzu: '分组一',
-      shebeipeople: '张思聪',
-      shebeipeople2: '张思聪',
-      'fs|1': ['站内', '短信', '公众号', '邮箱'],
-      'tztype|1': ['临时通知', '异常巡检通知'],
+      'kaipiao|1': ['是', '否'],
+      'fw|1': ['短信服务', '微信公众号服务', '邮箱服务', '组态服务', '云巡检服务', '组态服务'],
+      'num|1': [
+        '10000条',
+        '1个月',
+        '2个月',
+        '6个月',
+        '12个月',
+        '18个月',
+        '20000条',
+        '30000条',
+        '50000条',
+      ],
     },
-  ],
-  list2: [
-    { id: 1, fwname: '短信服务' },
-    { id: 2, fwname: '公众号服务' },
-    { id: 3, fwname: '邮箱服务' },
   ],
 });
 
 let database = BaseInfoData.list;
-
-const database2 = BaseInfoData.list2;
 
 module.exports = {
   list(req, res) {
@@ -92,49 +88,7 @@ module.exports = {
       res.status(200).json(data);
     }, 100);
   },
-  list2(req, res) {
-    let { pageSize, pageNum, ...other } = req.body;
-    pageSize = pageSize || 10;
-    pageNum = pageNum || 1;
-    other = { ...other };
 
-    let newData = database2;
-    for (const key in other) {
-      if ({}.hasOwnProperty.call(other, key)) {
-        newData = newData.filter(item => {
-          if ({}.hasOwnProperty.call(item, key)) {
-            if (key === 'address') {
-              return other[key].every(iitem => item[key].indexOf(iitem) > -1);
-            }
-            if (key === 'startTime' || key === 'endTime') {
-              const start = new Date(other.startTime).getTime();
-              const end = new Date(other.endTime).getTime();
-              const now = new Date(item[key]).getTime();
-              if (start && end) {
-                return now >= start && now <= end;
-              }
-              return true;
-            }
-            return (
-              String(item[key])
-                .trim()
-                .indexOf(decodeURI(other[key]).trim()) > -1
-            );
-          }
-          return true;
-        });
-      }
-    }
-    const list = {
-      data: newData.slice((pageNum - 1) * pageSize, pageNum * pageSize),
-      total: newData.length,
-    };
-    const data = baseData('success', '查询成功');
-    data.entity = list;
-    setTimeout(() => {
-      res.status(200).json(data);
-    }, 100);
-  },
   abnormal(req, res) {
     let { pageSize, pageNum, ...other } = req.body;
     pageSize = pageSize || 10;

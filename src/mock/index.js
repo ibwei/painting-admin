@@ -20,6 +20,7 @@ const user = require('./sysUser');
 const features = require('./features');
 const terminal = require('./terminal');
 const message = require('./message');
+const bill = require('./bill');
 
 module.exports = function mockInit(app) {
   app.use(bodyParser.json());
@@ -98,4 +99,6 @@ module.exports = function mockInit(app) {
 
   app.post('/api/message', message.list);
   app.post('/api/messagelList', message.list2);
+
+  app.post('/api/bill', bill.list);
 };

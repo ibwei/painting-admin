@@ -4,14 +4,14 @@ import { tableList, FilterFormList, Opreat } from '@/interface';
 import AddModal from './componets/addModal';
 
 @Component({
-  name: 'servicecenter',
+  name: 'list',
   components: {
     'a-tag': Tag,
     'a-add-modal': AddModal,
     'a-popconfirm': Popconfirm,
   },
 })
-export default class Servicecenter extends Vue {
+export default class List extends Vue {
   visible: boolean = false;
 
   modelType: string = 'add';
@@ -24,28 +24,30 @@ export default class Servicecenter extends Vue {
 
   tableList: tableList[] = [
     {
-      title: '终端编号',
+      title: '发票编号',
       dataIndex: 'id',
       align: 'center',
     },
     {
-      title: '终端名称',
-      dataIndex: 'name',
+      title: '公司名称',
+      dataIndex: 'gongsi',
       align: 'center',
     },
     {
-      title: '终端类型',
+      title: '发票金额',
+      dataIndex: 'money',
+      align: 'center',
+    },
+    {
+      title: '发票类型',
       dataIndex: 'type',
       align: 'center',
+      customRender: this.statusRender,
     },
+
     {
-      title: '创建人',
-      dataIndex: 'createName',
-      align: 'center',
-    },
-    {
-      title: '创建时间',
-      dataIndex: 'createTime',
+      title: '开票时间',
+      dataIndex: 'time',
       align: 'center',
     },
   ];
@@ -82,17 +84,17 @@ export default class Servicecenter extends Vue {
       key: 'edit',
       rowKey: 'id',
       color: 'blue',
-      text: '修改',
+      text: '查看发票信息',
       roles: true,
     },
-    {
-      key: 'delete',
-      rowKey: 'id',
-      color: 'red',
-      text: '删除',
-      roles: true,
-      msg: '确定删除?',
-    },
+    // {
+    //   key: 'delete',
+    //   rowKey: 'id',
+    //   color: 'red',
+    //   text: '删除',
+    //   roles: true,
+    //   msg: '确定删除?',
+    // },
   ];
 
   BackParams: any = {
@@ -153,10 +155,10 @@ export default class Servicecenter extends Vue {
 
   statusRender(data: string) {
     let color: string = 'green';
-    if (data === '异常') {
+    if (data === '税务机打服务发票') {
       color = 'red';
-    } else {
-      color = 'green';
+    } else if (data === '增值税专用发票') {
+      color = 'blue';
     }
     return <a-tag color={color}>{data}</a-tag>;
   }
@@ -170,7 +172,7 @@ export default class Servicecenter extends Vue {
           filterList={this.filterList}
           filterGrade={this.filterGrade}
           scroll={{ x: 900 }}
-          url={'/terminal'}
+          url={'/bill'}
           filterParams={this.filterParams}
           outParams={this.outParams}
           exportBtn={false}
@@ -181,7 +183,7 @@ export default class Servicecenter extends Vue {
           backParams={this.BackParams}
           on-menuClick={this.tableClick}
           on-add={this.add}
-          addBtn={true}
+          addBtn={false}
         />
         {this.visible && (
           <a-add-modal

@@ -4,14 +4,14 @@ import { tableList, FilterFormList, Opreat } from '@/interface';
 import AddModal from './componets/addModal';
 
 @Component({
-  name: 'servicecenter',
+  name: 'list',
   components: {
     'a-tag': Tag,
-    'a-add-modal': AddModal,
     'a-popconfirm': Popconfirm,
+    'a-add-modal': AddModal,
   },
 })
-export default class Servicecenter extends Vue {
+export default class List extends Vue {
   visible: boolean = false;
 
   modelType: string = 'add';
@@ -24,28 +24,30 @@ export default class Servicecenter extends Vue {
 
   tableList: tableList[] = [
     {
-      title: '终端编号',
-      dataIndex: 'id',
+      title: '通知标题',
+      dataIndex: 'title',
       align: 'center',
     },
     {
-      title: '终端名称',
-      dataIndex: 'name',
-      align: 'center',
-    },
-    {
-      title: '终端类型',
-      dataIndex: 'type',
-      align: 'center',
-    },
-    {
-      title: '创建人',
+      title: '接收人',
       dataIndex: 'createName',
       align: 'center',
     },
     {
-      title: '创建时间',
-      dataIndex: 'createTime',
+      title: '通知方式',
+      dataIndex: 'fs',
+      align: 'center',
+      customRender: this.statusRender,
+    },
+    {
+      title: '通知类型',
+      dataIndex: 'tztype',
+      align: 'center',
+      customRender: this.typeRender,
+    },
+    {
+      title: '发送时间',
+      dataIndex: 'time',
       align: 'center',
     },
   ];
@@ -53,20 +55,20 @@ export default class Servicecenter extends Vue {
   filterList: FilterFormList[] = [
     {
       key: 'name',
-      label: '终端名称',
+      label: '通知标题',
       type: 'input',
-      placeholder: '请输入终端名称',
+      placeholder: '请输入通知标题',
     },
     {
       key: 'renwu',
-      label: '终端类型',
+      label: '通知方式',
       type: 'select',
-      placeholder: '请选择终端类型',
+      placeholder: '请选择通知方式',
       options: [
-        { value: 0, label: '类型1' },
-        { value: 1, label: '类型2' },
-        { value: 1, label: '类型3' },
-        { value: 1, label: '类型4' },
+        { value: 0, label: '站内' },
+        { value: 1, label: '短信' },
+        { value: 2, label: '公众号' },
+        { value: 3, label: '邮箱' },
       ],
     },
   ];
@@ -82,16 +84,8 @@ export default class Servicecenter extends Vue {
       key: 'edit',
       rowKey: 'id',
       color: 'blue',
-      text: '修改',
+      text: '查看详情',
       roles: true,
-    },
-    {
-      key: 'delete',
-      rowKey: 'id',
-      color: 'red',
-      text: '删除',
-      roles: true,
-      msg: '确定删除?',
     },
   ];
 
@@ -114,7 +108,7 @@ export default class Servicecenter extends Vue {
     const data = JSON.parse(JSON.stringify(row));
     switch (key) {
       case 'edit':
-        this.editData = { ...data, area: 'jack' };
+        this.editData = { ...data };
         this.visible = true;
         this.modelType = 'edit';
         break;
@@ -144,21 +138,22 @@ export default class Servicecenter extends Vue {
     this.editData = {};
   }
 
-  typeRender(data: string) {
-    if (data === '临时任务') {
-      return <a-tag color='blue'>{data}</a-tag>;
-    }
-    return <a-tag color='green'>{data}</a-tag>;
+  statusRender(data: string) {
+    const colorObj: any = {
+      短信: 'rgb(250, 84, 28)',
+      站内: 'rgb(19, 194, 194)',
+      公众号: 'rgb(82, 196, 26)',
+      邮箱: 'rgb(47, 84, 235)',
+    };
+    return <a-tag color={colorObj[data]}>{data}</a-tag>;
   }
 
-  statusRender(data: string) {
-    let color: string = 'green';
-    if (data === '异常') {
-      color = 'red';
-    } else {
-      color = 'green';
-    }
-    return <a-tag color={color}>{data}</a-tag>;
+  typeRender(data: string) {
+    const colorObj: any = {
+      异常巡检通知: 'red',
+      临时通知: 'green',
+    };
+    return <a-tag color={colorObj[data]}>{data}</a-tag>;
   }
 
   render() {
@@ -170,7 +165,7 @@ export default class Servicecenter extends Vue {
           filterList={this.filterList}
           filterGrade={this.filterGrade}
           scroll={{ x: 900 }}
-          url={'/terminal'}
+          url={'/message'}
           filterParams={this.filterParams}
           outParams={this.outParams}
           exportBtn={false}
@@ -181,7 +176,7 @@ export default class Servicecenter extends Vue {
           backParams={this.BackParams}
           on-menuClick={this.tableClick}
           on-add={this.add}
-          addBtn={true}
+          addBtn={false}
         />
         {this.visible && (
           <a-add-modal

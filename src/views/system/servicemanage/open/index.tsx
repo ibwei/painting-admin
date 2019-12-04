@@ -24,7 +24,7 @@ interface state {
 @Component({
   name: 'open',
   components: {
-    'a-Form': Form,
+    'a-form': Form,
     'a-form-item': Form.Item,
     'a-input': Input,
     'a-button': Button,
@@ -65,12 +65,13 @@ class Open extends Vue {
   handleChange(val: string) {
     this.data.fw = val;
   }
+
   render() {
     const { getFieldDecorator } = this.Form;
     return (
       <div Style={{ padding: '15px' }} class='openForm'>
         <h1>开通服务</h1>
-        <a-Form class='form'>
+        <a-form class='form'>
           <a-form-item props={{ ...this.formItemLayout }} label='公司编号'>
             {getFieldDecorator('id', {
               initialValue: this.data.id ? this.data.id : undefined,
@@ -135,7 +136,7 @@ class Open extends Vue {
               重置
             </a-button>
           </a-form-item>
-        </a-Form>
+        </a-form>
       </div>
     );
   }

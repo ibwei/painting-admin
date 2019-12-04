@@ -40,6 +40,12 @@ export default class Businessmanage extends Vue {
       customRender: this.statusRender,
     },
     {
+      title: '通知类型',
+      dataIndex: 'tztype',
+      align: 'center',
+      customRender: this.typeRender,
+    },
+    {
       title: '通知时间',
       dataIndex: 'time',
       align: 'center',
@@ -132,19 +138,20 @@ export default class Businessmanage extends Vue {
     this.editData = {};
   }
 
-  typeRender(data: string) {
-    if (data === '临时任务') {
-      return <a-tag color='blue'>{data}</a-tag>;
-    }
-    return <a-tag color='green'>{data}</a-tag>;
-  }
-
   statusRender(data: string) {
     const colorObj: any = {
       短信: 'rgb(250, 84, 28)',
       站内: 'rgb(19, 194, 194)',
       公众号: 'rgb(82, 196, 26)',
       邮箱: 'rgb(47, 84, 235)',
+    };
+    return <a-tag color={colorObj[data]}>{data}</a-tag>;
+  }
+
+  typeRender(data: string) {
+    const colorObj: any = {
+      异常巡检通知: 'red',
+      临时通知: 'green',
     };
     return <a-tag color={colorObj[data]}>{data}</a-tag>;
   }

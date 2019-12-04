@@ -4,14 +4,14 @@ import { tableList, FilterFormList, Opreat } from '@/interface';
 import AddModal from './componets/addModal';
 
 @Component({
-  name: 'servicecenter',
+  name: 'order',
   components: {
     'a-tag': Tag,
     'a-add-modal': AddModal,
     'a-popconfirm': Popconfirm,
   },
 })
-export default class Servicecenter extends Vue {
+export default class Order extends Vue {
   visible: boolean = false;
 
   modelType: string = 'add';
@@ -22,10 +22,43 @@ export default class Servicecenter extends Vue {
 
   dataSource: any = [];
 
+  special: boolean = true;
+
   tableList: tableList[] = [
     {
-      title: '服务名称',
-      dataIndex: 'fwname',
+      title: '订单编号',
+      dataIndex: 'id',
+      align: 'center',
+    },
+    {
+      title: '公司名称',
+      dataIndex: 'gongsi2',
+      align: 'center',
+    },
+    {
+      title: '开通服务',
+      dataIndex: 'fw',
+      align: 'center',
+    },
+    {
+      title: '开通时间/条数',
+      dataIndex: 'num',
+      align: 'center',
+    },
+    {
+      title: '金额',
+      dataIndex: 'money',
+      align: 'center',
+    },
+    {
+      title: '是否开票',
+      dataIndex: 'kaipiao',
+      align: 'center',
+      customRender: this.typeRender,
+    },
+    {
+      title: '开通时间',
+      dataIndex: 'time',
       align: 'center',
     },
   ];
@@ -33,9 +66,21 @@ export default class Servicecenter extends Vue {
   filterList: FilterFormList[] = [
     {
       key: 'name',
-      label: '服务名称',
+      label: '终端名称',
       type: 'input',
-      placeholder: '请输入服务名称',
+      placeholder: '请输入终端名称',
+    },
+    {
+      key: 'renwu',
+      label: '终端类型',
+      type: 'select',
+      placeholder: '请选择终端类型',
+      options: [
+        { value: 0, label: '类型1' },
+        { value: 1, label: '类型2' },
+        { value: 1, label: '类型3' },
+        { value: 1, label: '类型4' },
+      ],
     },
   ];
 
@@ -47,26 +92,30 @@ export default class Servicecenter extends Vue {
 
   opreat: Opreat[] = [
     {
-      key: 'kaitong',
+      key: 'edit',
       rowKey: 'id',
-      color: 'f5222d',
-      text: '申请开通',
+      color: (val: any) => {
+        if (val.kaipiao === '是') {
+          return 'green';
+        }
+        return 'blue';
+      },
+      text: (val: any) => {
+        if (val.kaipiao === '是') {
+          return '查看发票';
+        }
+        return '申请发票';
+      },
       roles: true,
     },
-    {
-      key: 'shiyong',
-      rowKey: 'id',
-      color: '13C2C2',
-      text: '申请试用',
-      roles: true,
-    },
-    {
-      key: 'jieshao',
-      rowKey: 'id',
-      color: 'blue',
-      text: '查看介绍',
-      roles: true,
-    },
+    // {
+    //   key: 'delete',
+    //   rowKey: 'id',
+    //   color: 'red',
+    //   text: '删除',
+    //   roles: true,
+    //   msg: '确定删除?',
+    // },
   ];
 
   BackParams: any = {
@@ -87,11 +136,20 @@ export default class Servicecenter extends Vue {
   tableClick(key: string, row: any) {
     const data = JSON.parse(JSON.stringify(row));
     switch (key) {
-      case 'jieshao':
-        this.editData = { ...data, area: 'jack' };
-        this.visible = true;
-        this.modelType = 'edit';
-        break;
+      case 'edit':
+        if (row.kaipiao === '是') {
+          this.editData = { ...data };
+          this.visible = true;
+          this.modelType = 'edit';
+          this.special = false;
+          break;
+        } else {
+          this.editData = { ...data };
+          this.visible = true;
+          this.modelType = 'edit';
+          this.special = true;
+          break;
+        }
       case 'delete':
         // window.api.facilitiesBaseInfoDelete({ id: row.id }).then((res: any) => {
         //   const { err_code } = res.data;
@@ -119,18 +177,18 @@ export default class Servicecenter extends Vue {
   }
 
   typeRender(data: string) {
-    if (data === '临时任务') {
-      return <a-tag color='blue'>{data}</a-tag>;
+    if (data === '否') {
+      return <a-tag color='red'>{data}</a-tag>;
     }
     return <a-tag color='green'>{data}</a-tag>;
   }
 
   statusRender(data: string) {
     let color: string = 'green';
-    if (data === '异常') {
+    if (data === '税务机打服务发票') {
       color = 'red';
-    } else {
-      color = 'green';
+    } else if (data === '增值税专用发票') {
+      color = 'blue';
     }
     return <a-tag color={color}>{data}</a-tag>;
   }
@@ -144,7 +202,7 @@ export default class Servicecenter extends Vue {
           filterList={this.filterList}
           filterGrade={this.filterGrade}
           scroll={{ x: 900 }}
-          url={'/messagelList'}
+          url={'/bill'}
           filterParams={this.filterParams}
           outParams={this.outParams}
           exportBtn={false}
@@ -156,7 +214,6 @@ export default class Servicecenter extends Vue {
           on-menuClick={this.tableClick}
           on-add={this.add}
           addBtn={false}
-          opreatWidth='200px'
         />
         {this.visible && (
           <a-add-modal
@@ -166,6 +223,7 @@ export default class Servicecenter extends Vue {
             title={this.modelType}
             width='800px'
             data={this.editData}
+            special={this.special}
           ></a-add-modal>
         )}
       </div>
