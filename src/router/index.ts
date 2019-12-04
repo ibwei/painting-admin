@@ -53,6 +53,14 @@ export const asyncRouterMap: routerItem[] = [
     meta: { key: 'Dashboard' },
   },
   {
+    path: '/deviceMap',
+    icon: 'heat-map',
+    name: '设备地图',
+    component: getComponent('deviceMap/index'),
+    permission: true,
+    meta: { key: 'DeviceMap' },
+  },
+  {
     path: '/area',
     icon: 'dot-chart',
     name: '区域管理',
