@@ -3,7 +3,7 @@ import { Modal, Form, Select, Input, Button, Checkbox } from 'ant-design-vue';
 @Component({
   name: 'ChangeModal',
   components: {
-    'a-Form': Form,
+    'a-form': Form,
     'a-form-item': Form.Item,
     'a-input': Input,
     'a-button': Button,
@@ -53,54 +53,54 @@ class ChangeModal extends Vue {
         width={this.$props.width}
       >
         <div Style={{ padding: '15px' }}>
-          <a-Form>
-            <a-form-item props={{ ...this.formItemLayout }} label="路线名称">
+          <a-form>
+            <a-form-item props={{ ...this.formItemLayout }} label='路线名称'>
               {getFieldDecorator('name', {
                 initialValue: this.$props.data.name ? this.$props.data.name : '',
                 rules: [{ required: true, message: '请输入路线名称' }],
-              })(<a-input placeholder="请输入路线名称"></a-input>)}
+              })(<a-input placeholder='请输入路线名称'></a-input>)}
             </a-form-item>
-            <a-form-item props={{ ...this.formItemLayout }} label="巡检方式">
+            <a-form-item props={{ ...this.formItemLayout }} label='巡检方式'>
               {getFieldDecorator('xuanjianfangshi', {
                 initialValue: this.$props.data.xuanjianfangshi
                   ? this.$props.data.xuanjianfangshi
                   : undefined,
                 rules: [{ required: true, message: '请选择巡检方式' }],
               })(
-                <a-select placeholder="请选择巡检方式">
-                  <a-select-option value="车巡">车巡</a-select-option>
-                  <a-select-option value="步巡">步巡</a-select-option>
+                <a-select placeholder='请选择巡检方式'>
+                  <a-select-option value='车巡'>车巡</a-select-option>
+                  <a-select-option value='步巡'>步巡</a-select-option>
                 </a-select>,
               )}
             </a-form-item>
-            <a-form-item props={{ ...this.formItemLayout }} label="区域">
+            <a-form-item props={{ ...this.formItemLayout }} label='区域'>
               {getFieldDecorator('area', {
                 initialValue: this.$props.data.area ? this.$props.data.area : undefined,
                 rules: [{ required: true, message: '请选择区域' }],
               })(
-                <a-select placeholder="请选择区域">
-                  <a-select-option value="jack">区域一</a-select-option>
-                  <a-select-option value="lucy">区域二</a-select-option>
-                  <a-select-option value="Yiminghe">区域三</a-select-option>
-                  <a-select-option value="Yiminghe">区域四</a-select-option>
-                  <a-select-option value="Yiminghe">区域五</a-select-option>
-                  <a-select-option value="Yiminghe">区域六</a-select-option>
+                <a-select placeholder='请选择区域'>
+                  <a-select-option value='jack'>区域一</a-select-option>
+                  <a-select-option value='lucy'>区域二</a-select-option>
+                  <a-select-option value='Yiminghe'>区域三</a-select-option>
+                  <a-select-option value='Yiminghe'>区域四</a-select-option>
+                  <a-select-option value='Yiminghe'>区域五</a-select-option>
+                  <a-select-option value='Yiminghe'>区域六</a-select-option>
                 </a-select>,
               )}
             </a-form-item>
-            <a-form-item props={{ ...this.formItemLayout }} label="设施">
+            <a-form-item props={{ ...this.formItemLayout }} label='设施'>
               <a-button onClick={this.$props.changeDetail.bind(null, 'sheshi')}>选择设施</a-button>
             </a-form-item>
-            <a-form-item props={{ ...this.formItemLayout }} label="设备">
+            <a-form-item props={{ ...this.formItemLayout }} label='设备'>
               <a-button onClick={this.$props.changeDetail.bind(null, 'shebei')}>选择设备</a-button>
             </a-form-item>
-            <a-form-item props={{ ...this.formItemLayout }} label="管道">
+            <a-form-item props={{ ...this.formItemLayout }} label='管道'>
               <a-button onClick={this.$props.changeDetail.bind(null, 'guandao')}>选择管道</a-button>
             </a-form-item>
-            <a-form-item props={{ ...this.formItemLayout }} label="签到点">
+            <a-form-item props={{ ...this.formItemLayout }} label='签到点'>
               <a-button onClick={this.$props.handleSeleceMap}>选择签到点</a-button>
             </a-form-item>
-          </a-Form>
+          </a-form>
         </div>
       </a-modal>
     );

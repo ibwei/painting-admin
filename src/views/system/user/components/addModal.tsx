@@ -3,7 +3,7 @@ import { Modal, Form, Select, Input, Button, DatePicker, Table, TreeSelect } fro
 @Component({
   name: 'ChangeModal',
   components: {
-    'a-Form': Form,
+    'a-form': Form,
     'a-form-item': Form.Item,
     'a-input': Input,
     'a-button': Button,
@@ -94,7 +94,7 @@ class ChangeModal extends Vue {
           title={this.$props.title === 'edit' ? '修改用户' : '新增用户'}
         >
           <div Style={{ padding: '15px' }}>
-            <a-Form>
+            <a-form>
               <a-form-item props={{ ...this.formItemLayout }} label='用户名称'>
                 {getFieldDecorator('name', {
                   initialValue: this.$props.data.name ? this.$props.data.name : undefined,
@@ -146,7 +146,7 @@ class ChangeModal extends Vue {
                   rules: [{ required: true, message: '请输入身份证号' }],
                 })(<a-input placeholder='请输入身份证号' />)}
               </a-form-item>
-            </a-Form>
+            </a-form>
           </div>
         </a-modal>
 

@@ -67,7 +67,7 @@ export default class Shopping extends Vue {
             ></a-card-meta>
           </div>
           <div class='card'>
-            <a-row gutter={{ xs: 8, sm: 16, md: 24 }}>
+            <a-row gutter={12}>
               <a-col span={6}>
                 <a-card hoverable>
                   <a-card-meta
@@ -152,27 +152,6 @@ export default class Shopping extends Vue {
                   </template>
                 </a-card>
               </a-col>
-              <a-col span={6}>
-                <a-card hoverable>
-                  <a-card-meta
-                    title='组态服务'
-                    description='组态服务是一个非常好的服务，测试填充测试填充测试填充测试填充测试填充测试...'
-                  >
-                    <a-icon slot='avatar' type='sliders' class='icon' />
-                  </a-card-meta>
-                  <template class='ant-card-actions' slot='actions'>
-                    <div onclick={this.handleOpen} data-value='组态服务'>
-                      立即开通
-                    </div>
-                    <div onclick={this.handleTry} data-value={'短信服务'}>
-                      申请试用
-                    </div>
-                    <div onclick={this.handleSelect} data-value='组态服务'>
-                      查看简介
-                    </div>
-                  </template>
-                </a-card>
-              </a-col>
             </a-row>
           </div>
         </a-card>
@@ -196,7 +175,7 @@ export default class Shopping extends Vue {
                   </a-card-meta>
                   <template class='ant-card-actions' slot='actions'>
                     <div data-value='微信公众号服务'>已永久开通</div>
-                    <div onclick={this.handlexf} data-value='微信公众号服务'>
+                    <div onclick={this.handleSelect} data-value='微信公众号服务'>
                       查看简介
                     </div>
                   </template>
@@ -206,7 +185,7 @@ export default class Shopping extends Vue {
                 <a-card hoverable>
                   <a-card-meta title='组态服务'>
                     <p slot='description'>
-                      组态服务是一个非常好的服务，测试填充测试填充测试填充测试填充测试填充测试填充测试...
+                      组态服务是一个非常好的服务，测试填充测试填充测试填充测试填充测试填充测试填...
                       <p class='express'>
                         <span style={{ marginRight: '10px' }}>到期时间:</span>2019-12-03
                       </p>

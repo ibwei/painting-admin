@@ -3,7 +3,7 @@ import { Modal, Form, Select, Input, Button, DatePicker, Table } from 'ant-desig
 @Component({
   name: 'ChangeModal',
   components: {
-    'a-Form': Form,
+    'a-form': Form,
     'a-form-item': Form.Item,
     'a-input': Input,
     'a-button': Button,
@@ -89,44 +89,44 @@ class ChangeModal extends Vue {
           onOk={this.$props.handleOk}
           onCancel={this.$props.handkeCancel}
           width={this.$props.width}
-          title="新建临时任务"
+          title='新建临时任务'
         >
           <div Style={{ padding: '15px' }}>
-            <a-Form>
-              <a-form-item props={{ ...this.formItemLayout }} label="巡检人员">
+            <a-form>
+              <a-form-item props={{ ...this.formItemLayout }} label='巡检人员'>
                 <a-button onClick={this.handleDisplay.bind(null, 'people')}>选择巡检人员</a-button>
               </a-form-item>
-              <a-form-item props={{ ...this.formItemLayout }} label="巡检路线">
+              <a-form-item props={{ ...this.formItemLayout }} label='巡检路线'>
                 <a-button onClick={this.handleDisplay.bind(null, 'xianlu')}>选择巡检路线</a-button>
               </a-form-item>
-              <a-form-item props={{ ...this.formItemLayout }} label="巡检时间">
+              <a-form-item props={{ ...this.formItemLayout }} label='巡检时间'>
                 {getFieldDecorator('time', {
                   rules: [{ required: true, message: '请选择巡检时间' }],
                 })(<a-date-picker />)}
               </a-form-item>
-              <a-form-item props={{ ...this.formItemLayout }} label="短信">
+              <a-form-item props={{ ...this.formItemLayout }} label='短信'>
                 {getFieldDecorator('duanxin', {
                   initialValue: this.$props.data.duanxin ? this.$props.data.duanxin : undefined,
                   rules: [{ required: true, message: '请选择是否短信通知' }],
                 })(
-                  <a-select placeholder="请选择是否短信通知">
-                    <a-select-option value="jack">是</a-select-option>
-                    <a-select-option value="lucy">否</a-select-option>
+                  <a-select placeholder='请选择是否短信通知'>
+                    <a-select-option value='jack'>是</a-select-option>
+                    <a-select-option value='lucy'>否</a-select-option>
                   </a-select>,
                 )}
               </a-form-item>
-              <a-form-item props={{ ...this.formItemLayout }} label="邮件">
+              <a-form-item props={{ ...this.formItemLayout }} label='邮件'>
                 {getFieldDecorator('youjian', {
                   initialValue: this.$props.data.youjian ? this.$props.data.youjian : undefined,
                   rules: [{ required: true, message: '请选择是否邮件通知' }],
                 })(
-                  <a-select placeholder="请选择是否邮件通知">
-                    <a-select-option value="jack">是</a-select-option>
-                    <a-select-option value="lucy">否</a-select-option>
+                  <a-select placeholder='请选择是否邮件通知'>
+                    <a-select-option value='jack'>是</a-select-option>
+                    <a-select-option value='lucy'>否</a-select-option>
                   </a-select>,
                 )}
               </a-form-item>
-            </a-Form>
+            </a-form>
           </div>
         </a-modal>
 
@@ -135,13 +135,13 @@ class ChangeModal extends Vue {
             visible={this.detailVis}
             onOk={this.handleConfirm}
             onCancel={this.handleModalCancel}
-            width="800px"
+            width='800px'
           >
             <div Style={{ padding: '15px' }}>
               <a-table
                 columns={this.column}
                 dataSource={this.dataSource}
-                rowKey="name"
+                rowKey='name'
                 rowSelection={{
                   selectedRowKeys: [1, 2, 3],
                   onChange: () => {},

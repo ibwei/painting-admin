@@ -53,14 +53,6 @@ class ChangeModal extends Vue {
 
   column: any = [];
 
-  listData = [
-    {
-      title: '关于今天检查线路需要再次核查的通知',
-      content:
-        '测测测测测测测测测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试',
-    },
-  ];
-
   handleConfirm() {
     this.detailVis = false;
   }
@@ -70,6 +62,13 @@ class ChangeModal extends Vue {
   }
 
   render() {
+    const listData = [
+      {
+        title: this.$props.data.title,
+        content:
+          '测测测测测测测测测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试',
+      },
+    ];
     return (
       <div>
         <a-modal
@@ -82,10 +81,10 @@ class ChangeModal extends Vue {
           <div Style={{ padding: '15px' }}>
             <a-list
               itemLayout='vertical'
-              dataSource={this.listData}
+              dataSource={listData}
               footer={
                 <div>
-                  <b>接收人:</b> 莉莉丝
+                  <b>接收人:</b> {this.$props.data.createName}
                 </div>
               }
               renderItem={(item: any) => (

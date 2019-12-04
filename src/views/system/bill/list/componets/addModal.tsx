@@ -1,15 +1,5 @@
-import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
-import {
-  Modal,
-  Form,
-  Select,
-  Input,
-  Button,
-  DatePicker,
-  Table,
-  TreeSelect,
-  Tree,
-} from 'ant-design-vue';
+import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Modal, Form, Select, Input, Button, Tag, Radio } from 'ant-design-vue';
 
 @Component({
   name: 'terminalManage',
@@ -21,11 +11,10 @@ import {
     'a-modal': Modal,
     'a-select': Select,
     'a-select-option': Select.Option,
-    'a-date-picker': DatePicker,
-    'a-table': Table,
-    'a-tree-select': TreeSelect,
-    'a-tree-select-node': TreeSelect.TreeNode,
-    'a-tree': Tree,
+    'a-tag': Tag,
+    'a-input-group': Input.Group,
+    'a-radio-group': Radio.Group,
+    'a-radio-button': Radio.Button,
   },
   props: {
     Form,
@@ -103,56 +92,36 @@ class TerminalManage extends Vue {
           onOk={this.$props.handleOk}
           onCancel={this.$props.handkeCancel}
           width={this.$props.width}
-          title={this.$props.title === 'edit' ? '修改终端' : '新增终端'}
+          title={'发票信息'}
+          footer={null}
         >
           <div Style={{ padding: '15px' }}>
             <a-form>
-              <a-form-item props={{ ...this.formItemLayout }} label='终端名称'>
-                {getFieldDecorator('name', {
-                  initialValue: this.$props.data.name ? this.$props.data.name : undefined,
-                  rules: [{ required: true, message: '请输入终端名称' }],
-                })(<a-input placeholder='请输入终端名称' />)}
+              <a-form-item props={{ ...this.formItemLayout }} label='公司名称'>
+                <span>{this.data.gongsi ? this.data.gongsi : undefined}</span>
               </a-form-item>
-              <a-form-item props={{ ...this.formItemLayout }} label='终端类型'>
-                {getFieldDecorator('type', {
-                  initialValue: this.$props.data.type ? this.$props.data.type : undefined,
-                  rules: [{ required: true, message: '请选择终端类型' }],
-                })(
-                  <a-select placeholder='请选择终端类型'>
-                    <a-select-option value='1'>类型1</a-select-option>
-                    <a-select-option value='2'>类型2</a-select-option>
-                    <a-select-option value='3'>类型3</a-select-option>
-                    <a-select-option value='4'>类型4</a-select-option>
-                    <a-select-option value='5'>类型5</a-select-option>
-                  </a-select>,
-                )}
+              <a-form-item props={{ ...this.formItemLayout }} label='公司税号'>
+                <span>10086</span>
+              </a-form-item>
+              <a-form-item props={{ ...this.formItemLayout }} label='公司地址'>
+                <span>10086</span>
+              </a-form-item>
+              <a-form-item props={{ ...this.formItemLayout }} label='公司电话'>
+                <span>023-</span>
+                <span>10086</span>
+              </a-form-item>
+              <a-form-item props={{ ...this.formItemLayout }} label='开户银行'>
+                <span>中国建设银行</span>
+              </a-form-item>
+              <a-form-item props={{ ...this.formItemLayout }} label='开户账号'>
+                <span>10000</span>
+              </a-form-item>
+              <a-form-item props={{ ...this.formItemLayout }} label='发票类型'>
+                <span>{this.data.type ? this.data.type : undefined}</span>
               </a-form-item>
             </a-form>
           </div>
         </a-modal>
-
-        {this.detailVis ? (
-          <a-modal
-            visible={this.detailVis}
-            onOk={this.handleConfirm}
-            onCancel={this.handleModalCancel}
-            width='800px'
-          >
-            <div Style={{ padding: '15px' }}>
-              <a-table
-                columns={this.column}
-                dataSource={this.dataSource}
-                rowKey='name'
-                rowSelection={{
-                  selectedRowKeys: [1, 2, 3],
-                  onChange: () => {},
-                }}
-              ></a-table>
-            </div>
-          </a-modal>
-        ) : (
-          ''
-        )}
       </div>
     );
   }
