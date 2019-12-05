@@ -12,6 +12,7 @@ import {
   Upload,
   Icon,
   Button,
+  Tag,
 } from 'ant-design-vue';
 
 import './index.less';
@@ -32,6 +33,7 @@ import './index.less';
     'a-cascader': Cascader,
     'a-upload': Upload,
     'a-icon': Icon,
+    'a-tag': Tag,
   },
   props: {
     Form,
@@ -208,13 +210,39 @@ class InfoModal extends Vue {
               rules: [{ required: true, message: '请输入隐患名称' }],
             })(<a-input placeholder="请输入隐患名称"></a-input>)}
           </a-form-item>
-          <a-form-item {...{ props: this.formItemLayout }} label="隐患详情">
+          {this.data.status !== 0 ? (<div>
+            <a-form-item {...{ props: this.formItemLayout }} label="隐患详情">
+              {getFieldDecorator('detail', {
+                initialValue: this.data.detail,
+                rules: [{ required: true, message: '请填写隐患详情' }],
+              })(<a-input placeholder="请填写隐患详情" type="textarea"></a-input>)}
+            </a-form-item>
+            <a-form-item {...{ props: this.formItemLayout }} label="隐患图片">
+              <div>
+                <a-upload
+                  name="avatar"
+                  listType="picture-card"
+                  class="avatar-uploader"
+                  showUploadList={true}
+                  fileList={this.fileList}
+                  action="http://img5.imgtn.bdimg.com/it/u=1178834295,1192804106&fm=11&gp=0.jpg"
+                  onChange={this.handleChange}
+                >
+                  {plus}
+                  <a-modal visible={this.previewVisible} footer={null} onCancel={this.hideThumbnail}>
+                    <img alt="example" style={{ width: '100%' }} src={this.previewImage} />
+                  </a-modal>
+                </a-upload>
+              </div>
+            </a-form-item>
+          </div>) : ''}
+          <a-form-item {...{ props: this.formItemLayout }} label="处理详情">
             {getFieldDecorator('detail', {
               initialValue: this.data.detail,
-              rules: [{ required: true, message: '请填写隐患详情' }],
-            })(<a-input placeholder="请填写隐患详情" type="textarea"></a-input>)}
+              rules: [{ required: true, message: '请填写处理隐患详情' }],
+            })(<a-input placeholder="请填写处理隐患详情" type="textarea"></a-input>)}
           </a-form-item>
-          <a-form-item {...{ props: this.formItemLayout }} label="隐患图片">
+          <a-form-item {...{ props: this.formItemLayout }} label="处理图片">
             <div>
               <a-upload
                 name="avatar"
@@ -232,20 +260,18 @@ class InfoModal extends Vue {
               </a-upload>
             </div>
           </a-form-item>
+
           <a-form-item {...{ props: this.formItemLayout }} label="状态">
             {getFieldDecorator('status', {
               initialValue: this.data.status,
             })(
-              this.data.status === 0 ? (
+              this.data.status !== 0 ? (
                 <div>
                   <a-button onClick={this.submit} type="primary" style={{ marginRight: '20px' }}>
                     已经处理
                   </a-button>
-                  <a-button type="danger">处理失败</a-button>
                 </div>
-              ) : (
-                <a-tag>已经处理</a-tag>
-              ),
+              ) : ''
             )}
           </a-form-item>
         </a-form>

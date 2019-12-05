@@ -1,20 +1,16 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { Tag, Popover, Button, Modal } from 'ant-design-vue';
 import { tableList, FilterFormList, Opreat } from '@/interface';
-import InfoModal from './infoModal';
-
-import './index.less';
 
 @Component({
-  name: 'message',
+  name: 'dangerCheck',
   components: {
     'a-tag': Tag,
-    'info-modal': InfoModal,
     'a-popover': Popover,
     'a-button': Button,
   },
 })
-export default class Message extends Vue {
+export default class DangerCheck extends Vue {
   filterParams: any = {
     name: '',
     address: [],
@@ -60,13 +56,23 @@ export default class Message extends Vue {
       width: '300px',
     },
     {
-      title: '上报时间',
-      dataIndex: 'createTime',
+      title: '隐患图片',
+      dataIndex: 'image',
+      customRender: this.imageRender,
     },
     {
-      title: '审核结果',
-      dataIndex: 'status',
-      customRender: this.typeRender,
+      title: '处理内容',
+      dataIndex: 'handleDetail',
+      width: '300px',
+    },
+    {
+      title: '隐患图片',
+      dataIndex: 'handleImage',
+      customRender: this.imageRender,
+    },
+    {
+      title: '上报时间',
+      dataIndex: 'createTime',
     },
   ];
 
@@ -74,18 +80,20 @@ export default class Message extends Vue {
     {
       key: 'edit',
       rowKey: 'id',
-      color: (val: any) => {
+      color(val: any) {
         if (val.status === 0) {
           return 'blue';
         }
         return 'green';
       },
-      text: (val: any) => {
+      text(val: any) {
         if (val.status === 0) {
-          return '去处理';
+          return '通过审核';
         }
-        return '查看结果';
+        return '已审核';
       },
+      msg: '确认通过审核吗？',
+      popconfirm: true,
       roles: true,
     },
   ];
@@ -130,24 +138,18 @@ export default class Message extends Vue {
     const data = JSON.parse(JSON.stringify(row));
     switch (key) {
       case 'edit':
-        this.editData = data;
-        this.visible = true;
-        this.title = '修改隐患信息';
-        this.modelType = 'edit';
-        break;
-      case 'delete':
-        window.api.deviceBaseInfoDelete({ id: row.id }).then((res: any) => {
+        window.api.dangerMessageBaseInfoUpdate({ id: row.id, status: 2 }).then((res: any) => {
           const { err_code } = res.data;
           if (err_code === 0) {
-            this.$message.success('删除成功');
+            this.$message.success('审核成功');
             this.success();
           } else {
-            this.$message.error('删除失败');
+            this.$message.error('审核失败');
           }
         });
         break;
       default:
-        break;
+        console.log('hah');
     }
   }
 
@@ -208,20 +210,6 @@ export default class Message extends Vue {
           on-menuClick={this.tableClick}
           on-add={this.add}
         />
-        {this.visible ? (
-          <info-modal
-            title={this.title}
-            position={this.position}
-            visible={this.visible}
-            deviceName={this.deviceName}
-            type={this.modelType}
-            data={this.editData}
-            on-close={this.closeModal}
-            on-success={this.success}
-          />
-        ) : (
-            ''
-          )}
       </div>
     );
   }

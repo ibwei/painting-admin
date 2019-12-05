@@ -94,11 +94,6 @@ module.exports = {
     const newData = req.body;
     newData.createTime = Mock.mock('@now');
     newData.id = Mock.mock('@id');
-    newData.deviceNum = Mock.mock('@integer(1000, 5000)');
-    newData.guandaoNum = Mock.mock('@integer(1000, 5000)');
-    newData.shesiNum = Mock.mock('@integer(1000, 5000)');
-    newData.errorNum = Mock.mock('@integer(0, 10)');
-    newData.createName = Mock.mock('@cname');
     database.unshift(newData);
     res.json(baseData('success', '新增成功！'));
   },

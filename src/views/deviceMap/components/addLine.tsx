@@ -11,6 +11,7 @@ import {
   Cascader,
   Select,
   Button,
+  Upload,
 } from 'ant-design-vue';
 
 import './addDevice.less';
@@ -33,6 +34,7 @@ import fourSelect from '@/components/Form/fourSelect';
     'a-tree-select': treeSelect,
     'four-select': fourSelect,
     'a-button': Button,
+    'a-upload': Upload,
   },
   props: {
     Form,
@@ -70,37 +72,27 @@ class InfoModal extends Vue {
     },
   };
 
-  // 地图方法类
-  created() {
-    this.$nextTick(() => {
-      loadBmap().then((BMap: any) => {
-        this.BMap = BMap;
-        this.map = new BMap.Map('editmap'); // 创建Map实例
-        this.map.centerAndZoom(new BMap.Point(106.486404, 29.611018), 12); // 初始化地图,设置中心点坐标和地图级别
-        this.map.setCurrentCity('北京'); // 设置地图显示的城市 此项是必须设置的
-        this.map.enableScrollWheelZoom(true);
-        this.marker = new BMap.Marker(new BMap.Point(this.data.position.x, this.data.position.y), {
-          offset: new this.BMap.Size(10, 10),
-        }); // 创建标注
-        this.map.addOverlay(this.marker);
-        this.map.addEventListener('click', this.mapClick);
-      });
-    });
-  }
-
-  //点击地图触发
-  mapClick(e: any) {
-    let point = new this.BMap.Point(e.point.lng, e.point.lat);
-    this.map.removeOverlay(this.marker);
-    this.marker = new this.BMap.Marker(point, { offset: new this.BMap.Size(10, 10) });
-    this.map.addOverlay(this.marker);
-    this.map.setCenter(point);
-    this.data.position = { x: e.point.lng, y: e.point.lat };
-  }
-
-  typeArray: Array<string> = ['类型1', '类型2', '类型3', '类型4'];
   areaArray: Array<string> = ['区域1', '区域2', '区域3', '区域4'];
-  facilitiesArray: Array<string> = ['设施1', '设施2', '设施3', '设施4'];
+  deviceArray: Array<any> = [];
+  relativeResult: Array<any> = [];
+  deviceArrayList: Array<any> = [
+    '设备1',
+    '设备2',
+    '设备3',
+    '设备4',
+    '设备5',
+    '设备6',
+    '设备7',
+    '设备8',
+  ];
+  propertyArray: Array<string> = [
+    '供配电设备',
+    '照明设备',
+    '动力设备',
+    '弱电设备',
+    '空调与通风设备',
+    '运输设备',
+  ];
 
   submit() {
 
@@ -113,18 +105,80 @@ class InfoModal extends Vue {
   cancel() {
     this.$emit('close');
   }
+
+  // 地图方法类
+  relativeDeviceChange(e: any) {
+    this.relativeResult = [];
+    e.map((item: any) => {
+      this.relativeResult.push({ name: item });
+    });
+    console.log(this.relativeResult);
+  }
+
+  previewVisible: boolean = true;
+  previewImage: string = '';
+  fileList: any = [
+    {
+      uid: '-1',
+      name: 'xxx.png',
+      status: 'done',
+      url: 'http://i0.sinaimg.cn/dy/c/sd/2012-04-01/U7815P1T1D24212000F21DT20120401172319.jpg',
+    },
+  ];
+
+  hideThumbnail() {
+    this.previewVisible = false;
+  }
+
+  handlePreview(file: any) {
+    this.previewImage = file.url || file.thumbUrl;
+    this.previewVisible = true;
+  }
+  // @ts-ignore
+  handleChange({ fileList }) {
+    this.fileList = fileList;
+  }
+  typeArray: Array<string> = ['设施类型1', '设施类型2', '设施类型3', '设施类型4'];
+
+  showMap() {
+    this.$emit('showMap')
+  }
+
   render() {
     const { getFieldDecorator } = this.Form;
+    const area = this.areaArray.map((item, index) => {
+      return (
+        <a-select-option key={(index + 9).toString(36) + index} value={item}>
+          {item}
+        </a-select-option>
+      );
+    });
+
     const selectType = this.typeArray.map((item, index) => (
       <a-select-option key={index} value={item}>
         {item}
       </a-select-option>
     ));
-    const area = this.typeArray.map((item, index) => (
-      <a-select-option key={index} value={item}>
-        {item}
-      </a-select-option>
-    ));
+
+    const device = this.deviceArrayList.map((item, index) => {
+      return (
+        <a-select-option key={(index + 9).toString(36) + index} value={item}>
+          {item}
+        </a-select-option>
+      );
+    });
+
+    const plus = () => {
+      return (
+        <div>
+          <a-icon type="picture" />
+          <div class="ant-upload-text">上传图片</div>
+        </div>
+      );
+    };
+
+
+
     const facilities = this.typeArray.map((item, index) => (
       <a-select-option key={index} value={item}>
         {item}
@@ -136,33 +190,28 @@ class InfoModal extends Vue {
         on-cancel={this.cancel}
       >
         <a-form>
-          <a-form-item {...{ props: this.formItemLayout }} label="设备名称">
-            <a-input placeholder="请输入设备名"></a-input>
-          </a-form-item>
-          <a-form-item {...{ props: this.formItemLayout }} label="设备类型">
-            <a-tree-select></a-tree-select>
+          <a-form-item {...{ props: this.formItemLayout }} label="管道名称">
+            <a-input placeholder="请输入管道名称"></a-input>
           </a-form-item>
           <a-form-item {...{ props: this.formItemLayout }} label="所属区域">
             <a-select size="default" style="width: 200px">
               {area}
             </a-select>
           </a-form-item>
-          <a-form-item {...{ props: this.formItemLayout }} label="所属设施">
+          <a-form-item {...{ props: this.formItemLayout }} label="管道类型">
             <a-select size="default" style="width: 200px">
-              {facilities}
+              {selectType}
             </a-select>
           </a-form-item>
-          <a-form-item {...{ props: this.formItemLayout }} label="地理位置">
-            <a-input placeholder="地理位置" value={'经度：' + this.position.x + ',纬度：' + this.position.y}></a-input>
+          <a-form-item {...{ props: this.formItemLayout }} label="管道地理位置">
+            <a-input placeholder="地理位置" value={'管道地图位置数组'}></a-input>
           </a-form-item>
-
           <four-select openType={'list'} formItemLayout={this.formItemLayout} data={this.data}></four-select>
           <div class="button-group">
             <a-button type="primary" onClick={this.add}>确认</a-button>
             <a-button onClick={this.cancel}>取消</a-button>
           </div>
         </a-form>
-
       </div>
     );
   }
@@ -170,7 +219,6 @@ class InfoModal extends Vue {
 
 export default Form.create({
   props: {
-    position: Object,
     data: Object,
   },
 })(InfoModal);
