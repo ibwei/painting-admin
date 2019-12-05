@@ -149,7 +149,7 @@ export const asyncRouterMap: routerItem[] = [
   {
     path: '/system',
     name: '系统管理',
-    icon: 'dashboard',
+    icon: 'setting',
     component: getComponent('system/index'),
     permission: true,
     meta: { key: 'system' },
@@ -449,6 +449,39 @@ export const asyncRouterMap: routerItem[] = [
         component: getComponent('danger/map/index'),
         permission: true,
         meta: { key: 'Map' },
+      },
+    ],
+  },
+  {
+    path: '/knowledgebase',
+    icon: 'folder',
+    name: '知识库',
+    component: getComponent('knowledgebase/index'),
+    permission: true,
+    meta: { key: 'knowledgebase' },
+    children: [
+      {
+        path: 'public',
+        name: '公共知识库',
+        component: getComponent('knowledgebase/public/index'),
+        permission: true,
+        meta: { key: 'public' },
+        children: [
+          {
+            path: 'problem',
+            name: '题库管理',
+            component: getComponent('knowledgebase/public/problem/index'),
+            permission: true,
+            meta: { key: 'problem' },
+          },
+        ],
+      },
+      {
+        path: '/private',
+        name: '私有知识库',
+        component: getComponent('knowledgebase/private/index'),
+        permission: true,
+        meta: { key: 'private' },
       },
     ],
   },
