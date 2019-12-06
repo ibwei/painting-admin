@@ -183,7 +183,7 @@ export default class Monitor extends Vue {
   render() {
 
     return (
-      <div class="monitor-wrap">
+      <div class="monitor-wrap1">
         <div id="monitor-map"></div>
         <div class="statistics">
           <span class="people">当前巡检人数 : 65</span>
@@ -207,7 +207,6 @@ export default class Monitor extends Vue {
             <a-switch checked={this.deviceChecked} onClick={this.onSwitchChange.bind(this, '设备')} />
             <span>显示设备</span>
           </div>
-
         </div>
         <a-drawer
           title={this.title}

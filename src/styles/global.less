@@ -7,10 +7,11 @@
   height: 8px;
 }
 :root {
-  --font-family-sans-serif: "Nunito",sans-serif;
-  --font-family-monospace: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+  --font-family-sans-serif: 'Nunito', sans-serif;
+  --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas,
+    'Liberation Mono', 'Courier New', monospace;
 }
-@primary-color: #409EFF;
+@primary-color: #409eff;
 
 html {
   font-size: 16px;
@@ -20,7 +21,7 @@ body {
   height: 100%;
   overflow-y: hidden;
   background-color: #f0f2f5 !important;
-  font-family: Nunito,sans-serif;
+  font-family: Nunito, sans-serif;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -73,7 +74,7 @@ body {
   }
 
   .ant-table-pagination {
-    float: none!important;
+    float: none !important;
     display: table;
     margin: 16px auto !important;
   }
@@ -162,15 +163,17 @@ body {
 }
 
 @font-face {
-  font-family: 'iconfont';  /* project id 730427 */
+  font-family: 'iconfont'; /* project id 730427 */
   src: url('//at.alicdn.com/t/font_730427_0jr8nzjd50j6.eot');
-  src: url('//at.alicdn.com/t/font_730427_0jr8nzjd50j6.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_730427_0jr8nzjd50j6.woff') format('woff'),
-  url('//at.alicdn.com/t/font_730427_0jr8nzjd50j6.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_730427_0jr8nzjd50j6.svg#iconfont') format('svg');
+  src: url('//at.alicdn.com/t/font_730427_0jr8nzjd50j6.eot?#iefix')
+      format('embedded-opentype'),
+    url('//at.alicdn.com/t/font_730427_0jr8nzjd50j6.woff') format('woff'),
+    url('//at.alicdn.com/t/font_730427_0jr8nzjd50j6.ttf') format('truetype'),
+    url('//at.alicdn.com/t/font_730427_0jr8nzjd50j6.svg#iconfont') format('svg');
 }
 
-[class*=" iconfont-"], [class^="iconfont-"] {
+[class*=' iconfont-'],
+[class^='iconfont-'] {
   font-family: iconfont !important;
   font-size: 18px;
   speak: none;
@@ -315,4 +318,7 @@ body {
 }
 .iconfont-plus::before {
   content: '\e801';
+}
+.link-gray {
+  color: rgba(0, 0, 0, 0.3);
 }

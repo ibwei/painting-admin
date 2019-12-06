@@ -1,11 +1,13 @@
-.monitor-wrap,
-#monitor-map {
+.devicemap {
+  width: 100%;
+  height: 100%;
+  #devicemap {
     width: 100%;
     height: 100%;
-}
-
-.monitor-wrap{
-.statistics {
+    position: relative;
+    z-index: 10000;
+  }
+  .switch-group {
     position: absolute;
     box-sizing: border-box;
     display: flex;
@@ -22,34 +24,58 @@
     border: 1px solid rgba(114, 124, 245, 0.3);
     padding: 0px 10px;
     border-radius: 0px;
-}
+  }
+  .swit {
+    background: #fff;
+    width: 200px;
+    margin: 10px 0;
+    padding: 10px 20px;
+  }
+  .statistics {
+    position: absolute;
+    box-sizing: border-box;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    top: 270px;
+    width: 220px;
+    left: 10px;
+    font-size: 14px;
+    line-height: 3;
+    background: rgba(114, 124, 245, 0.1);
+    border: 1px solid rgba(114, 124, 245, 0.3);
+    padding: 0px 10px;
+    border-radius: 0px;
+  }
 
-.people {
+  .people {
     margin-top: 10px;
     border: 1px dashed lightseagreen;
     padding: 0 10px;
     border-radius: 3px;
     width: 100%;
-}
+  }
 
-.current-warn {
+  .current-warn {
     border-radius: 3px;
     margin-top: 10px;
     border: 1px dashed lightskyblue;
     padding: 0 10px;
     width: 100%;
-}
+  }
 
-.all-warn {
+  .all-warn {
     border-radius: 3px;
     width: 100%;
     margin-top: 10px;
     border: 1px dashed lightskyblue;
     padding: 0 10px;
     margin-bottom: 10px;
-}
+  }
 
-.container1 {
+  .container1 {
     position: absolute;
     top: 10px;
     left: 10px;
@@ -60,12 +86,11 @@
     flex-flow: column nowrap;
     justify-content: center;
     align-items: center;
-}
+  }
 
+  /* 波动效果 */
 
-/* 波动效果 */
-
-.wave {
+  .wave {
     position: relative;
     width: 10px;
     height: 10px;
@@ -74,33 +99,33 @@
     flex-flow: column nowrap;
     justify-content: center;
     align-items: center;
-}
+  }
 
-.wave .circle {
+  .wave .circle {
     width: 100%;
     height: 100%;
     position: absolute;
     border-radius: 50%;
     opacity: 0;
     background: red;
-}
+  }
 
-.wave .circle:first-child {
+  .wave .circle:first-child {
     animation: circle-opacity 2s infinite ease-in-out;
-}
+  }
 
-@keyframes circle-opacity {
+  @keyframes circle-opacity {
     from {
-        opacity: 1;
-        transform: scale(1);
+      opacity: 1;
+      transform: scale(1);
     }
     to {
-        opacity: 0;
-        transform: scale(6);
+      opacity: 0;
+      transform: scale(6);
     }
-}
+  }
 
-.card {
+  .card {
     width: 10px;
     height: 10px;
     border-radius: 50%;
@@ -109,9 +134,9 @@
     color: #fff;
     position: absolute;
     z-index: 999;
-}
+  }
 
-.infowindow {
+  .infowindow {
     display: flex;
     flex-flow: row nowrap;
     position: absolute;
@@ -120,15 +145,15 @@
     align-items: center;
     .right,
     .left {
-        margin-top: 10px;
-        border: 1px solid green;
-        padding: 5px 10px;
-        font-size: 16p;
-        cursor: pointer;
+      margin-top: 10px;
+      border: 1px solid green;
+      padding: 5px 10px;
+      font-size: 16p;
+      cursor: pointer;
     }
     .left {
-        margin-right: 20px;
-        border: 1px solid rgb(48, 152, 216);
+      margin-right: 20px;
+      border: 1px solid rgb(48, 152, 216);
     }
-}
+  }
 }

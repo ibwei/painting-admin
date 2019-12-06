@@ -153,20 +153,7 @@ export default class DangerMap extends Vue {
 
   // 打开信息窗体
   openInfo(e: any) {
-    this.infoShow = false;
-
-    this.infoX = e.clientX || e.pageX;
-    this.infoY = e.clientY || e.pageY;
-    console.log(`x=${this.infoX},y=${this.infoY}`);
-    // @ts-ignore
-    this.$refs.info.style.left = this.infoX;
-    // @ts-ignore
-    this.$refs.info.style.top = this.infoY;
-    //模拟
-    setTimeout(() => {
-      this.infoShow = true;
-    }, 200)
-
+    this.infoShow = true;
   }
 
   onClose() {
@@ -228,9 +215,15 @@ export default class DangerMap extends Vue {
         <div class='map-operate'>
           <div class="date">选择日期</div>
           <div> <a-date-picker onFocus={this.closeInfoBox} onChange={this.onDateChange} /></div>
-          <div class="info" ref="info" style={{ display: this.infoShow ? 'block' : 'none' }}>
+          <a-drawer
+            width="320px"
+            title={"隐患详情"}
+            placement="right"
+            closable={true}
+            on-close={this.closeInfoBox}
+            visible={this.infoShow}>
             <info-modal on-close={this.closeInfoBox}></info-modal>
-          </div>
+          </a-drawer>
         </div>
       </div>
     );

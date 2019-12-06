@@ -13,9 +13,19 @@ import {
   Icon,
   Button,
   Tag,
+  Card,
 } from 'ant-design-vue';
 
+import { quillEditor } from 'vue-quill-editor';
+
+
 import './index.less';
+
+// 富文本框样式
+import 'quill/dist/quill.core.css';
+import 'quill/dist/quill.snow.css';
+import 'quill/dist/quill.bubble.css';
+
 
 @Component({
   components: {
@@ -34,6 +44,8 @@ import './index.less';
     'a-upload': Upload,
     'a-icon': Icon,
     'a-tag': Tag,
+    'a-card': Card,
+    'quill-editor': quillEditor,
   },
   props: {
     Form,
@@ -48,14 +60,37 @@ class InfoModal extends Vue {
 
   @Prop() data!: any;
 
-  @Watch('visible')
-  protected valueWatch(newV: any, oldV: any) {
-    if (newV === true) {
-      this.deviceArray = this.data.relativeDevice.map((item: any) => {
-        return item.name;
-      });
+  @Prop() openType!: string;
+
+  content: string = '<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>';
+
+  contentHTML: string = '<div><div>水表已经修复<div><img<div><img src="http://img0.imgtn.bdimg.com/it/u=2600953318,1041728492&fm=26&gp=0.jpg" width="200px" height="200px" alt=""/>';
+
+
+  editorOption: any = {};
+
+
+  created() {
+    if (this.openType === 'read') {
+      this.$nextTick(() => {
+        let editor: any = document.getElementById('handleResult');
+        editor.innerHTML = this.contentHTML;
+      })
     }
   }
+
+  onEditorBlur = (e: any) => {
+
+  };
+
+  onEditorFocus = (e: any) => {
+
+  };
+
+  onEditorReady = (e: any) => {
+
+  };
+
 
   formItemLayout = {
     labelCol: {
@@ -68,27 +103,6 @@ class InfoModal extends Vue {
     },
   };
 
-  areaArray: Array<string> = ['隐患1', '隐患2', '隐患3', '隐患4'];
-  deviceArray: Array<any> = [];
-  relativeResult: Array<any> = [];
-  deviceArrayList: Array<any> = [
-    '设备1',
-    '设备2',
-    '设备3',
-    '设备4',
-    '设备5',
-    '设备6',
-    '设备7',
-    '设备8',
-  ];
-  propertyArray: Array<string> = [
-    '供配电设备',
-    '照明设备',
-    '动力设备',
-    '弱电设备',
-    '空调与通风设备',
-    '运输设备',
-  ];
 
   submit() {
     this.$props.Form.validateFields((err: any, values: any) => {
@@ -97,7 +111,6 @@ class InfoModal extends Vue {
           window.api
             .facilitiesBaseInfoUpdate({
               id: this.data.id,
-              relativeDevice: this.relativeResult,
               ...values,
             })
             .then((res: any) => {
@@ -114,7 +127,7 @@ class InfoModal extends Vue {
             });
         } else if (this.type === 'add') {
           window.api
-            .facilitiesBaseInfoAdd({ relativeDevice: this.relativeResult, ...values })
+            .facilitiesBaseInfoAdd({ ...values })
             .then((res: any) => {
               const {
                 err_code,
@@ -135,14 +148,6 @@ class InfoModal extends Vue {
 
   cancel() {
     this.$emit('close');
-  }
-
-  relativeDeviceChange(e: any) {
-    this.relativeResult = [];
-    e.map((item: any) => {
-      this.relativeResult.push({ name: item });
-    });
-    console.log(this.relativeResult);
   }
 
   previewVisible: boolean = true;
@@ -171,21 +176,7 @@ class InfoModal extends Vue {
 
   render() {
     const { getFieldDecorator } = this.Form;
-    const area = this.areaArray.map((item, index) => {
-      return (
-        <a-select-option key={(index + 9).toString(36) + index} value={item}>
-          {item}
-        </a-select-option>
-      );
-    });
 
-    const device = this.deviceArrayList.map((item, index) => {
-      return (
-        <a-select-option key={(index + 9).toString(36) + index} value={item}>
-          {item}
-        </a-select-option>
-      );
-    });
 
     const plus = () => {
       return (
@@ -196,84 +187,66 @@ class InfoModal extends Vue {
       );
     };
 
+    console.log(this.data);
     return (
       <a-modal
+        width={"720px"}
         title={this.title}
         visible={this.visible}
         on-ok={this.submit}
         on-cancel={this.cancel}
       >
+
         <a-form>
-          <a-form-item {...{ props: this.formItemLayout }} label="隐患名称">
-            {getFieldDecorator('name', {
-              initialValue: this.data.name,
-              rules: [{ required: true, message: '请输入隐患名称' }],
-            })(<a-input placeholder="请输入隐患名称"></a-input>)}
-          </a-form-item>
-          {this.data.status !== 0 ? (<div>
+          {this.openType === 'edit' ? (<div>
+            <a-form-item {...{ props: this.formItemLayout }} label="隐患名称">
+              <div>{this.data.name}</div>
+            </a-form-item>
             <a-form-item {...{ props: this.formItemLayout }} label="隐患详情">
-              {getFieldDecorator('detail', {
-                initialValue: this.data.detail,
-                rules: [{ required: true, message: '请填写隐患详情' }],
-              })(<a-input placeholder="请填写隐患详情" type="textarea"></a-input>)}
+              <div>{this.data.detail}</div>
             </a-form-item>
             <a-form-item {...{ props: this.formItemLayout }} label="隐患图片">
               <div>
-                <a-upload
-                  name="avatar"
-                  listType="picture-card"
-                  class="avatar-uploader"
-                  showUploadList={true}
-                  fileList={this.fileList}
-                  action="http://img5.imgtn.bdimg.com/it/u=1178834295,1192804106&fm=11&gp=0.jpg"
-                  onChange={this.handleChange}
-                >
-                  {plus}
-                  <a-modal visible={this.previewVisible} footer={null} onCancel={this.hideThumbnail}>
-                    <img alt="example" style={{ width: '100%' }} src={this.previewImage} />
-                  </a-modal>
-                </a-upload>
+                <img src="http://img0.imgtn.bdimg.com/it/u=1808649893,1561867321&fm=26&gp=0.jpg" width="200px" height="200px" alt="" />
               </div>
             </a-form-item>
-          </div>) : ''}
-          <a-form-item {...{ props: this.formItemLayout }} label="处理详情">
-            {getFieldDecorator('detail', {
-              initialValue: this.data.detail,
-              rules: [{ required: true, message: '请填写处理隐患详情' }],
-            })(<a-input placeholder="请填写处理隐患详情" type="textarea"></a-input>)}
-          </a-form-item>
-          <a-form-item {...{ props: this.formItemLayout }} label="处理图片">
-            <div>
-              <a-upload
-                name="avatar"
-                listType="picture-card"
-                class="avatar-uploader"
-                showUploadList={true}
-                fileList={this.fileList}
-                action="http://img5.imgtn.bdimg.com/it/u=1178834295,1192804106&fm=11&gp=0.jpg"
-                onChange={this.handleChange}
-              >
-                {plus}
-                <a-modal visible={this.previewVisible} footer={null} onCancel={this.hideThumbnail}>
-                  <img alt="example" style={{ width: '100%' }} src={this.previewImage} />
-                </a-modal>
-              </a-upload>
-            </div>
-          </a-form-item>
+            <a-form-item {...{ props: this.formItemLayout }} label="处理详情">
+              <div>
+                <quill-editor
+                  v-model={this.content}
+                  ref='myQuillEditor'
+                  options={this.editorOption}
+                  on-blur={this.onEditorBlur.bind(this)}
+                  on-focus={this.onEditorFocus.bind(this)}
+                  on-ready={this.onEditorReady.bind(this)}
+                ></quill-editor>
+              </div>
+            </a-form-item>
 
-          <a-form-item {...{ props: this.formItemLayout }} label="状态">
-            {getFieldDecorator('status', {
-              initialValue: this.data.status,
-            })(
-              this.data.status !== 0 ? (
-                <div>
-                  <a-button onClick={this.submit} type="primary" style={{ marginRight: '20px' }}>
-                    已经处理
-                  </a-button>
-                </div>
-              ) : ''
+          </div>) : (
+              <div>
+                <a-form-item {...{ props: this.formItemLayout }} label="隐患名称">
+                  <div>{this.data.name}</div>
+                </a-form-item>
+                <a-form-item {...{ props: this.formItemLayout }} label="隐患详情">
+                  <div>{this.data.detail}</div>
+                </a-form-item>
+                <a-form-item {...{ props: this.formItemLayout }} label="隐患图片">
+                  <div>
+                    <img src="http://img0.imgtn.bdimg.com/it/u=1808649893,1561867321&fm=26&gp=0.jpg" width="200px" height="200px" alt="" />
+                  </div>
+                </a-form-item>
+                <a-form-item {...{ props: this.formItemLayout }} label="处理详情">
+                  <div id="handleResult"></div>
+                </a-form-item>
+                <a-form-item {...{ props: this.formItemLayout }} label="审核状态">
+                  {(this.data.status === 2 && this.data.checkStatus === 1) ? (<a-tag color={'green'}>已通过</a-tag>) : ''}
+                  {(this.data.status === 2 && this.data.checkStatus === 0)
+                    ? (<div><a-tag color={'red'}>未通过审核</a-tag><br />原因：{this.data.rejectReason}</div>) : ''}
+                  {this.data.status === 1 ? (<a-tag color={'gray'}>审核中</a-tag>) : ''}
+                </a-form-item>
+              </div>
             )}
-          </a-form-item>
         </a-form>
       </a-modal>
     );
@@ -286,5 +259,6 @@ export default Form.create({
     visible: Boolean,
     type: String,
     data: Object,
+    openType: String,
   },
 })(InfoModal);

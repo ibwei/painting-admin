@@ -55,11 +55,11 @@ class InfoModal extends Vue {
 
   }
 
-  cancel() {
-    this.$emit('close');
+  handle() {
+    this.$router.push({ path: '/danger/message' })
   }
 
-  previewVisible: boolean = true;
+
   previewImage: string = '';
   fileList: any = [
     {
@@ -70,14 +70,8 @@ class InfoModal extends Vue {
     },
   ];
 
-  hideThumbnail() {
-    this.previewVisible = false;
-  }
 
-  handlePreview(file: any) {
-    this.previewImage = file.url || file.thumbUrl;
-    this.previewVisible = true;
-  }
+
   // @ts-ignore
   handleChange({ fileList }) {
     this.fileList = fileList;
@@ -94,42 +88,26 @@ class InfoModal extends Vue {
     };
 
     return (
-      <div class="infomodal">
-        <a-form>
-          <a-form-item {...{ props: this.formItemLayout }} label="隐患名称">
-            <a-input placeholder="请输入隐患名称" value={"水表故障"}></a-input>
-          </a-form-item>
-          <a-form-item {...{ props: this.formItemLayout }} label="隐患详情">
-            <a-input placeholder="请填写隐患详情" value={"水表指针不能正常运转"} type="textarea"></a-input>
-          </a-form-item>
-          <a-form-item {...{ props: this.formItemLayout }} label="隐患图片">
-            <a-upload
-              name="avatar"
-              listType="picture-card"
-              class="avatar-uploader"
-              showUploadList={true}
-              fileList={this.fileList}
-              action="http://img5.imgtn.bdimg.com/it/u=1178834295,1192804106&fm=11&gp=0.jpg"
-              onChange={this.handleChange}
-            >
-              {plus}
-              <a-modal visible={this.previewVisible} footer={null} onCancel={this.hideThumbnail}>
-                <img alt="example" style={{ width: '100%' }} src={this.previewImage} />
-              </a-modal>
-            </a-upload>
-          </a-form-item>
-          <a-form-item {...{ props: this.formItemLayout }} label="上报日期">
-            <a-input placeholder="" type="input" value={"2019-12-11 08:12:11"}></a-input>
-          </a-form-item>
-          <div class="button-group">
-            <a-button onClick={this.cancel}>关闭</a-button>
+      <a-form>
+        <a-form-item {...{ props: this.formItemLayout }} label="隐患名称">
+          <div>水表故障</div>
+        </a-form-item>
+        <a-form-item {...{ props: this.formItemLayout }} label="隐患详情">
+          <div>水表不能正常运转</div>
+
+        </a-form-item>
+        <a-form-item {...{ props: this.formItemLayout }} label="隐患图片">
+          <div>
+            <img src="http://img0.imgtn.bdimg.com/it/u=1808649893,1561867321&fm=26&gp=0.jpg" width="200px" height="200px" alt="" />
           </div>
-
-
-
-
-        </a-form>
-      </div>
+        </a-form-item>
+        <a-form-item {...{ props: this.formItemLayout }} label="上报日期">
+          <div>2019-12-11 08:12:11</div>
+        </a-form-item>
+        <div class="button-group">
+          <a-button onClick={this.handle}>去处理</a-button>
+        </div>
+      </a-form>
     );
   }
 }
