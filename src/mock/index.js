@@ -21,6 +21,7 @@ const features = require('./features');
 const terminal = require('./terminal');
 const message = require('./message');
 const bill = require('./bill');
+const problem = require('./problem');
 
 module.exports = function mockInit(app) {
   app.use(bodyParser.json());
@@ -101,4 +102,6 @@ module.exports = function mockInit(app) {
   app.post('/api/messagelList', message.list2);
 
   app.post('/api/bill', bill.list);
+
+  app.post('/api/problem', problem.list);
 };
