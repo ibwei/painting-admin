@@ -1,5 +1,5 @@
 import { Component, Vue } from 'vue-property-decorator';
-import { Tag, Popover, Button, Modal } from 'ant-design-vue';
+import { Tag, Popover, Button, Modal, Input } from 'ant-design-vue';
 import { tableList, FilterFormList, Opreat } from '@/interface';
 
 @Component({
@@ -8,6 +8,8 @@ import { tableList, FilterFormList, Opreat } from '@/interface';
     'a-tag': Tag,
     'a-popover': Popover,
     'a-button': Button,
+    'a-input': Input,
+    'a-modal': Modal,
   },
 })
 export default class DangerCheck extends Vue {
@@ -26,6 +28,10 @@ export default class DangerCheck extends Vue {
     data: 'data.entity.data',
     total: 'data.entity.total',
   };
+
+  reasonModalShow: boolean = false;
+
+  rejectReason: string = '';
 
   outParams: any = {};
 
@@ -61,14 +67,10 @@ export default class DangerCheck extends Vue {
       customRender: this.imageRender,
     },
     {
-      title: '处理内容',
+      title: '处理详情',
       dataIndex: 'handleDetail',
+      customRender: this.handleRender,
       width: '300px',
-    },
-    {
-      title: '隐患图片',
-      dataIndex: 'handleImage',
-      customRender: this.imageRender,
     },
     {
       title: '上报时间',
@@ -78,24 +80,45 @@ export default class DangerCheck extends Vue {
 
   opreat: Opreat[] = [
     {
-      key: 'edit',
+      key: 'success',
       rowKey: 'id',
       color(val: any) {
         if (val.status === 0) {
           return 'blue';
         }
-        return 'green';
+        if (val.status === 1) {
+          return 'green';
+
+        }
+        return 'red';
       },
       text(val: any) {
         if (val.status === 0) {
-          return '通过审核';
+          return '通过';
         }
-        return '已审核';
+        if (val.status === 1) {
+          return '已通过';
+        }
+        return '已拒绝';
       },
-      msg: '确认通过审核吗？',
-      popconfirm: true,
+      popconfirm: false,
       roles: true,
     },
+    {
+      key: 'reject',
+      rowKey: 'id',
+      color(val: any) {
+        return 'blue';
+      },
+      text(val: any) {
+        if (val.status === 0) {
+          return '拒绝';
+        }
+        return '';
+      },
+      roles: true,
+    },
+
   ];
 
   title: string = '新增隐患';
@@ -110,47 +133,71 @@ export default class DangerCheck extends Vue {
     return <img src={url}></img>;
   }
 
-  typeRender(type: number, others: any) {
-    const colorArray: Array<string> = ['pink', 'red', 'orange', 'green', 'cyan', 'blue', 'purple'];
-    let render: any = null;
-    if (type === 0) {
-      render = <a-tag color="red">未审核</a-tag>;
-    } else if (type === 1) {
-      render = <a-tag color="blue">审核中</a-tag>;
-    } else {
-      render = <a-tag color="green">已审核</a-tag>;
-    }
-    return render;
+  changeRejectReason(e: any) {
+    // @ts-ignore
+    this.rejectReason = this.$refs.reject.stateValue;
   }
 
-  showSuccesResult(data: any) {
-    const h = this.$createElement;
-    Modal.info({
-      title: '处理隐患',
-      content: h('div', {}, [
-        h('p', 'some messages...some messages...'),
-      ]),
-      onOk() { },
-    });
+  handleRender(url: string, other: any) {
+    return (
+      <div>
+        <img src={other.image} alt={'处理图片'}></img >
+        <img src={other.image} alt={'处理图片'}></img >
+        <div>{other.handleDetail}</div>
+      </div>
+    )
   }
+
+  currentId: number = 0;
 
   tableClick(key: string, row: any) {
     const data = JSON.parse(JSON.stringify(row));
     switch (key) {
-      case 'edit':
-        window.api.dangerMessageBaseInfoUpdate({ id: row.id, status: 2 }).then((res: any) => {
-          const { err_code } = res.data;
-          if (err_code === 0) {
-            this.$message.success('审核成功');
-            this.success();
-          } else {
-            this.$message.error('审核失败');
-          }
-        });
+      case 'success':
+        if (row.status === 0) {
+          window.api.dangerCheckMessageBaseInfoUpdate({ id: row.id, status: 1 }).then((res: any) => {
+            const { err_code } = res.data;
+            if (err_code === 0) {
+              this.$message.success('审核成功');
+              this.success();
+            } else {
+              this.$message.error('审核失败');
+            }
+          });
+        }
+        if (row.status === 1) {
+          this.$message.info('审核已经通过')
+          return false;
+        }
+        if (row.status === 2) {
+          this.$message.info('审核已经拒绝')
+          return false;
+        }
+        break;
+      case 'reject':
+        this.reasonModalShow = true;
+        this.currentId = row.id;
         break;
       default:
         console.log('hah');
     }
+  }
+
+  update() {
+    window.api.dangerCheckMessageBaseInfoUpdate({ id: this.currentId, status: 2 }).then((res: any) => {
+      const { err_code } = res.data;
+      if (err_code === 0) {
+        this.$message.success('已驳回');
+        this.success();
+      } else {
+        this.$message.error('处理失败');
+      }
+    });
+    this.cancel();
+  }
+
+  cancel() {
+    this.reasonModalShow = false;
   }
 
   add() {
@@ -197,10 +244,10 @@ export default class DangerCheck extends Vue {
           filterList={this.filterList}
           filterGrade={[]}
           scroll={{ x: 900 }}
-          url={'/dangerMessage/list'}
+          url={'/dangerCheckMessage/list'}
           filterParams={this.filterParams}
           outParams={this.outParams}
-          addBtn={true}
+          addBtn={false}
           exportBtn={false}
           dataType={'json'}
           rowKey={'id'}
@@ -210,6 +257,9 @@ export default class DangerCheck extends Vue {
           on-menuClick={this.tableClick}
           on-add={this.add}
         />
+        <a-modal title="请输入拒绝原因" visible={this.reasonModalShow} onOk={this.update} okText="确认" cancelText="取消" onCancel={this.cancel}>
+          <a-input ref="reject" onChange={this.changeRejectReason}></a-input>
+        </a-modal>
       </div>
     );
   }

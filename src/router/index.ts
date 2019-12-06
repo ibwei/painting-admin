@@ -492,6 +492,30 @@ export const asyncRouterMap: routerItem[] = [
       },
     ],
   },
+  {
+    path: '/statistics',
+    icon: 'pie-chart',
+    name: '统计管理',
+    component: getComponent('statistics/index'),
+    permission: true,
+    meta: { key: 'statistics' },
+    children: [
+      {
+        path: 'statisticsdanger',
+        name: '隐患统计',
+        component: getComponent('statistics/danger/index'),
+        permission: true,
+        meta: { key: 'statisticsdanger' },
+      },
+      {
+        path: 'statisticsdanger',
+        name: '巡检统计',
+        component: getComponent('statistics/inspection/index'),
+        permission: true,
+        meta: { key: 'statisticsinspection' },
+      },
+    ],
+  },
 ];
 
 Vue.use(Router);

@@ -196,6 +196,21 @@ export default class Api {
       fetchType: 'json',
       method: 'post',
     },
+    dangerCheckMessageBaseInfoAdd: {
+      url: '/dangerCheckMessage/add',
+      fetchType: 'json',
+      method: 'post',
+    },
+    dangerCheckMessageBaseInfoUpdate: {
+      url: '/dangerCheckMessage/update',
+      fetchType: 'json',
+      method: 'post',
+    },
+    dangerCheckMessageBaseInfoDelete: {
+      url: '/dangerCheckMessage/delete',
+      fetchType: 'json',
+      method: 'post',
+    },
   };
 
   // 对外暴露方法

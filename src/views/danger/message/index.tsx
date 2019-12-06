@@ -64,7 +64,7 @@ export default class Message extends Vue {
       dataIndex: 'createTime',
     },
     {
-      title: '审核结果',
+      title: '审核状态',
       dataIndex: 'status',
       customRender: this.typeRender,
     },
@@ -78,11 +78,17 @@ export default class Message extends Vue {
         if (val.status === 0) {
           return 'blue';
         }
+        if (val.status === 1) {
+          return 'gray';
+        }
         return 'green';
       },
       text: (val: any) => {
         if (val.status === 0) {
           return '去处理';
+        }
+        if (val.status === 1) {
+          return '查看详情'
         }
         return '查看结果';
       },
@@ -98,6 +104,8 @@ export default class Message extends Vue {
 
   editData: object = {};
 
+  openType: string = '';
+
   imageRender(url: string) {
     return <img src={url}></img>;
   }
@@ -106,11 +114,11 @@ export default class Message extends Vue {
     const colorArray: Array<string> = ['pink', 'red', 'orange', 'green', 'cyan', 'blue', 'purple'];
     let render: any = null;
     if (type === 0) {
-      render = <a-tag color="red">未审核</a-tag>;
+      render = <a-tag color="red">未提交处理</a-tag>;
     } else if (type === 1) {
       render = <a-tag color="blue">审核中</a-tag>;
     } else {
-      render = <a-tag color="green">已审核</a-tag>;
+      render = <a-tag color="green">审核完成</a-tag>;
     }
     return render;
   }
@@ -130,9 +138,20 @@ export default class Message extends Vue {
     const data = JSON.parse(JSON.stringify(row));
     switch (key) {
       case 'edit':
+        if (row.status === 1) {
+          this.openType = 'read';
+          this.title = '隐患详情'
+        }
+        if (row.status === 0) {
+          this.openType = 'edit';
+          this.title = '处理隐患';
+        }
+        if (row.status === 2) {
+          this.openType = 'read';
+          this.title = '查看处理结果'
+        }
         this.editData = data;
         this.visible = true;
-        this.title = '修改隐患信息';
         this.modelType = 'edit';
         break;
       case 'delete':
@@ -198,7 +217,7 @@ export default class Message extends Vue {
           url={'/dangerMessage/list'}
           filterParams={this.filterParams}
           outParams={this.outParams}
-          addBtn={true}
+          addBtn={false}
           exportBtn={false}
           dataType={'json'}
           rowKey={'id'}
@@ -213,8 +232,8 @@ export default class Message extends Vue {
             title={this.title}
             position={this.position}
             visible={this.visible}
-            deviceName={this.deviceName}
             type={this.modelType}
+            openType={this.openType}
             data={this.editData}
             on-close={this.closeModal}
             on-success={this.success}

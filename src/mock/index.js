@@ -22,6 +22,7 @@ const terminal = require('./terminal');
 const message = require('./message');
 const bill = require('./bill');
 const problem = require('./problem');
+const dangerCheckMessage = require('./dangerCheckMessage');
 
 module.exports = function mockInit(app) {
   app.use(bodyParser.json());
@@ -104,4 +105,10 @@ module.exports = function mockInit(app) {
   app.post('/api/bill', bill.list);
 
   app.post('/api/problem', problem.list);
+
+  app.post('/api/dangerCheckMessage/list', dangerCheckMessage.list);
+  app.post('/api/dangerCheckMessage/add', dangerCheckMessage.add);
+  app.post('/api/dangerCheckMessage/update', dangerCheckMessage.update);
+  app.post('/api/dangerCheckMessage/delete', dangerCheckMessage.delete);
+
 };

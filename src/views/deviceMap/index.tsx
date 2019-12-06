@@ -1,14 +1,14 @@
 /* eslint-disable */
 import { Component, Vue } from 'vue-property-decorator';
 import { Tag, Popover, Tree, Button, Collapse, Modal, Icon, Table, Drawer, Switch } from 'ant-design-vue';
-import './index.less';
 import { loadBmap } from '@/utils/index';
 // @ts-ignore
 import vCollapse from './components/vCollapse.vue';
 import addDevice from './components/addDevice';
 import addFacilities from './components/addFacilities';
 import addLine from './components/addLine';
-import Device from '../device/deviceList/index';
+
+import './index.less';
 
 
 function DangerOverlay(center: any, length: any) {
@@ -70,7 +70,7 @@ export default class DeviceMap extends Vue {
     this.$nextTick(() => {
       loadBmap().then((BMap: any) => {
         this.BMap = BMap;
-        this.map = new BMap.Map('monitor-map'); // 创建Map实例
+        this.map = new BMap.Map('devicemap'); // 创建Map实例
         this.map.centerAndZoom(new BMap.Point(106.514, 29.558), 13); // 初始化地图,设置中心点坐标和地图级别
         this.map.enableDragging();
         this.map.enableScrollWheelZoom();
@@ -156,16 +156,32 @@ export default class DeviceMap extends Vue {
 
   render() {
     return (
-      <div class="monitor-wrap">
-        <div id="monitor-map"></div>
+      <div class="devicemap">
+        <div id="devicemap"></div>
         <div class="statistics">
           <v-collapse on-changeMouse={this.changeMouse}></v-collapse>
+        </div>
+        <div class="switch-group">
+          <div class="swit">
+            <div class="switch-item">
+              <a-switch />
+              <span>显示管道</span>
+            </div>
+            <div class="switch-item">
+              <a-switch />
+              <span>显示设施</span>
+            </div>
+            <div class="switch-item">
+              <a-switch />
+              <span>显示设备</span>
+            </div>
+          </div>
         </div>
         <a-drawer
           width="450px"
           title={"新增" + this.addType}
           placement="right"
-          closable={false}
+          closable={true}
           on-close={this.onClose}
           visible={this.drawerVisible}
         >
