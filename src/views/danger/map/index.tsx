@@ -11,9 +11,11 @@ import {
   Table,
   Drawer,
   Switch,
+  DatePicker,
 } from 'ant-design-vue';
 import './index.less';
 import { loadBmap } from '@/utils/index';
+import InfoModal from './infoModal';
 // @ts-ignore
 
 function DangerOverlay(center: any, length: any) {
@@ -37,6 +39,8 @@ function DangerOverlay(center: any, length: any) {
     'a-tree': Tree,
     'a-icon': Icon,
     'a-switch': Switch,
+    'a-date-picker': DatePicker,
+    InfoModal,
   },
 })
 
@@ -68,6 +72,14 @@ export default class DangerMap extends Vue {
 
   data: any = null;
 
+  //隐患窗体是否显示
+  infoShow: boolean = false;
+  //隐患窗体横坐标
+  infoX: number = 0;
+  //隐患窗体纵坐标
+  infoY: number = 0;
+
+
   mounted() {
     this.$nextTick(() => {
       loadBmap().then((BMap: any) => {
@@ -79,70 +91,83 @@ export default class DangerMap extends Vue {
         this.map.enableDoubleClickZoom();
         this.map.enableContinuousZoom();
         this.map.setCurrentCity('重庆'); // 设置地图显示的城市 此项是必须设置的
-
-        let point: Array<any> = [new BMap.Point(106.554, 29.576), new BMap.Point(106.51, 29.576), new BMap.Point(106.49, 29.536), new BMap.Point(106.39, 29.516), new BMap.Point(106.60, 29.506), new BMap.Point(106.49, 29.606), new BMap.Point(106.39, 29.606)];
-
-        let point1: Array<any> = [new BMap.Point(106.55, 29.586), new BMap.Point(106.51, 29.576), new BMap.Point(106.39, 29.526), new BMap.Point(106.19, 29.516), new BMap.Point(106.66, 29.536), new BMap.Point(106.40, 29.596), new BMap.Point(106.39, 29.606)];
-
-        let marker: Array<any> = [];
+        this.drawDangerMarker();
+      });
+    });
+  }
 
 
-
-
-
-
-        /* 添加隐患标注 */
-        const count = Math.floor(Math.random() * 10 + 5);
-        const dangerList = new Array(count).fill(1);
-        let dangerPoint: Array<string> = [];
-        dangerList.map((item, index) => {
-          let x = Math.floor(Math.random() * 1000 + 30);
-          let y = Math.floor(Math.random() * 600 + 100);
-          dangerPoint[index] =
-            `<div class="container1" key=${index} style={{ top: ${y} + "px", left: ${x} + "px" }}>
+  drawDangerMarker() {
+    this.map.clearOverlays();
+    /* 添加隐患标注 */
+    //要生成标注的总个数
+    const dangerCount = Math.floor(Math.random() * 15) + 2;
+    const dangerList = new Array(dangerCount).fill(1);
+    let dangerPoint: Array<string> = [];
+    dangerList.map((item, index) => {
+      let x = Math.floor(Math.random() * 1000 + 30);
+      let y = Math.floor(Math.random() * 600 + 100);
+      dangerPoint[index] =
+        `<div class="container1" key=${index} style={{ top: ${y} + "px", left: ${x} + "px" }}>
                           <div class="wave">
                             <div class="circle"></div>
                             <div class="card"></div>
                           </div>
                         </div>`
-        });
-        DangerOverlay.prototype = new this.BMap.Overlay();
-        DangerOverlay.prototype.initialize = function(map: any) {
-          this._map = map;
-          const div = document.createElement("div");
-          div.style.position = "absolute";
-          div.style.zIndex = "99999999";
-          div.innerHTML = dangerPoint[0];
-          map.getPanes().labelPane.appendChild(div);
-          this._div = div;
-          return div;
-        }
-
-        DangerOverlay.prototype.draw = function() {
-          // 根据地理坐标转换为像素坐标，并设置给容器 
-          const position = this._map.pointToOverlayPixel(this._center);
-          this._div.style.left = position.x - this._length / 2 + "px";
-          this._div.style.top = position.y - this._length / 2 + "px";
-        }
-
-        let myDangerList: Array<any> = [];
-        point1.forEach((item, index) => {
-          // @ts-ignore
-          myDangerList[index] = new DangerOverlay(item, 100);
-          this.map.addOverlay(myDangerList[index]);
-        })
-      });
     });
+    DangerOverlay.prototype = new this.BMap.Overlay();
+    let that = this;
+    DangerOverlay.prototype.initialize = function(map: any) {
+      this._map = map;
+      const div = document.createElement("div");
+      div.style.position = "absolute";
+      div.style.zIndex = "99999999";
+      div.innerHTML = dangerPoint[0];
+      map.getPanes().labelPane.appendChild(div);
+
+      div.onclick = function(e) {
+        // @ts-ignore
+        that.openInfo(e);
+      }
+      this._div = div;
+      return div;
+    }
+
+    DangerOverlay.prototype.draw = function() {
+      // 根据地理坐标转换为像素坐标，并设置给容器 
+      const position = this._map.pointToOverlayPixel(this._center);
+      this._div.style.left = position.x - this._length / 2 + "px";
+      this._div.style.top = position.y - this._length / 2 + "px";
+    }
+
+    let myDangerList: Array<any> = [];
+    dangerList.forEach((item, index) => {
+      let x = Math.random() / 10 + 106.5;
+      let y = Math.random() / 10 + 29.5;
+      let point = new this.BMap.Point(x, y);
+      // @ts-ignore
+      myDangerList[index] = new DangerOverlay(point, 100);
+      this.map.addOverlay(myDangerList[index]);
+    })
   }
+
+  // 打开信息窗体
+  openInfo(e: any) {
+    this.infoShow = false;
+
+    this.infoX = e.clientX || e.pageX;
+    this.infoY = e.clientY || e.pageY;
+    console.log(`x=${this.infoX},y=${this.infoY}`);
+    // @ts-ignore
+    this.$refs.info.style.left = this.infoX;
+    // @ts-ignore
+    this.$refs.info.style.top = this.infoY;
+
+    this.infoShow = true;
+  }
+
   onClose() {
     this.drawerVisible = false;
-  }
-
-
-  openInfo(point: any) {
-    const sContent = '<div class="infowindow"><div class="left">发送消息</div><div class="right">新增临时任务</div></div>';
-    this.infoWindow = new this.BMap.InfoWindow(sContent);  // 创建信息窗口对象
-    this.map.openInfoWindow(this.infoWindow, point);
   }
 
   selected: boolean = false;
@@ -162,6 +187,15 @@ export default class DangerMap extends Vue {
 
   closeDrawer() {
     this.drawerVisible = false;
+  }
+
+  onDateChange(e: any) {
+    console.log(e);
+    this.drawDangerMarker();
+  }
+
+  closeInfoBox() {
+    this.infoShow = false;
   }
 
   //新建标点并且打开新增抽屉栏
@@ -187,7 +221,13 @@ export default class DangerMap extends Vue {
     return (
       <div class='danger-map'>
         <div id='dangermap'></div>
-        <div class='map-icon'>hahah</div>
+        <div class='map-operate'>
+          <div class="date">选择日期</div>
+          <div> <a-date-picker onChange={this.onDateChange} /></div>
+          <div class="info" ref="info" style={{ display: this.infoShow ? 'block' : 'none' }}>
+            <info-modal on-close={this.closeInfoBox}></info-modal>
+          </div>
+        </div>
       </div>
     );
   }
