@@ -10,6 +10,7 @@ import { tableList, FilterFormList, Opreat } from '@/interface';
     'a-button': Button,
     'a-input': Input,
     'a-modal': Modal,
+    'a-textarea': Input.TextArea,
   },
 })
 export default class DangerCheck extends Vue {
@@ -88,7 +89,6 @@ export default class DangerCheck extends Vue {
         }
         if (val.status === 1) {
           return 'green';
-
         }
         return 'red';
       },
@@ -134,8 +134,6 @@ export default class DangerCheck extends Vue {
   }
 
   changeRejectReason(e: any) {
-    // @ts-ignore
-    this.rejectReason = this.$refs.reject.stateValue;
   }
 
   handleRender(url: string, other: any) {
@@ -258,7 +256,7 @@ export default class DangerCheck extends Vue {
           on-add={this.add}
         />
         <a-modal title="请输入拒绝原因" visible={this.reasonModalShow} onOk={this.update} okText="确认" cancelText="取消" onCancel={this.cancel}>
-          <a-input ref="reject" onChange={this.changeRejectReason}></a-input>
+          <a-textarea placeholder="请输入拒绝原因" onChange={this.changeRejectReason} rows={4} />
         </a-modal>
       </div>
     );
