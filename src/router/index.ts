@@ -468,6 +468,13 @@ export const asyncRouterMap: routerItem[] = [
         meta: { key: 'public' },
         children: [
           {
+            path: 'type',
+            name: '分类管理',
+            component: getComponent('knowledgebase/public/type/index'),
+            permission: true,
+            meta: { key: 'type' },
+          },
+          {
             path: 'problem',
             name: '题库管理',
             component: getComponent('knowledgebase/public/problem/index'),
