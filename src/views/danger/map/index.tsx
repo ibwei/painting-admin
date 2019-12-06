@@ -162,8 +162,11 @@ export default class DangerMap extends Vue {
     this.$refs.info.style.left = this.infoX;
     // @ts-ignore
     this.$refs.info.style.top = this.infoY;
+    //模拟
+    setTimeout(() => {
+      this.infoShow = true;
+    }, 200)
 
-    this.infoShow = true;
   }
 
   onClose() {
@@ -190,9 +193,10 @@ export default class DangerMap extends Vue {
   }
 
   onDateChange(e: any) {
-    console.log(e);
+    this.infoShow = false;
     this.drawDangerMarker();
   }
+
 
   closeInfoBox() {
     this.infoShow = false;
@@ -223,7 +227,7 @@ export default class DangerMap extends Vue {
         <div id='dangermap'></div>
         <div class='map-operate'>
           <div class="date">选择日期</div>
-          <div> <a-date-picker onChange={this.onDateChange} /></div>
+          <div> <a-date-picker onFocus={this.closeInfoBox} onChange={this.onDateChange} /></div>
           <div class="info" ref="info" style={{ display: this.infoShow ? 'block' : 'none' }}>
             <info-modal on-close={this.closeInfoBox}></info-modal>
           </div>
