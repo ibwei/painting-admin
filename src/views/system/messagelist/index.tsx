@@ -138,14 +138,17 @@ export default class Businessmanage extends Vue {
     this.editData = {};
   }
 
-  statusRender(data: string) {
-    const colorObj: any = {
-      短信: 'rgb(250, 84, 28)',
-      站内: 'rgb(19, 194, 194)',
-      公众号: 'rgb(82, 196, 26)',
-      邮箱: 'rgb(47, 84, 235)',
-    };
-    return <a-tag color={colorObj[data]}>{data}</a-tag>;
+  statusRender(data: any[]) {
+    return (
+      <div>
+        {data.length > 0 &&
+          data.map((item, index) => (
+            <a-tag color='blue' key={index}>
+              {item}
+            </a-tag>
+          ))}
+      </div>
+    );
   }
 
   typeRender(data: string) {

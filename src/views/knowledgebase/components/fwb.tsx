@@ -1,4 +1,4 @@
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Tag } from 'ant-design-vue';
 import { quillEditor } from 'vue-quill-editor';
 
@@ -16,6 +16,8 @@ import './index.less';
   },
 })
 export default class Message extends Vue {
+  @Prop() title?: string;
+
   content: string = '';
 
   editorOption: any = {
@@ -34,17 +36,23 @@ export default class Message extends Vue {
         [{ font: [] }],
         [{ align: [] }],
         ['clean'],
-        ['image'],
+        ['image', 'video'],
       ],
     },
-    placeholder: '请输入通知内容',
+    placeholder: '请输入问题答案',
   };
 
   onEditorBlur = (e: any) => {};
 
   onEditorFocus = (e: any) => {};
 
-  onEditorReady = (e: any) => {};
+  onEditorReady = (e: any) => {
+    if (this.title) {
+      e.setText(
+        'test-test-test-test-test-test-test-test-test\ntest-test-test-test-test-test-test-test\ntest-test-test-test-test-test-test-test',
+      );
+    }
+  };
 
   render() {
     return (

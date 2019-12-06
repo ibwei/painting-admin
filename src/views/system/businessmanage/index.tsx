@@ -1,7 +1,8 @@
 import { Component, Vue } from 'vue-property-decorator';
-import { Tag, Card, Row, Col, Modal, Popconfirm } from 'ant-design-vue';
+import { Tag, Card, Row, Col, Modal, Popconfirm, Button } from 'ant-design-vue';
 import { tableList, FilterFormList, Opreat } from '@/interface';
 import AddModal from './componets/addModal';
+import './index.less';
 
 @Component({
   name: 'businessmanage',
@@ -9,10 +10,16 @@ import AddModal from './componets/addModal';
     'a-tag': Tag,
     'a-add-modal': AddModal,
     'a-popconfirm': Popconfirm,
+    'a-button': Button,
+    'a-modal': Modal,
+    'a-row': Row,
+    'a-col': Col,
   },
 })
 export default class Businessmanage extends Vue {
   visible: boolean = false;
+
+  infoVisible: boolean = false;
 
   modelType: string = 'add';
 
@@ -39,12 +46,30 @@ export default class Businessmanage extends Vue {
       align: 'center',
     },
     {
+      title: '公司信息',
+      dataIndex: 'shebeiquyu',
+      align: 'center',
+      customRender: this.btnGSRender,
+    },
+    {
       title: '状态',
       dataIndex: 'shebeistatus',
       align: 'center',
       customRender: this.statusRender,
     },
   ];
+
+  btnGSRender() {
+    return (
+      <a-button
+        onClick={() => {
+          this.infoVisible = true;
+        }}
+      >
+        查看详情
+      </a-button>
+    );
+  }
 
   filterList: FilterFormList[] = [
     {
@@ -136,6 +161,10 @@ export default class Businessmanage extends Vue {
     this.editData = {};
   }
 
+  closeInfoModal() {
+    this.infoVisible = false;
+  }
+
   success() {
     this.visible = false;
     this.editData = {};
@@ -190,6 +219,39 @@ export default class Businessmanage extends Vue {
             width='800px'
             data={this.editData}
           ></a-add-modal>
+        )}
+        {this.infoVisible && (
+          <a-modal
+            visible={this.infoVisible}
+            onCancel={this.closeInfoModal}
+            title='公司信息'
+            footer={null}
+          >
+            <div>
+              <table class='gsinfo'>
+                <tr>
+                  <td class='name'>公司名称:</td>
+                  <td>test</td>
+                </tr>
+                <tr>
+                  <td class='name'>公司类型:</td>
+                  <td>有限责任公司(台港澳法人独资)</td>
+                </tr>
+                <tr>
+                  <td class='name'>经营行业:</td>
+                  <td>软件和信息技术服务业</td>
+                </tr>
+                <tr>
+                  <td class='name'>经营状态:</td>
+                  <td>存续</td>
+                </tr>
+                <tr>
+                  <td class='name'>注册地址:</td>
+                  <td>深圳市南山区高新区科技中一路腾讯大厦35层</td>
+                </tr>
+              </table>
+            </div>
+          </a-modal>
         )}
       </div>
     );
