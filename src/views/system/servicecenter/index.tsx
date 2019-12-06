@@ -145,7 +145,7 @@ export default class Shopping extends Vue {
                 <a-card hoverable>
                   <a-card-meta title='微信公众号服务'>
                     <p slot='description'>
-                      微信公众号服务是一个非常好的服务，测试填充测试填充测试填充测试填充测试填充测试...
+                      微信公众号服务是一个非常好的服务，测试填充测试填充测试填充测试填充测...
                       <p class='express'>
                         <span style={{ marginRight: '10px' }}>到期时间:</span>无
                       </p>
