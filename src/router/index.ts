@@ -288,7 +288,7 @@ export const asyncRouterMap: routerItem[] = [
       },
       {
         path: 'patrol',
-        name: '签到距离设置',
+        name: '巡检设置',
         component: getComponent('system/patrol/index'),
         permission: true,
         meta: { key: 'patrol' },
