@@ -72,7 +72,7 @@ export default class Shopping extends Vue {
                 <a-card hoverable>
                   <a-card-meta
                     title='短信服务'
-                    description='短信服务是一个非常好的服务，测试填充测试填充测试填充测试填充测试填充测试填充测试...'
+                    description='短信服务是一个非常好的服务，测试填充测试填充测试填充测试填充测试填充测试...'
                   >
                     <a-icon slot='avatar' type='message' class='icon' />
                   </a-card-meta>
@@ -93,7 +93,7 @@ export default class Shopping extends Vue {
                 <a-card hoverable>
                   <a-card-meta
                     title='邮箱服务'
-                    description='邮箱服务是一个非常好的服务，测试填充测试填充测试填充测试填充测试填充测试填充测试...'
+                    description='邮箱服务是一个非常好的服务，测试填充测试填充测试填充测试填充测试填充测试...'
                   >
                     <a-icon slot='avatar' type='mail' class='icon' />
                   </a-card-meta>
@@ -105,27 +105,6 @@ export default class Shopping extends Vue {
                       申请试用
                     </div>
                     <div onclick={this.handleSelect} data-value='邮箱服务'>
-                      查看简介
-                    </div>
-                  </template>
-                </a-card>
-              </a-col>
-              <a-col span={6}>
-                <a-card hoverable>
-                  <a-card-meta
-                    title='微信公众号服务'
-                    description='微信公众号服务是一个非常好的服务，测试填充测试填充测试填充测试填充测试填充测试...'
-                  >
-                    <a-icon slot='avatar' type='wechat' class='icon' />
-                  </a-card-meta>
-                  <template class='ant-card-actions' slot='actions'>
-                    <div onclick={this.handleOpen} data-value='微信公众号服务'>
-                      立即开通
-                    </div>
-                    <div onclick={this.handleTry} data-value={'短信服务'}>
-                      申请试用
-                    </div>
-                    <div onclick={this.handleSelect} data-value='微信公众号服务'>
                       查看简介
                     </div>
                   </template>
@@ -166,7 +145,7 @@ export default class Shopping extends Vue {
                 <a-card hoverable>
                   <a-card-meta title='微信公众号服务'>
                     <p slot='description'>
-                      微信公众号服务是一个非常好的服务，测试填充测试填充测试填充测试填充测试填充测试...
+                      微信公众号服务是一个非常好的服务，测试填充测试填充测试填充测试填充测...
                       <p class='express'>
                         <span style={{ marginRight: '10px' }}>到期时间:</span>无
                       </p>
@@ -185,7 +164,7 @@ export default class Shopping extends Vue {
                 <a-card hoverable>
                   <a-card-meta title='组态服务'>
                     <p slot='description'>
-                      组态服务是一个非常好的服务，测试填充测试填充测试填充测试填充测试填充测试填...
+                      组态服务是一个非常好的服务，测试填充测试填充测试填充测试填充测试填充测试...
                       <p class='express'>
                         <span style={{ marginRight: '10px' }}>到期时间:</span>2019-12-03
                       </p>

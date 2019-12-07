@@ -1,6 +1,17 @@
 import { Component, Vue } from 'vue-property-decorator';
-import { Row, Col, Icon, Tree, Input, Select, Button, Collapse, Table } from 'ant-design-vue';
-import Editor from '../../components/fwb';
+import {
+  Row,
+  Col,
+  Icon,
+  Tree,
+  Input,
+  Select,
+  Button,
+  Collapse,
+  Table,
+  Modal,
+} from 'ant-design-vue';
+import AddModal from './componets/addModal';
 import './index.less';
 
 @Component({
@@ -19,19 +30,39 @@ import './index.less';
     'a-button': Button,
     'a-collapse': Collapse,
     'a-panel': Collapse.Panel,
-    'a-editor': Editor,
+    'a-add-modal': AddModal,
     'a-table': Table,
+    'a-modal': Modal,
   },
 })
 export default class PublicKnowLedge extends Vue {
+  visible: any = false;
+
+  modalvisible: any = false;
+
   onSelect() {}
 
   onCheck() {}
 
+  handleCancel() {
+    this.visible = false;
+  }
+
+  closeModal() {
+    this.modalvisible = false;
+  }
+
   oprateRender() {
     return (
       <div>
-        <a-button style={{ marginRight: '10px' }} type='primary' size='small'>
+        <a-button
+          style={{ marginRight: '10px' }}
+          type='primary'
+          size='small'
+          onClick={() => {
+            this.visible = true;
+          }}
+        >
           查看答案
         </a-button>
         <a-button style={{ marginRight: '10px' }} type='danger' size='small'>
@@ -184,7 +215,14 @@ export default class PublicKnowLedge extends Vue {
                     </a-input-group>
                   </a-col>
                   <a-col class='head-add' span={4}>
-                    <a-button type='primary'>添加问题</a-button>
+                    <a-button
+                      type='primary'
+                      onClick={() => {
+                        this.modalvisible = true;
+                      }}
+                    >
+                      添加问答
+                    </a-button>
                   </a-col>
                 </a-row>
               </a-col>
@@ -196,6 +234,26 @@ export default class PublicKnowLedge extends Vue {
             </a-row>
           </a-col>
         </a-row>
+
+        {this.visible && (
+          <a-add-modal
+            visible={this.visible}
+            handleOk={this.handleCancel}
+            handkeCancel={this.handleCancel}
+            width='800px'
+            type='update'
+          ></a-add-modal>
+        )}
+
+        {this.modalvisible && (
+          <a-add-modal
+            visible={this.modalvisible}
+            handleOk={this.closeModal}
+            handkeCancel={this.closeModal}
+            width='800px'
+            type='add'
+          ></a-add-modal>
+        )}
       </div>
     );
   }

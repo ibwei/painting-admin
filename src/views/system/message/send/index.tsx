@@ -64,7 +64,7 @@ class Send extends Vue {
               {getFieldDecorator('val', {
                 rules: [{ required: true, message: '请选择通知方式' }],
               })(
-                <a-select placeholder='请选择通知方式'>
+                <a-select mode='multiple' placeholder='请选择通知方式'>
                   <a-select-option value='a'>站内</a-select-option>
                   <a-select-option value='b'>短信</a-select-option>
                   <a-select-option value='c'>公众号</a-select-option>

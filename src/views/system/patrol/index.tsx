@@ -38,9 +38,9 @@ class Patrol extends Vue {
     const { getFieldDecorator } = this.Form;
     return (
       <div class='portal'>
-        <a-card style='width: 80%' title='巡检自动签到距离设定' bordered={false}>
+        <a-card style='width: 80%' title='巡检设置' bordered={false}>
           <a-form>
-            <a-form-item props={{ ...this.formItemLayout }} label='距离设置'>
+            <a-form-item props={{ ...this.formItemLayout }} label='巡检签到距离设置'>
               <a-input-group compact>
                 {getFieldDecorator('num', {
                   initialValue: this.data.num ? this.data.num : undefined,
