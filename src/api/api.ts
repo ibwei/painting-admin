@@ -211,6 +211,26 @@ export default class Api {
       fetchType: 'json',
       method: 'post',
     },
+    feedbackBaseInfoAdd: {
+      url: '/feedback/feedbackAdd',
+      fetchType: 'json',
+      method: 'post',
+    },
+    feedbackBaseInfoDelete: {
+      url: '/feedback/feedbackDelete',
+      fetchType: 'json',
+      method: 'post',
+    },
+    messageBoarBaseInfodAdd: {
+      url: '/messageBoard/messageBoardAdd',
+      fetchType: 'json',
+      method: 'post',
+    },
+    messageBoardBaseInfoDelete: {
+      url: '/messageBoard/messageBoardDelete',
+      fetchType: 'json',
+      method: 'post',
+    },
   };
 
   // 对外暴露方法
