@@ -70,6 +70,10 @@ export default class Feedback extends Vue {
             dataIndex: 'phone',
         },
         {
+            title: '反馈内容',
+            dataIndex: 'content',
+        },
+        {
             title: '登陆方式',
             dataIndex: 'isphone',
             customRender: this.isphone,
