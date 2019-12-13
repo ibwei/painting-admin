@@ -5,6 +5,7 @@ const dangerMessage = require('./dangerMessage');
 const dangerCheckMessage = require('./dangerCheckMessage');
 const feedback = require('./feedback');
 const messageBoard = require('./messageBoard');
+const banner = require('./banner');
 
 module.exports = function mockInit(app) {
   app.use(bodyParser.json());
@@ -33,4 +34,9 @@ module.exports = function mockInit(app) {
   app.post('/api/dangerCheckMessage/add', dangerCheckMessage.add);
   app.post('/api/dangerCheckMessage/update', dangerCheckMessage.update);
   app.post('/api/dangerCheckMessage/delete', dangerCheckMessage.delete);
+
+  app.post('/api/banner/bannerList', banner.bannerList);
+  app.post('/api/banner/add', banner.add);
+  app.post('/api/banner/update', banner.update);
+  app.post('/api/banner/delete', banner.delete);
 };

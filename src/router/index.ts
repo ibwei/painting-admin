@@ -68,6 +68,14 @@ export const asyncRouterMap: routerItem[] = [
     permission: true,
     meta: { key: 'messageBoard' },
   },
+  {
+    path: '/banner',
+    icon: 'picture',
+    name: '轮播图片管理',
+    component: getComponent('banner/index'),
+    permission: true,
+    meta: { key: 'banner' },
+  },
 ];
 
 Vue.use(Router);
