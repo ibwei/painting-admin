@@ -5,7 +5,7 @@ const Dashboard = Mock.mock({
   'actuals|12': ['@integer(30, 90)'],
   'dataList|4': [
     {
-      'name|+1': ['Customers', 'Orders', 'Revenue', 'Growth'],
+      'name|+1': ['注册用户', '今日登陆', '未处理反馈', '未处理报名'],
       'value|+1': ['@integer(10000, 40000)', '@integer(1000, 10000)', '@integer(3000, 8000)', '@integer(10, 100)'],
       'number|+1': ['@float(1, 10, 2, 2)', '@float(1, 10, 2, 2)', '@float(1, 10, 2, 2)', '@float(1, 10, 2, 2)'],
     },

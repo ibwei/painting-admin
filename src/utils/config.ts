@@ -3,8 +3,8 @@ const Logo = require('../assets/logo.png');
 const API = process.env.NODE_ENV === 'production' ? '' : '/api';
 
 const config = {
-  name: '信驰云巡检管理平台',
-  footerText: '信驰云巡检管理平台  2018 - 2019 © CQXC.allright reserved.ICP',
+  name: '品贤画室管理平台',
+  footerText: '品贤画室管理平台  2018 - 2019 © 品贤画室',
   logo: Logo,
   icon: '/favicon.ico',
   API,

@@ -53,20 +53,28 @@ export const asyncRouterMap: routerItem[] = [
     meta: { key: 'Dashboard' },
   },
   {
-    path: '/feedback',
+    path: '/studio',
     icon: 'home',
     name: '画室管理',
+    component: getComponent('studio/index'),
+    permission: true,
+    meta: { key: 'studio' },
+  },
+  {
+    path: '/courseenroll',
+    icon: 'pay-circle',
+    name: '在线报名',
+    component: getComponent('courseenroll/index'),
+    permission: true,
+    meta: { key: 'courseenroll' },
+  },
+  {
+    path: '/feedback',
+    icon: 'smile',
+    name: '反馈管理',
     component: getComponent('feedback/index'),
     permission: true,
     meta: { key: 'feedback' },
-  },
-  {
-    path: '/messageBoard',
-    icon: 'smile',
-    name: '反馈管理',
-    component: getComponent('messageBoard/index'),
-    permission: true,
-    meta: { key: 'messageBoard' },
   },
 ];
 

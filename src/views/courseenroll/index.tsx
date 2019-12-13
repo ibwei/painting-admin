@@ -1,22 +1,24 @@
 import { Component, Vue } from 'vue-property-decorator';
-import { Tag, Popover, Button } from 'ant-design-vue';
+import { Tag, Modal, Button, Table } from 'ant-design-vue';
+import moment from 'moment';
 import { tableList, FilterFormList, Opreat } from '@/interface';
 import InfoModal from './infoModal';
 
-import './index.less';
-
 @Component({
-  name: 'deviceType',
+  name: 'courseenroll',
   components: {
     'a-tag': Tag,
     'info-modal': InfoModal,
-    'a-popover': Popover,
+    'a-modal': Modal,
     'a-button': Button,
+    'a-table': Table,
   },
 })
-export default class DeviceType extends Vue {
+export default class CourseEnroll extends Vue {
   filterParams: any = {
     name: '',
+    address: [],
+    createtime: [],
     startTime: '',
     endTime: '',
   };
@@ -34,55 +36,72 @@ export default class DeviceType extends Vue {
   filterList: FilterFormList[] = [
     {
       key: 'name',
-      label: '类型名称',
+      label: 'name',
       type: 'input',
-      placeholder: '请输入设备类型名称',
+      placeholder: '请输入报名人姓名',
     },
     {
       key: 'createtime',
       label: 'Createtime',
       type: 'datetimerange',
-      placeholder: ['开始时间', '截止时间'],
+      placeholder: ['开始时间', '结束时间'],
       value: ['startTime', 'endTime'],
     },
   ];
 
+
   tableList: tableList[] = [
     {
-      title: '类别ID',
+      title: '序号',
       dataIndex: 'id',
     },
     {
-      title: '设备类型名称',
+      title: '姓名',
       dataIndex: 'name',
+      customRender: this.nameRender,
     },
     {
-      title: '类型图标',
-      dataIndex: 'image',
-      customRender: this.imageRender,
+      title: '电话',
+      dataIndex: 'phone',
     },
     {
-      title: '基础属性1',
-      dataIndex: 'basicProperty1',
+      title: '微信号',
+      dataIndex: 'wechat',
     },
     {
-      title: '基础属性2',
-      dataIndex: 'basicProperty2',
+      title: '用户设备',
+      dataIndex: 'device',
+      customRender: this.device,
     },
     {
-      title: '创建时间',
-      dataIndex: 'createTime',
+      title: '所报课程',
+      dataIndex: 'course_id',
+      customRender: this.courseRender,
+    },
+    {
+      title: '报名时间',
+      dataIndex: 'created_at',
     },
   ];
-
 
   opreat: Opreat[] = [
     {
       key: 'edit',
       rowKey: 'id',
-      color: 'blue',
-      text: '编辑',
+      color(value: any) {
+        if (value.status === 0) {
+          return 'blue';
+        }
+        return 'green';
+      },
+      text(value: any) {
+        if (value.status === 0) {
+          return '去处理'
+        }
+        return '查看结果';
+      },
       roles: true,
+      popconfirm: false,
     },
     {
       key: 'delete',
@@ -94,7 +113,11 @@ export default class DeviceType extends Vue {
     },
   ];
 
-  title: string = '新增设备类型';
+  changeVis: boolean = false;
+
+  detailVis: boolean = false;
+
+  title: string = '新增报名';
 
   visible: boolean = false;
 
@@ -102,28 +125,60 @@ export default class DeviceType extends Vue {
 
   editData: object = {};
 
-  typeRender(type: string) {
-    const colorArray: Array<string> = ['pink', 'red', 'orange', 'green', 'cyan', 'blue', 'purple'];
-    const index = Math.floor(Math.random() * 7);
-    return <a-tag color={colorArray[index]}>{type}</a-tag>;
+  dataSource: Array<any> = [];
+
+  //打开地图的入口 [查看|编辑]
+  openType: string = '';
+
+  //地图需要展示的图形 [多边形,圆形,自定义等]
+  type: string = '';
+
+  handleOk() {
+    this.detailVis = true;
   }
 
-  imageRender(type: string) {
-    return <img src={type} alt='设备类型图片' />;
+  nameRender(name: string, row: any) {
+    return (
+      <a-tag color="green">{name}</a-tag>
+    )
   }
 
+  courseRender(courseId: number, row: any) {
+    return (
+      <a-tag type="primary">课程名:绘画兴趣班 学费:6500</a-tag>
+    )
+  }
+
+  device(device: number) {
+    if (device === 0) {
+      return (
+        <a-tag color={'green'}>手机</a-tag>
+      )
+    }
+    return <a-tag color={'blue'}>PC</a-tag>
+
+  }
+
+  handleCancel() {
+    this.detailVis = false;
+  }
 
   tableClick(key: string, row: any) {
     const data = JSON.parse(JSON.stringify(row));
+    this.type = row.type;
     switch (key) {
       case 'edit':
         this.editData = data;
         this.visible = true;
-        this.title = '修改设备类型';
-        this.modelType = 'edit';
+        if (row.status === 0) {
+          this.title = '处理报名';
+        } else {
+          this.title = '查看报名处理结果';
+        }
+        this.type = 'edit';
         break;
       case 'delete':
-        window.api.deviceTypeBaseInfoDelete({ id: row.id }).then((res: any) => {
+        window.api.feedbackDelete({ id: row.id }).then((res: any) => {
           const { err_code } = res.data;
           if (err_code === 0) {
             this.$message.success('删除成功');
@@ -139,8 +194,8 @@ export default class DeviceType extends Vue {
   }
 
   add() {
-    this.title = '添加设备类型';
-    this.modelType = 'add';
+    this.title = '新增报名';
+    this.type = 'add';
     this.visible = true;
     this.editData = {};
   }
@@ -150,27 +205,11 @@ export default class DeviceType extends Vue {
     this.editData = {};
   }
 
-  position: any;
-
   success() {
     this.visible = false;
-    const Table: any = this.$refs.baseInfoTable;
+    const Table2: any = this.$refs.baseInfoTable;
     this.editData = {};
-    Table.reloadTable();
-  }
-
-
-  expandedRowRender(record: any) {
-    return (
-      <div>
-        <div>
-          {record.ownProperty1}
-        </div>
-        <div>
-          {record.ownProperty2}
-        </div>
-      </div>
-    );
+    Table2.reloadTable();
   }
 
   render() {
@@ -182,11 +221,12 @@ export default class DeviceType extends Vue {
           filterList={this.filterList}
           filterGrade={[]}
           scroll={{ x: 900 }}
-          url={'deviceType/deviceTypeList'}
+          url={'/feedback/feedbackList'}
           filterParams={this.filterParams}
           outParams={this.outParams}
-          addBtn={true}
+          addBtn={false}
           exportBtn={false}
+          opreatWidth={'120px'}
           dataType={'json'}
           rowKey={'id'}
           opreat={this.opreat}
@@ -194,16 +234,9 @@ export default class DeviceType extends Vue {
           backParams={this.BackParams}
           on-menuClick={this.tableClick}
           on-add={this.add}
-          expandedRowRender={this.expandedRowRender}
         />
-        <info-modal
-          title={this.title}
-          visible={this.visible}
-          type={this.modelType}
-          data={this.editData}
-          on-close={this.closeModal}
-          on-success={this.success}
-        />
+        {this.visible ? (<info-modal on-close={this.closeModal} on-success={this.success} data={this.editData} type={this.type} title={this.title} visible={this.visible}
+        ></info-modal>) : ''}
       </div>
     );
   }

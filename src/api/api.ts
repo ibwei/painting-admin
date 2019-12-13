@@ -32,7 +32,6 @@ export default class Api {
   // 请求列表，在这里添加相应接口
   apiList: ApiList = {
     //用户类
-
     login: {
       url: '/user/login',
       fetchType: 'json',
@@ -48,17 +47,29 @@ export default class Api {
       fetchType: 'json',
       method: 'post',
     },
-
     //看板类
-
     dashboard: {
       url: '/dashboard',
       fetchType: 'json',
       method: 'post',
     },
-
-    //画室表
-
+    // 反馈表类
+    feedbackAdd: {
+      url: '/feedback/feedbackAdd',
+      fetchType: 'json',
+      method: 'post',
+    },
+    feedbackUpdate: {
+      url: '/feedback/feedbackUpdate',
+      fetchType: 'json',
+      method: 'post',
+    },
+    feedbackDelete: {
+      url: '/feedback/feedbackDelete',
+      fetchType: 'json',
+      method: 'post',
+    },
+    // 画室表
     dangerMessageBaseInfoAdd: {
       url: '/dangerMessage/add',
       fetchType: 'json',
@@ -74,7 +85,6 @@ export default class Api {
       fetchType: 'json',
       method: 'post',
     },
-
     //课程表
   };
 

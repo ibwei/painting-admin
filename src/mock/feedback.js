@@ -12,12 +12,15 @@ const BaseInfoData = Mock.mock({
   'list|100': [{
     id: '@id',
     name: '@cname',
+    wechat: 'wechat@integer(1,100)',
     'phone|13000000000-19999999999': 100,
     content: '@cparagraph',
-    createTime: '@datetime',
-    'status|1': [0, 1],
-    'isphone|1': [0, 1],
-  }, ],
+    created_at: '@datetime',
+    updated_at: '',
+    result: '',
+    'status|1': [0],
+    'device|1': [0, 1],
+  },],
 });
 
 let database = BaseInfoData.list;

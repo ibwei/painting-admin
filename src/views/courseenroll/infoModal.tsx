@@ -10,6 +10,8 @@ import {
   Button,
 } from 'ant-design-vue';
 
+import { getCurrentDate } from '../../utils/index';
+
 @Component({
   components: {
     'a-modal': Modal,
@@ -22,6 +24,7 @@ import {
     'a-radio-group': Radio.Group,
     'a-date-picker': DatePicker,
     'a-cascader': Cascader,
+    'a-textarea': Input.TextArea,
   },
   props: {
     Form,
@@ -36,7 +39,6 @@ class InfoModal extends Vue {
 
   @Prop() data!: any;
 
-  @Prop() changeDetail?: any;
 
   formItemLayout = {
     labelCol: {
@@ -50,10 +52,15 @@ class InfoModal extends Vue {
   };
 
   submit() {
+    console.log('haha');
     this.$props.Form.validateFields((err: any, values: any) => {
       if (!err) {
         if (this.type === 'edit') {
-          window.api.areaBaseInfoUpdate({ id: this.data.id, ...values }).then((res: any) => {
+          if (this.data.status === 1) {
+            this.cancel();
+            return false;
+          }
+          window.api.feedbackUpdate({ id: this.data.id, status: 1, updated_at: getCurrentDate(), ...values }).then((res: any) => {
             const {
               result: { resultCode, resultMessage },
             } = res.data;
@@ -66,7 +73,7 @@ class InfoModal extends Vue {
             }
           });
         } else if (this.type === 'add') {
-          window.api.areaBaseInfoAdd(values).then((res: any) => {
+          window.api.feedbackAdd(values).then((res: any) => {
             const {
               err_code,
               result: { resultMessage },
@@ -88,27 +95,8 @@ class InfoModal extends Vue {
     this.$emit('close');
   }
 
-  showMap(type: string) {
-    this.$emit('showEditMap', type);
-  }
-
   render() {
     const { getFieldDecorator } = this.Form;
-    console.log(this.type);
-    console.log(this);
-    const formItem = () => (
-      <div style={{ display: this.type === 'edit' ? 'block' : 'none' }}>
-        <a-form-item {...{ props: this.formItemLayout }} label="关联管道">
-          <a-button onClick={this.$props.changeDetail.bind(this, 'guandao')}>选择管道</a-button>
-        </a-form-item>
-        <a-form-item {...{ props: this.formItemLayout }} label="关联设施">
-          <a-button onClick={this.$props.changeDetail.bind(this, 'sheshi')}>选择设施</a-button>
-        </a-form-item>
-        <a-form-item {...{ props: this.formItemLayout }} label="关联设备">
-          <a-button onClick={this.$props.changeDetail.bind(this, 'shebei')}>选择设备</a-button>
-        </a-form-item>
-      </div>
-    );
     return (
       <a-modal
         title={this.title}
@@ -117,19 +105,20 @@ class InfoModal extends Vue {
         on-cancel={this.cancel}
       >
         <a-form>
-          <a-form-item {...{ props: this.formItemLayout }} label="区域名称">
-            {getFieldDecorator('name', {
-              initialValue: this.data.name,
-              rules: [{ required: true, message: '请输入区域名' }],
-            })(<a-input placeholder="请输入区域名"></a-input>)}
-          </a-form-item>
-          <a-form-item {...{ props: this.formItemLayout }} label="区域范围">
-            {getFieldDecorator('type', {
-              initialValue: this.data.type,
-              rules: [{ required: true, message: '请选择类型' }],
-            })(<a-button onClick={this.showMap.bind(null, 'edit')}>选取区域范围</a-button>)}
-          </a-form-item>
-          {formItem()}
+          {this.data.status === 0 ? (<a-form-item {...{ props: this.formItemLayout }} label="处理结果">
+            {getFieldDecorator('result', {
+              initialValue: this.data.result,
+              rules: [{ required: true, message: '请输入处理结果' }],
+            })(<a-textarea placeholder='请输入处理结果,如:已经联系报名用户。' rows={5}></a-textarea>)}
+          </a-form-item>) : (
+              <div><a-form-item {...{ props: this.formItemLayout }} label="处理结果">
+                <div>{this.data.result}</div>
+              </a-form-item>
+                <a-form-item {...{ props: this.formItemLayout }} label="处理时间">
+                  <div>{this.data.updated_at}</div>
+                </a-form-item>
+              </div>)
+          }
         </a-form>
       </a-modal>
     );
@@ -142,6 +131,5 @@ export default Form.create({
     visible: Boolean,
     type: String,
     data: Object,
-    changeDetail: Function,
   },
 })(InfoModal);

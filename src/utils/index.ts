@@ -1,3 +1,4 @@
+/* eslint-disable */
 export function param2Obj(url: string): { token?: string } {
   const search = url.split('?')[1];
   if (!search) {
@@ -240,3 +241,15 @@ export const loadDrawingManager = () =>
     };
     script.onreadystatechange = script.onload;
   });
+
+export function getCurrentDate() {
+  let date = new Date();
+  let y = date.getFullYear();
+  let m: any = date.getMonth() + 1;
+  m = m < 10 ? '0' + m : m;
+  let d = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
+  let h = date.getHours() < 10 ? '0' + date.getHours() : date.getHours();
+  let f = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();
+  let s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
+  return y + '-' + m + '-' + d + ' ' + h + ':' + f + ':' + s;
+}

@@ -28,7 +28,7 @@ class Login extends Vue {
 
   loading = false;
 
-  created() {}
+  created() { }
 
   @Emit()
   submitForm() {
@@ -73,7 +73,7 @@ class Login extends Vue {
         <h2 class='loginTxt'>
           欢迎使用
           <br />
-          信驰云巡检管理平台
+          品贤画室管理平台
         </h2>
         <div class='loginForm'>
           <div class='logo'>
@@ -83,12 +83,12 @@ class Login extends Vue {
           <a-form ref='loginForm' on-submit={this.submitForm}>
             <a-form-item>
               {getFieldDecorator('username', {
-                rules: [{ required: true, message: 'Please enter a user name' }],
+                rules: [{ required: true, message: '请输入用户名字' }],
               })(
                 <a-input
                   id='username'
                   prefix-icon='iconfont-user'
-                  placeholder='Please enter a user name'
+                  placeholder='请输入用户名字'
                 >
                   <a-icon slot='prefix' type='user' />
                 </a-input>,
@@ -96,14 +96,14 @@ class Login extends Vue {
             </a-form-item>
             <a-form-item>
               {getFieldDecorator('password', {
-                rules: [{ required: true, message: 'Please enter a password' }],
+                rules: [{ required: true, message: '请输入密码' }],
               })(
                 <a-input
                   id='password'
                   prefix-icon='iconfont-lock'
                   type='password'
                   on-pressEnter={this.submitForm}
-                  placeholder='Please enter a user name'
+                  placeholder='请输入密码'
                 >
                   <a-icon slot='prefix' type='lock' />
                 </a-input>,
@@ -116,8 +116,7 @@ class Login extends Vue {
             </a-form-item>
           </a-form>
           <div class='tips'>
-            <span>username：admin</span>
-            <span class='right'>password：admin</span>
+            <span>请妥善保管密码</span>
           </div>
         </div>
       </div>
