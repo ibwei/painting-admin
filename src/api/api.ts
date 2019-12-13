@@ -31,6 +31,8 @@ export default class Api {
 
   // 请求列表，在这里添加相应接口
   apiList: ApiList = {
+    //用户类
+
     login: {
       url: '/user/login',
       fetchType: 'json',
@@ -46,141 +48,17 @@ export default class Api {
       fetchType: 'json',
       method: 'post',
     },
+
+    //看板类
+
     dashboard: {
       url: '/dashboard',
       fetchType: 'json',
       method: 'post',
     },
-    baseInfoAdd: {
-      url: '/customers/baseInfo/add',
-      fetchType: 'json',
-      method: 'post',
-    },
-    baseInfoUpdate: {
-      url: '/customers/baseInfo/update',
-      fetchType: 'json',
-      method: 'post',
-    },
-    baseInfoDelete: {
-      url: '/customers/baseInfo/delete',
-      fetchType: 'json',
-      method: 'post',
-    },
-    gpsToAddress: {
-      url: 'https://api.map.baidu.com/geocoder/v2/',
-      method: 'get',
-      fetchType: 'jsonp',
-    },
-    areaBaseInfoAdd: {
-      url: '/area/baseInfo/add',
-      fetchType: 'json',
-      method: 'post',
-    },
-    areaBaseInfoUpdate: {
-      url: '/area/baseInfo/update',
-      fetchType: 'json',
-      method: 'post',
-    },
-    areaBaseInfoDelete: {
-      url: '/area/baseInfo/delete',
-      fetchType: 'json',
-      method: 'post',
-    },
-    deviceBaseInfoAdd: {
-      url: '/device/baseInfo/add',
-      fetchType: 'json',
-      method: 'post',
-    },
-    deviceBaseInfoUpdate: {
-      url: '/device/baseInfo/update',
-      fetchType: 'json',
-      method: 'post',
-    },
-    deviceBaseInfoDelete: {
-      url: '/device/baseInfo/delete',
-      fetchType: 'json',
-      method: 'post',
-    },
-    deviceTypeBaseInfoAdd: {
-      url: '/deviceType/baseInfo/add',
-      fetchType: 'json',
-      method: 'post',
-    },
-    deviceTypeBaseInfoUpdate: {
-      url: '/deviceType/baseInfo/update',
-      fetchType: 'json',
-      method: 'post',
-    },
-    deviceTypeBaseInfoDelete: {
-      url: '/deviceType/baseInfo/delete',
-      fetchType: 'json',
-      method: 'post',
-    },
-    facilitiesBaseInfoAdd: {
-      url: '/facilities/baseInfo/add',
-      fetchType: 'json',
-      method: 'post',
-    },
-    facilitiesBaseInfoUpdate: {
-      url: '/facilities/baseInfo/update',
-      fetchType: 'json',
-      method: 'post',
-    },
-    facilitiesBaseInfoDelete: {
-      url: '/facilities/baseInfo/delete',
-      fetchType: 'json',
-      method: 'post',
-    },
-    facilitiesTypeBaseInfoAdd: {
-      url: '/facilitiesType/baseInfo/add',
-      fetchType: 'json',
-      method: 'post',
-    },
-    facilitiesTypeBaseInfoUpdate: {
-      url: '/facilitiesType/baseInfo/update',
-      fetchType: 'json',
-      method: 'post',
-    },
-    facilitiesTypeBaseInfoDelete: {
-      url: '/facilitiesType/baseInfo/delete',
-      fetchType: 'json',
-      method: 'post',
-    },
-    lineTypeBaseInfoAdd: {
-      url: '/lineTypeType/baseInfo/add',
-      fetchType: 'json',
-      method: 'post',
-    },
-    lineTypeBaseInfoUpdate: {
-      url: '/lineType/baseInfo/update',
-      fetchType: 'json',
-      method: 'post',
-    },
-    lineTypeBaseInfoDelete: {
-      url: '/lineType/baseInfo/delete',
-      fetchType: 'json',
-      method: 'post',
-    },
-    inspectPlanAdd: {
-      url: '/inspectPlan/add',
-      fetchType: 'json',
-      method: 'post',
-    },
-    inspectPlanUpdate: {
-      url: '/inspectPlan/update',
-      fetchType: 'json',
-      method: 'post',
-    },
-    linspectPlanDelete: {
-      url: '/inspectPlan/delete',
-      fetchType: 'json',
-      method: 'post',
-    },
-    inspectRoad: {
-      url: '/inspectRoad',
-      fetchType: 'json',
-      method: 'post',
-    },
+
+    //画室表
+
     dangerMessageBaseInfoAdd: {
       url: '/dangerMessage/add',
       fetchType: 'json',
@@ -196,41 +74,8 @@ export default class Api {
       fetchType: 'json',
       method: 'post',
     },
-    dangerCheckMessageBaseInfoAdd: {
-      url: '/dangerCheckMessage/add',
-      fetchType: 'json',
-      method: 'post',
-    },
-    dangerCheckMessageBaseInfoUpdate: {
-      url: '/dangerCheckMessage/update',
-      fetchType: 'json',
-      method: 'post',
-    },
-    dangerCheckMessageBaseInfoDelete: {
-      url: '/dangerCheckMessage/delete',
-      fetchType: 'json',
-      method: 'post',
-    },
-    feedbackBaseInfoAdd: {
-      url: '/feedback/feedbackAdd',
-      fetchType: 'json',
-      method: 'post',
-    },
-    feedbackBaseInfoDelete: {
-      url: '/feedback/feedbackDelete',
-      fetchType: 'json',
-      method: 'post',
-    },
-    messageBoarBaseInfodAdd: {
-      url: '/messageBoard/messageBoardAdd',
-      fetchType: 'json',
-      method: 'post',
-    },
-    messageBoardBaseInfoDelete: {
-      url: '/messageBoard/messageBoardDelete',
-      fetchType: 'json',
-      method: 'post',
-    },
+
+    //课程表
   };
 
   // 对外暴露方法
