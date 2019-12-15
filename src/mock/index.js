@@ -3,7 +3,6 @@ const login = require('./login');
 const dashboard = require('./dashboard');
 const feedback = require('./feedback');
 
-
 module.exports = function mockInit(app) {
   app.use(bodyParser.json());
   app.use(

@@ -86,6 +86,24 @@ export default class Api {
       method: 'post',
     },
     //课程表
+
+    //轮播表
+
+    bannerBaseInfoAdd: {
+      url: '/banner/add',
+      fetchType: 'json',
+      method: 'post',
+    },
+    bannerBaseInfoUpdate: {
+      url: '/banner/update',
+      fetchType: 'json',
+      method: 'post',
+    },
+    bannerBaseInfoDelete: {
+      url: '/banner/delete',
+      fetchType: 'json',
+      method: 'post',
+    },
   };
 
   // 对外暴露方法
