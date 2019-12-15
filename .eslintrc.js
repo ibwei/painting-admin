@@ -14,6 +14,7 @@ module.exports = {
     'no-plusplus': 'off',
     'guard-for-in': 'off',
     indent: 'off',
+    'self-closing': 'off',
     semi: 'off',
     'prefer-destructuring': 'off',
     'prefer-promise-reject-errors': 'off',

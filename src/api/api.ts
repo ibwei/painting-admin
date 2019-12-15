@@ -69,19 +69,20 @@ export default class Api {
       fetchType: 'json',
       method: 'post',
     },
-    // 画室表
-    dangerMessageBaseInfoAdd: {
-      url: '/dangerMessage/add',
+
+    // 课程报名表
+    courseEnrollAdd: {
+      url: '/courseEnroll/courseEnrollAdd',
       fetchType: 'json',
       method: 'post',
     },
-    dangerMessageBaseInfoUpdate: {
-      url: '/dangerMessage/update',
+    courseEnrollUpdate: {
+      url: '/courseEnroll/courseEnrollUpdate',
       fetchType: 'json',
       method: 'post',
     },
-    dangerMessageBaseInfoDelete: {
-      url: '/dangerMessage/delete',
+    courseEnrollDelete: {
+      url: '/courseEnroll/courseEnrollDelete',
       fetchType: 'json',
       method: 'post',
     },

@@ -8,7 +8,10 @@ import {
   InputNumber,
   Cascader,
   Button,
+  Spin,
 } from 'ant-design-vue';
+
+import './infoModal.less';
 
 import { getCurrentDate } from '../../utils/index';
 
@@ -25,6 +28,7 @@ import { getCurrentDate } from '../../utils/index';
     'a-date-picker': DatePicker,
     'a-cascader': Cascader,
     'a-textarea': Input.TextArea,
+    'a-spin': Spin,
   },
   props: {
     Form,
@@ -64,6 +68,7 @@ class InfoModal extends Vue {
               result: this.data.result,
             })
             .then((res: any) => {
+              this.spinShow = false;
               const { resultCode, resultMessage } = res.data;
               if (!resultCode) {
                 this.$message.success(resultMessage);
@@ -100,6 +105,8 @@ class InfoModal extends Vue {
     this.data.result = e.target.value;
   }
 
+  spinShow: boolean = false;
+
   render() {
     const { getFieldDecorator } = this.Form;
     return (
@@ -109,6 +116,13 @@ class InfoModal extends Vue {
         on-ok={this.submit}
         on-cancel={this.cancel}
       >
+        {this.spinShow ? (
+          <div class='spin'>
+            <a-spin tip='正在发送邮件,请稍后...'></a-spin>
+          </div>
+        ) : (
+          ''
+        )}
         <a-form>
           {this.data.status === 0 ? (
             <a-form-item {...{ props: this.formItemLayout }} label='回复该反馈'>
