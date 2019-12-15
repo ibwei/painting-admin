@@ -28,7 +28,7 @@ class Login extends Vue {
 
   loading = false;
 
-  created() { }
+  created() {}
 
   @Emit()
   submitForm() {
@@ -39,21 +39,23 @@ class Login extends Vue {
           .login({ ...values })
           .then(res => {
             this.loading = false;
-            const {
-              result: { resultCode, resultMessage },
-            } = res.data;
+            const { resultCode, resultMessage, data } = res.data;
             if (resultCode !== 0) {
-              this.$message.error(resultMessage || 'unkown error');
+              this.$message.error(resultMessage || '未知错误');
             } else {
               this.$message.success(resultMessage);
-              this.$store
-                .dispatch('getUserInfo')
-                .then(() => {
-                  this.$router.push('/');
-                })
-                .catch(error => {
-                  this.$message.error(error);
-                });
+              //将token 保存在本地
+              localStorage.setItem('token', data.token);
+              setTimeout(() => {
+                this.$store
+                  .dispatch('getUserInfo')
+                  .then(() => {
+                    this.$router.push('/');
+                  })
+                  .catch(error => {
+                    this.$message.error(error);
+                  });
+              }, 200);
             }
           })
           .catch((errs: any) => {
@@ -85,11 +87,7 @@ class Login extends Vue {
               {getFieldDecorator('username', {
                 rules: [{ required: true, message: '请输入用户名字' }],
               })(
-                <a-input
-                  id='username'
-                  prefix-icon='iconfont-user'
-                  placeholder='请输入用户名字'
-                >
+                <a-input id='username' prefix-icon='iconfont-user' placeholder='请输入用户名字'>
                   <a-icon slot='prefix' type='user' />
                 </a-input>,
               )}

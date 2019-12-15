@@ -8,7 +8,7 @@ import { message } from 'ant-design-vue';
 import config from '@/utils/config';
 import router from '@/router';
 
-axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+/* axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded'; */
 
 const service = axios.create({
   baseURL: process.env.NODE_ENV === 'production' ? '/monitor' : '/api', // api的base_url
@@ -19,11 +19,11 @@ const service = axios.create({
 });
 
 const fetch = (options: {
-url: string,
-method: string,
-data?: object,
-fetchType?: string,
-headers?: any,
+  url: string;
+  method: string;
+  data?: object;
+  fetchType?: string;
+  headers?: any;
 }) => {
   const { data } = options;
   let { url } = options;
@@ -57,19 +57,26 @@ headers?: any,
 
   if (fetchType === 'JSONP') {
     return new Promise((resolve, reject) => {
-      jsonp(url, {
-        param: `${qs.stringify(data)}&callback`,
-        name: `jsonp_${new Date().getTime()}`,
-        timeout: 4000,
-      }, (error, result) => {
-        if (error) {
-          reject(error);
-        }
-        resolve({ statusText: 'OK', status: 200, data: result });
-      });
+      jsonp(
+        url,
+        {
+          param: `${qs.stringify(data)}&callback`,
+          name: `jsonp_${new Date().getTime()}`,
+          timeout: 4000,
+        },
+        (error, result) => {
+          if (error) {
+            reject(error);
+          }
+          resolve({ statusText: 'OK', status: 200, data: result });
+        },
+      );
     });
-  } if (fetchType === 'YQL') {
-    url = `http://query.yahooapis.com/v1/public/yql?q=select * from json where url='${options.url}?${encodeURIComponent(qs.stringify(options.data))}'&format=json`;
+  }
+  if (fetchType === 'YQL') {
+    url = `http://query.yahooapis.com/v1/public/yql?q=select * from json where url='${
+      options.url
+    }?${encodeURIComponent(qs.stringify(options.data))}'&format=json`;
   } else if (fetchType === 'JSON') {
     return service({
       url,
@@ -91,47 +98,49 @@ headers?: any,
 };
 
 interface Option {
-  url: string,
-  method: string,
-  data?: object,
-  fetchType?: string,
-  headers?: any,
+  url: string;
+  method: string;
+  data?: object;
+  fetchType?: string;
+  headers?: any;
 }
 
 export default function request(options: Option): Promise<any> {
-  return fetch(options).then((response: any) => {
-    const { statusText, status } = response;
-    let { data } = response;
-    if (data instanceof Array) {
-      data = {
-        list: data,
-      };
-    }
-    if (response.data.result && response.data.result.resultCode === 3) {
-      if (config.noLoginList.indexOf(window.location.hash) < 0) {
-        router.replace('/login');
+  return fetch(options)
+    .then((response: any) => {
+      const { statusText, status } = response;
+      let { data } = response;
+      if (data instanceof Array) {
+        data = {
+          list: data,
+        };
       }
-      return Promise.reject(new Error(response.data.result.resultMessage));
-    }
-    return Promise.resolve({
-      success: true,
-      message: statusText,
-      statusCode: status,
-      ...data,
+      if (response.data.result && response.data.result.resultCode === 3) {
+        if (config.noLoginList.indexOf(window.location.hash) < 0) {
+          router.replace('/login');
+        }
+        return Promise.reject(new Error(response.data.result.resultMessage));
+      }
+      return Promise.resolve({
+        success: true,
+        message: statusText,
+        statusCode: status,
+        ...data,
+      });
+    })
+    .catch(error => {
+      const { response } = error;
+      let msg;
+      let statusCode;
+      if (response && response instanceof Object) {
+        const { data, statusText } = response;
+        statusCode = response.status;
+        msg = data.message || statusText;
+      } else {
+        statusCode = 600;
+        msg = error.message || 'Network Error';
+      }
+      message.error(msg);
+      return Promise.reject(new Error(msg));
     });
-  }).catch((error) => {
-    const { response } = error;
-    let msg;
-    let statusCode;
-    if (response && response instanceof Object) {
-      const { data, statusText } = response;
-      statusCode = response.status;
-      msg = data.message || statusText;
-    } else {
-      statusCode = 600;
-      msg = error.message || 'Network Error';
-    }
-    message.error(msg);
-    return Promise.reject(new Error(msg));
-  });
 }

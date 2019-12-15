@@ -39,7 +39,6 @@ class InfoModal extends Vue {
 
   @Prop() data!: any;
 
-
   formItemLayout = {
     labelCol: {
       xs: { span: 24 },
@@ -52,7 +51,6 @@ class InfoModal extends Vue {
   };
 
   submit() {
-    console.log('haha');
     this.$props.Form.validateFields((err: any, values: any) => {
       if (!err) {
         if (this.type === 'edit') {
@@ -60,18 +58,21 @@ class InfoModal extends Vue {
             this.cancel();
             return false;
           }
-          window.api.feedbackUpdate({ id: this.data.id, status: 1, updated_at: getCurrentDate(), ...values }).then((res: any) => {
-            const {
-              result: { resultCode, resultMessage },
-            } = res.data;
-            if (!resultCode) {
-              this.$message.success(resultMessage);
-              this.Form.resetFields();
-              this.$emit('success');
-            } else {
-              this.$message.error(resultMessage);
-            }
-          });
+          window.api
+            .feedbackUpdate({
+              id: this.data.id,
+              result: this.data.result,
+            })
+            .then((res: any) => {
+              const { resultCode, resultMessage } = res.data;
+              if (!resultCode) {
+                this.$message.success(resultMessage);
+                this.Form.resetFields();
+                this.$emit('success');
+              } else {
+                this.$message.error(resultMessage);
+              }
+            });
         } else if (this.type === 'add') {
           window.api.feedbackAdd(values).then((res: any) => {
             const {
@@ -95,6 +96,10 @@ class InfoModal extends Vue {
     this.$emit('close');
   }
 
+  resultChange(e: any) {
+    this.data.result = e.target.value;
+  }
+
   render() {
     const { getFieldDecorator } = this.Form;
     return (
@@ -105,20 +110,24 @@ class InfoModal extends Vue {
         on-cancel={this.cancel}
       >
         <a-form>
-          {this.data.status === 0 ? (<a-form-item {...{ props: this.formItemLayout }} label="处理结果">
-            {getFieldDecorator('result', {
-              initialValue: this.data.result,
-              rules: [{ required: true, message: '请输入处理结果' }],
-            })(<a-textarea placeholder='请输入处理结果,如:已经联系反馈用户。' rows={5}></a-textarea>)}
-          </a-form-item>) : (
-              <div><a-form-item {...{ props: this.formItemLayout }} label="处理结果">
-                <div>{this.data.result}</div>
+          {this.data.status === 0 ? (
+            <a-form-item {...{ props: this.formItemLayout }} label='回复该反馈'>
+              <a-textarea
+                onChange={this.resultChange}
+                placeholder='如需回复,请在此输入回复内容,内容将以邮件方式通知反馈人。不需要回复,请直接点击确定按扭。'
+                rows={5}
+              ></a-textarea>
+            </a-form-item>
+          ) : (
+            <div>
+              <a-form-item {...{ props: this.formItemLayout }} label='处理结果'>
+                <div>{this.data.result ? this.data.result : '默认处理,没有回复任何内容 .'}</div>
               </a-form-item>
-                <a-form-item {...{ props: this.formItemLayout }} label="处理时间">
-                  <div>{this.data.updated_at}</div>
-                </a-form-item>
-              </div>)
-          }
+              <a-form-item {...{ props: this.formItemLayout }} label='处理时间'>
+                <div>{this.data.updated_at}</div>
+              </a-form-item>
+            </div>
+          )}
         </a-form>
       </a-modal>
     );

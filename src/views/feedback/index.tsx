@@ -24,11 +24,11 @@ export default class Feedback extends Vue {
   };
 
   BackParams: any = {
-    code: 'data.result.resultCode',
+    code: 'data.resultCode',
     codeOK: 0,
-    message: 'data.result.resultMessage',
-    data: 'data.entity.data',
-    total: 'data.entity.total',
+    message: 'data.resultMessage',
+    data: 'data.data',
+    total: 'data.total',
   };
 
   outParams: any = {};
@@ -49,7 +49,6 @@ export default class Feedback extends Vue {
     },
   ];
 
-
   tableList: tableList[] = [
     {
       title: '序号',
@@ -67,6 +66,10 @@ export default class Feedback extends Vue {
     {
       title: '微信号',
       dataIndex: 'wechat',
+    },
+    {
+      title: '电子邮箱',
+      dataIndex: 'email',
     },
     {
       title: '用户设备',
@@ -90,13 +93,13 @@ export default class Feedback extends Vue {
       rowKey: 'id',
       color(value: any) {
         if (value.status === 0) {
-          return 'blue'
+          return 'blue';
         }
-        return 'green'
+        return 'green';
       },
       text(value: any) {
         if (value.status === 0) {
-          return '去处理'
+          return '去处理';
         }
         return '查看结果';
       },
@@ -138,19 +141,14 @@ export default class Feedback extends Vue {
   }
 
   nameRender(name: string, row: any) {
-    return (
-      <a-tag color="green">{name}</a-tag>
-    )
+    return <a-tag color='green'>{name}</a-tag>;
   }
 
   device(device: number) {
     if (device === 0) {
-      return (
-        <a-tag color={'green'}>手机</a-tag>
-      )
+      return <a-tag color={'green'}>手机</a-tag>;
     }
-    return <a-tag color={'blue'}>PC</a-tag>
-
+    return <a-tag color={'blue'}>PC</a-tag>;
   }
 
   handleCancel() {
@@ -173,8 +171,8 @@ export default class Feedback extends Vue {
         break;
       case 'delete':
         window.api.feedbackDelete({ id: row.id }).then((res: any) => {
-          const { err_code } = res.data;
-          if (err_code === 0) {
+          const { resultCode } = res.data;
+          if (resultCode === 0) {
             this.$message.success('删除成功');
             this.success();
           } else {
@@ -208,9 +206,9 @@ export default class Feedback extends Vue {
 
   render() {
     return (
-      <div class="baseInfo-wrap">
+      <div class='baseInfo-wrap'>
         <filter-table
-          ref="baseInfoTable"
+          ref='baseInfoTable'
           tableList={this.tableList}
           filterList={this.filterList}
           filterGrade={[]}
@@ -229,8 +227,18 @@ export default class Feedback extends Vue {
           on-menuClick={this.tableClick}
           on-add={this.add}
         />
-        {this.visible ? (<info-modal on-close={this.closeModal} on-success={this.success} data={this.editData} type={this.type} title={this.title} visible={this.visible}
-        ></info-modal>) : ''}
+        {this.visible ? (
+          <info-modal
+            on-close={this.closeModal}
+            on-success={this.success}
+            data={this.editData}
+            type={this.type}
+            title={this.title}
+            visible={this.visible}
+          ></info-modal>
+        ) : (
+          ''
+        )}
       </div>
     );
   }

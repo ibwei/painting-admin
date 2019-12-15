@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import { message } from 'ant-design-vue';
 // 自定义全局组件
+//@ts-ignore
 import FilterTable from '@/components/FilterTable/index.vue';
 
 import App from '@/App';
@@ -16,6 +17,9 @@ import './styles/global.less';
 const Apis = new Api({ baseUrl: process.env.NODE_ENV === 'production' ? '/api' : '/api' });
 // 全局api
 // 配置接口
+
+//拦截路由
+
 window.api = Apis.api;
 // 第三方接口
 window.ajax = Apis;

@@ -1,14 +1,14 @@
 const Mock = require('./src/mock/index');
 
 module.exports = {
-  chainWebpack: (config) => {
+  chainWebpack: config => {
     config.module
       .rule('tsx')
       .test(/\.tsx$/)
       .use('vue-jsx-hot-loader')
       .before('babel-loader')
       .loader('vue-jsx-hot-loader');
-    config.plugin('html').tap((args) => {
+    config.plugin('html').tap(args => {
       args[0].chunksSortMode = 'none';
       return args;
     });
@@ -38,15 +38,15 @@ module.exports = {
   devServer: {
     proxy: {
       '/api': {
-        target: 'http://47.103.72.200:3000/mock/104/api/v1', // 开发环境地址
+        target: 'http://127.0.0.1/api', // 开发环境地址
         changeOrigin: true,
         pathRewrite: {
           '^/api': '/',
         },
       },
     },
-    before(app) {
+    /* before(app) {
       Mock(app);
-    },
+    }, */
   },
 };

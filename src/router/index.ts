@@ -7,8 +7,15 @@ const getComponent = require(`./import_${process.env.NODE_ENV}`);
 // 不需要权限判断的路由
 export const constantRouterMap: routerItem[] & RouterOptions['routes'] = [
   {
+    path: '/dashboard',
+    name: '数据看板',
+    component: getComponent('dashboard/index'),
+    meta: { key: 'Dashboard' },
+  },
+  {
     path: '/',
-    redirect: '/dashboard',
+    name: 'dashboard',
+    component: getComponent('dashboard/index'),
   },
   {
     path: '/login',

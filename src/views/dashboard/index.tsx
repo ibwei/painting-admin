@@ -24,11 +24,11 @@ export default class Dashboard extends Vue {
 
   created() {
     window.api.dashboard(null).then((res: returnData) => {
-      this.pageData = res.data.entity;
+      this.pageData = res.data.data;
       this.loading = false;
-      setTimeout(() => {
+      this.$nextTick(() => {
         this.init();
-      }, 200);
+      });
     });
   }
 
@@ -219,7 +219,7 @@ export default class Dashboard extends Vue {
     xs: 24,
   };
 
-  tabChange() { }
+  tabChange() {}
 
   iconList = ['team', 'shopping-cart', 'pay-circle', 'line-chart'];
 
@@ -287,9 +287,7 @@ export default class Dashboard extends Vue {
               </div>
               <div class='float-text'>
                 <p class='txt'>今日成交总额: $2,562.30</p>
-                <p class='tips'>
-                  订单系统待接入...
-                </p>
+                <p class='tips'>订单系统待接入...</p>
                 <a-button type='dashed'>
                   View Statements <a-icon type='arrow-right'></a-icon>
                 </a-button>

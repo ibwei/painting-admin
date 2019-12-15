@@ -92,7 +92,7 @@ export default class Api {
   api: Apis<any> = {};
 
   constructor(options: { baseUrl: string }) {
-    axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+    // eslint-ignore-nextline
     this.service = axios.create({
       baseURL: options.baseUrl, // api的base_url
       timeout: 20000, // 请求超时时间
@@ -140,6 +140,13 @@ export default class Api {
             message: response.data.result.resultMessage,
           });
         }
+        if (response.data.resultCode && response.data.resultCode === 401) {
+          router.replace({ name: 'login' });
+          return Promise.reject({
+            success: false,
+            message: response.data.result.resultMessage,
+          });
+        }
         return Promise.resolve({
           success: true,
           message: statusText,
@@ -149,18 +156,10 @@ export default class Api {
       })
       .catch((error: any) => {
         const { response } = error;
-        let msg;
-        let statusCode;
-        if (response && response instanceof Object) {
-          const { data, statusText } = response;
-          statusCode = response.status;
-          msg = data.message || statusText;
-        } else {
-          statusCode = 600;
-          msg = error.message || 'Network Error';
+        if (response.status === 401) {
+          router.replace({ name: 'login' });
         }
-        message.error(msg);
-        return Promise.reject({ success: false, statusCode, message: msg });
+        return Promise.reject({ success: false, status, message: response.data.err_msg });
       });
 
   fetch = (options: Options) => {
@@ -168,7 +167,7 @@ export default class Api {
     let cloneData: any = lodash.cloneDeep(data);
     cloneData = qs.stringify(cloneData);
     const headers = {
-      token: window.localStorage.getItem('token'),
+      // token: window.localStorage.getItem('token'),
       ...options.headers,
     };
 
@@ -199,6 +198,9 @@ export default class Api {
           ...headers,
         },
         data,
+        params: {
+          token: localStorage.getItem('token'),
+        },
       });
     }
     if (fetchType === 'jsonfile') {
