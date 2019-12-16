@@ -1,7 +1,9 @@
-import { Component, Vue, Emit } from 'vue-property-decorator';
-import { Button, DatePicker, Modal, Row, Col, Card, Icon, Radio } from 'ant-design-vue';
+import {Component, Vue, Emit} from 'vue-property-decorator';
+import {Button, DatePicker, Modal, Row, Col, Card, Icon, Radio} from 'ant-design-vue';
 import Chart from 'chart.js';
-import { numFormat } from '@/utils/index';
+import {numFormat} from '@/utils/index';
+// @ts-ignore
+import UploadImage from '@/components/UploadImage';
 
 import './index.less';
 
@@ -17,6 +19,7 @@ import './index.less';
     'a-col': Col,
     'a-card': Card,
     'a-icon': Icon,
+    UploadImage,
   },
 })
 export default class Dashboard extends Vue {
@@ -225,15 +228,22 @@ export default class Dashboard extends Vue {
 
   loading: boolean = true;
 
+  getImageUrl(url: string) {
+    console.log(`已经去获取到${url}`);
+  }
+
   render() {
     return (
       <div class='container'>
-        <a-row gutter={{ xs: 8, md: 12, xl: 20 }} class='dash-col'>
+        <a-row>
+          <upload-image on-uploaded={this.getImageUrl}></upload-image>
+        </a-row>
+        <a-row gutter={{xs: 8, md: 12, xl: 20}} class='dash-col'>
           <a-col span={10} xxl={10} xl={10} lg={12} md={24} sm={24} xs={24}>
-            <a-row gutter={{ xs: 8, md: 12, xl: 20 }}>
+            <a-row gutter={{xs: 8, md: 12, xl: 20}}>
               {this.pageData &&
                 this.pageData.dataList.map((item: any, index: number) => (
-                  <a-col {...{ props: this.ColLayout }} class='sub-item'>
+                  <a-col {...{props: this.ColLayout}} class='sub-item'>
                     <a-card loading={this.loading} class='dash-card'>
                       <h3>{item.name}</h3>
                       <a-icon class='icon' type={this.iconList[index]}></a-icon>
@@ -250,7 +260,7 @@ export default class Dashboard extends Vue {
                 ))}
               {!this.pageData &&
                 this.iconList.map((item: any) => (
-                  <a-col {...{ props: this.ColLayout }} class='sub-item'>
+                  <a-col {...{props: this.ColLayout}} class='sub-item'>
                     <a-card loading={this.loading} class='dash-card' style='height: 160px'>
                       ............
                     </a-card>
@@ -268,7 +278,7 @@ export default class Dashboard extends Vue {
             </a-card>
           </a-col>
         </a-row>
-        <a-row gutter={{ xs: 8, md: 12, xl: 20 }}>
+        <a-row gutter={{xs: 8, md: 12, xl: 20}}>
           <a-col span={16} xxl={16} xl={16} lg={24} md={24} sm={24} xs={24}>
             <a-card loading={this.loading} class='dash-box revenue-chart'>
               <h2 class='title'>订单统计</h2>
