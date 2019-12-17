@@ -1,9 +1,4 @@
-<<<<<<< HEAD
 import axios, {AxiosPromise, AxiosInstance} from 'axios';
-=======
-/* eslint-disabled */
-import axios, { AxiosPromise, AxiosInstance } from 'axios';
->>>>>>> e5f56309490fdfe3a8fc3d475b2b179d9c8bbb3b
 import qs from 'qs';
 import jsonp from 'jsonp';
 import lodash from 'lodash';
