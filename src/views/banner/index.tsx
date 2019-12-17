@@ -1,312 +1,317 @@
-import { Component, Vue } from 'vue-property-decorator';
-import { Tag, Modal, Button, Table } from 'ant-design-vue';
+/* eslint-disabled */
+import {Component, Vue} from 'vue-property-decorator';
+import {Tag, Modal, Button, Table, Avatar} from 'ant-design-vue';
 import moment from 'moment';
-import { tableList, FilterFormList, Opreat } from '@/interface';
+import {tableList, FilterFormList, Opreat} from '@/interface';
 import city from '@/utils/city';
 import InfoModal from './infoModal';
 
 @Component({
-    name: 'messageBoard',
-    components: {
-        'a-tag': Tag,
-        'info-modal': InfoModal,
-        'a-modal': Modal,
-        'a-button': Button,
-        'a-table': Table,
-    },
+  name: 'bannerCourselBoard',
+  components: {
+    'a-tag': Tag,
+    'info-modal': InfoModal,
+    'a-modal': Modal,
+    'a-button': Button,
+    'a-table': Table,
+    'a-avatar': Avatar,
+  },
 })
 export default class messageBoard extends Vue {
-    filterParams: any = {
-        name: '',
-        address: [],
-        createtime: [],
-        startTime: '',
-        endTime: '',
-    };
+  filterParams: any = {
+    name: '',
+    address: [],
+    createtime: [],
+    startTime: '',
+    endTime: '',
+  };
 
-    BackParams: any = {
-        code: 'data.result.resultCode',
-        codeOK: 0,
-        message: 'data.result.resultMessage',
-        data: 'data.entity.data',
-        total: 'data.entity.total',
-    };
+  BackParams: any = {
+    code: 'data.resultCode',
+    codeOK: 0,
+    message: 'data.resultMessage',
+    data: 'data.data',
+    total: 'data.total',
+  };
 
-    outParams: any = {};
+  outParams: any = {};
 
-    filterList: FilterFormList[] = [
-        {
-            key: 'name',
-            label: 'name',
-            type: 'input',
-            placeholder: '请输入区域名称',
-        },
-        {
-            key: 'address',
-            label: 'address',
-            type: 'cascader',
-            placeholder: '区域所在地址',
-            options: city,
-        },
-        {
-            key: 'createtime',
-            label: 'Createtime',
-            type: 'datetimerange',
-            placeholder: ['start date', 'end date'],
-            value: ['startTime', 'endTime'],
-        },
-    ];
+  filterList: FilterFormList[] = [
+    {
+      key: 'desc',
+      label: 'desc',
+      type: 'input',
+      placeholder: '请输入图片描述',
+    },
+    {
+      key: 'status',
+      label: 'status',
+      type: 'cascader',
+      placeholder: '请选择图片状态',
+      options: [
+        {value: 0, label: '启用'},
+        {value: 1, label: '禁用'},
+      ],
+    },
+  ];
 
-    warnListModalShow: boolean = false;
+  warnListModalShow: boolean = false;
 
-    tableList: tableList[] = [
-        // {
-        //     title: 'ID',
-        //     dataIndex: 'id',
-        //     customRender: this.nameRender,
-        // },
-        {
-            title: '姓名',
-            dataIndex: 'name',
-            customRender: this.nameRender,
-        },
-        {
-            title: '手机号码',
-            dataIndex: 'phone',
-        },
-        {
-            title: '微信号',
-            dataIndex: 'wechat',
-        },
-        {
-            title: '留言内容',
-            dataIndex: 'content',
-        },
-        {
-            title: '创建时间',
-            dataIndex: 'createTime',
-        },
-        {
-            title: '登陆方式',
-            dataIndex: 'isphone',
-            customRender: this.isPhoneRender,
-        },
-        {
-            title: '备注内容',
-            dataIndex: 'results',
-        },
-    ];
+  tableList: tableList[] = [
+    {
+      title: '序号',
+      dataIndex: 'id',
+      customRender: this.nameRender,
+    },
+    {
+      title: '图片预览',
+      dataIndex: 'url',
+      customRender: this.ImgRender,
+    },
+    {
+      title: '图片描述',
+      dataIndex: 'desc',
+    },
+    {
+      title: '跳转链接',
+      dataIndex: 'routerUrl',
+    },
+    {
+      title: '图片显示先后顺序',
+      dataIndex: 'order',
+    },
+    {
+      title: '图片状态',
+      dataIndex: 'status',
+      customRender: this.statusRender,
+    },
+  ];
 
-    opreat: Opreat[] = [
-        {
-            key: 'edit',
-            rowKey: 'id',
-            color(value: any) {
-                if (value.status === 0) {
-                    return 'red'
-                }
-                return 'blue'
+  opreat: Opreat[] = [
+    {
+      key: 'updateStatus',
+      rowKey: 'id',
+      color(value: any) {
+        if (value.status === 0) {
+          return 'red';
+        }
+        return 'blue';
+      },
+      text(value: any) {
+        if (value.status === 1) {
+          return '启用';
+        }
+        return '禁用';
+      },
+      roles: true,
+      popconfirm: true,
+      msg(value: any) {
+        return value.status === 1 ? '是否启用该轮播图片' : '是否禁用该轮播图片';
+      },
+    },
+    {
+      key: 'edit',
+      rowKey: 'id',
+      color: 'blue',
+      text: '编辑',
+      roles: true,
+    },
+    {
+      key: 'delete',
+      rowKey: 'id',
+      color: 'black',
+      text: '删除',
+      roles: true,
+      popconfirm: true,
+      msg: '是否删除该轮播图片',
+    },
+  ];
 
-            },
-            text(value: any) {
-                if (value.status === 0) {
-                    return '去处理'
-                }
-                return '已处理'
+  changeVis: boolean = false;
 
+  detailVis: boolean = false;
 
-            },
-            roles: true,
-        },
-        {
-            key: 'delete',
-            rowKey: 'id',
-            color: 'red',
-            text: '删除',
-            roles: true,
-            msg: '确定删除？',
-        },
-    ];
+  title: string = '新增图片';
 
-    changeVis: boolean = false;
+  visible: boolean = false;
 
-    detailVis: boolean = false;
+  modelType: string = 'add';
 
-    title: string = '新增区域';
+  editData: object = {};
 
-    visible: boolean = false;
+  dataSource: Array<any> = [];
 
-    modelType: string = 'add';
+  //打开地图的入口 [查看|编辑]
+  openType: string = '';
 
-    editData: object = {};
+  //地图需要展示的图形 [多边形,圆形,自定义等]
+  type: string = '';
 
-    dataSource: Array<any> = [];
+  handleOk() {
+    this.detailVis = true;
+  }
 
-    //打开地图的入口 [查看|编辑]
-    openType: string = '';
+  nameRender(name: string, row: any) {
+    return <a-tag color='green'>{name}</a-tag>;
+  }
 
-    //地图需要展示的图形 [多边形,圆形,自定义等]
-    type: string = '';
+  statusRender(status: number) {
+    return status === 0 ? '启用' : '禁用';
+  }
+  ImgRender(url: string) {
+    return <a-avatar shape='square' size={96} src={url} />;
+  }
+  handleCancel() {
+    this.detailVis = false;
+  }
 
-    handleOk() {
-        this.detailVis = true;
+  handleSelectDetail(data: string[], e?: any) {
+    const tmp: any = [];
+    const random = Math.floor(Math.random() * 10) + 1;
+    const random2 = Math.floor(Math.random() * 10) + 1;
+    data.forEach((item: any, index: number) => {
+      tmp.push({
+        name: item,
+        type: `类型${index + random}`,
+        area: `区域${index + random2}`,
+      });
+    });
+    this.dataSource = tmp;
+    this.detailVis = true;
+  }
+
+  mapVisible: boolean = false;
+
+  showMap(others: any) {
+    if (typeof others === 'object') {
+      this.type = others.type;
+      this.openType = 'read';
+    } else if (others === '异常') {
+      this.type = '异常';
+      this.openType = 'read';
+    } else {
+      this.type = others;
+      this.openType = 'edit';
     }
+    this.mapVisible = true;
+  }
 
-    nameRender(name: string, row: any) {
-        return (
-            <a-tag color="green">{name}</a-tag>
-        )
-    }
+  hideMapModal() {
+    this.mapVisible = false;
+  }
 
-    isPhoneRender(isphone: number, row: any) {
-        return (
-            <a-tag color="blue">{isphone ? '手机' : 'PC'}</a-tag>
-        )
-    }
-
-    handleCancel() {
-        this.detailVis = false;
-    }
-
-    handleSelectDetail(data: string[], e?: any) {
-        const tmp: any = [];
-        const random = Math.floor(Math.random() * 10) + 1;
-        const random2 = Math.floor(Math.random() * 10) + 1;
-        data.forEach((item: any, index: number) => {
-            tmp.push({
-                name: item,
-                type: `类型${index + random}`,
-                area: `区域${index + random2}`,
-            });
+  tableClick(key: string, row: any) {
+    const data = JSON.parse(JSON.stringify(row));
+    this.type = row.type;
+    switch (key) {
+      case 'updateStatus':
+        window.api.bannerBaseInfoUpdateStatus({id: data.id}).then((res: any) => {
+          const resultCode = res.data.resultCode;
+          if (resultCode === 0) {
+            this.$message.success('修改成功');
+            this.success();
+          } else {
+            this.$message.error('修改失败');
+          }
         });
-        this.dataSource = tmp;
-        this.detailVis = true;
-    }
-
-    genderRender(text: any) {
-        return <a-tag color={text === '多边形' ? 'blue' : 'purple'}>{text}</a-tag>;
-    }
-
-    positionRender(id: number, others: any) {
-        return <a-button onClick={this.showMap.bind(this, others)}>查看地理位置</a-button>;
-    }
-
-    areaError(num: number) {
-        return (
-            <a-tag onClick={this.showWarnDeviceList.bind(this, num)} color={num ? 'red' : 'grey'}>
-                {num ? `${num}个异常设备` : '暂无异常设备'}
-            </a-tag>
-        );
-    }
-
-    mapVisible: boolean = false;
-
-    showMap(others: any) {
-        if (typeof others === 'object') {
-            this.type = others.type;
-            this.openType = 'read';
-        } else if (others === '异常') {
-            this.type = '异常';
-            this.openType = 'read';
-        } else {
-            this.type = others;
-            this.openType = 'edit';
-
-        }
-        this.mapVisible = true;
-    }
-
-    hideMapModal() {
-        this.mapVisible = false;
-    }
-
-    tableClick(key: string, row: any) {
-        const data = JSON.parse(JSON.stringify(row));
-        this.type = row.type;
-        switch (key) {
-            case 'edit':
-                this.openType = 'edit';
-                this.editData = data;
-                this.visible = true;
-                this.title = '修改区域信息';
-                this.modelType = 'edit';
-                break;
-            case 'delete':
-                window.api.messageBoardBaseInfoDelete({ id: row.id }).then((res: any) => {
-                    const { err_code } = res.data;
-                    if (err_code === 0) {
-                        this.$message.success('删除成功');
-                        this.success();
-                    } else {
-                        this.$message.error('删除失败');
-                    }
-                });
-                break;
-            default:
-                break;
-        }
-    }
-
-    add() {
-        this.title = '添加区域';
-        this.modelType = 'add';
+        break;
+      case 'delete':
+        window.api.bannerBaseInfoDelete({id: data.id}).then((res: any) => {
+          const resultCode = res.data.resultCode;
+          if (resultCode === 0) {
+            this.$message.success('删除成功');
+            this.success();
+          } else {
+            this.$message.error('删除失败');
+          }
+        });
+        break;
+      case 'edit':
+        this.title = '编辑轮播图';
+        this.type = 'edit';
         this.visible = true;
-        this.editData = {};
-    }
+        this.editData = row;
 
-    // 关闭地理位置故障列表modal
-    hideWarnDeviceList() {
-        this.warnListModalShow = false;
+        break;
+      default:
+        break;
     }
+  }
 
-    showWarnDeviceList(num: number) {
-        if (num > 0) {
-            this.showMap('异常');
-        } else {
-            this.$message.info('无设备故障');
-        }
-    }
+  add() {
+    this.title = '添加轮播图';
+    this.type = 'add';
+    this.visible = true;
+    this.editData = {};
+  }
 
-    //编辑框传回来的edit
-    showEditMap(type: string) {
-        this.showMap(type);
-    }
+  // 关闭地理位置故障列表modal
+  hideWarnDeviceList() {
+    this.warnListModalShow = false;
+  }
 
-    closeModal() {
-        this.visible = false;
-        this.editData = {};
+  showWarnDeviceList(num: number) {
+    if (num > 0) {
+      this.showMap('异常');
+    } else {
+      this.$message.info('无设备故障');
     }
+  }
 
-    success() {
-        this.visible = false;
-        const Table2: any = this.$refs.baseInfoTable;
-        this.editData = {};
-        Table2.reloadTable();
-    }
+  //编辑框传回来的edit
+  showEditMap(type: string) {
+    this.showMap(type);
+  }
 
-    render() {
-        return (
-            <div class="baseInfo-wrap">
-                <filter-table
-                    ref="baseInfoTable"
-                    tableList={this.tableList}
-                    filterList={this.filterList}
-                    filterGrade={[]}
-                    scroll={{ x: 900 }}
-                    url={'/messageBoard/messageBoardList'}
-                    filterParams={this.filterParams}
-                    outParams={this.outParams}
-                    addBtn={true}
-                    exportBtn={false}
-                    dataType={'json'}
-                    rowKey={'id'}
-                    opreat={this.opreat}
-                    fetchType={'post'}
-                    backParams={this.BackParams}
-                    on-menuClick={this.tableClick}
-                    on-add={this.add}
-                />
-            </div>
-        );
-    }
+  closeModal() {
+    this.visible = false;
+    this.editData = {};
+  }
+
+  success() {
+    this.visible = false;
+    const Table2: any = this.$refs.baseInfoTable;
+    this.editData = {};
+    Table2.reloadTable();
+  }
+
+  render() {
+    return (
+      <div class='baseInfo-wrap'>
+        <filter-table
+          ref='baseInfoTable'
+          tableList={this.tableList}
+          filterList={this.filterList}
+          filterGrade={[]}
+          scroll={{x: 900}}
+          url={'/coursel/courselList'}
+          filterParams={this.filterParams}
+          outParams={this.outParams}
+          addBtn={true}
+          exportBtn={false}
+          dataType={'json'}
+          rowKey={'id'}
+          opreat={this.opreat}
+          opreatWidth='120px'
+          fetchType={'get'}
+          backParams={this.BackParams}
+          on-menuClick={this.tableClick}
+          on-add={this.add}
+        />
+
+        {this.visible ? (
+          <info-modal
+            on-close={this.closeModal}
+            on-success={this.success}
+            data={this.editData}
+            type={this.type}
+            title={this.title}
+            visible={this.visible}
+          ></info-modal>
+        ) : (
+          ''
+        )}
+      </div>
+    );
+  }
 }

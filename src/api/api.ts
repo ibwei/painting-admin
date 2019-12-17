@@ -91,17 +91,22 @@ export default class Api {
 
     //轮播表
     bannerBaseInfoAdd: {
-      url: '/banner/add',
+      url: '/coursel/courselAdd',
       fetchType: 'json',
       method: 'post',
     },
     bannerBaseInfoUpdate: {
-      url: '/banner/update',
+      url: '/coursel/courselUpdate',
       fetchType: 'json',
       method: 'post',
     },
     bannerBaseInfoDelete: {
-      url: '/banner/delete',
+      url: '/coursel/courselDelete',
+      fetchType: 'json',
+      method: 'post',
+    },
+    bannerBaseInfoUpdateStatus: {
+      url: '/coursel/courselUpdateStatus',
       fetchType: 'json',
       method: 'post',
     },
@@ -126,6 +131,7 @@ export default class Api {
   };
   // 对外暴露方法
   api: Apis<any> = {};
+
   constructor(options: {baseUrl: string}) {
     // eslint-ignore-nextline
     this.service = axios.create({
