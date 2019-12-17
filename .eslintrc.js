@@ -32,6 +32,7 @@ module.exports = {
     'class-methods-use-this': 'off',
     'linebreak-style': 'off',
     'no-console': 'off',
+    'lines-between-class-members': 'off',
     'no-debugger': 'off',
     'no-multi-spaces': 'off',
     'padded-blocks': 'off',

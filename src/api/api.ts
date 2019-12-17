@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 import axios, {AxiosPromise, AxiosInstance} from 'axios';
+=======
+/* eslint-disabled */
+import axios, { AxiosPromise, AxiosInstance } from 'axios';
+>>>>>>> e5f56309490fdfe3a8fc3d475b2b179d9c8bbb3b
 import qs from 'qs';
 import jsonp from 'jsonp';
 import lodash from 'lodash';
@@ -110,17 +115,19 @@ export default class Api {
       method: 'post',
     },
   };
-
   // 对外暴露方法
   api: Apis<any> = {};
+<<<<<<< HEAD
 
   constructor(options: {baseUrl: string}) {
+=======
+  constructor(options: { baseUrl: string }) {
+>>>>>>> e5f56309490fdfe3a8fc3d475b2b179d9c8bbb3b
     // eslint-ignore-nextline
     this.service = axios.create({
       baseURL: options.baseUrl, // api的base_url
       timeout: 20000, // 请求超时时间
     });
-
     for (const i in this.apiList) {
       this.api[i] = (data: any) => {
         const {url} = this.apiList[i];
