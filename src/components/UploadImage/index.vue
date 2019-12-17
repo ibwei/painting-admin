@@ -41,6 +41,7 @@ export default {
       fileList: [],
       // 远程返回的图片url,单张图片是字符串,多张图片以逗号分隔
       remoteUrl: '',
+      uploadedList: [],
     };
   },
   methods: {
@@ -54,25 +55,20 @@ export default {
 
     handleChange({fileList}) {
       this.fileList = fileList;
-      //上传单张模式
-      if (this.pictureLength === 1) {
-        if (fileList[0].status && fileList[0].status === 'done') {
-          if (fileList[0].response.resultCode === 0) {
-            this.$message.success('上传图片成功!');
-            this.$emit('uploaded', this.fileList[0].response.data.path);
+      const urlList = [];
+      for (let i = 0; i < this.fileList.length; i++) {
+        if (fileList[i].status && fileList[i].status === 'done') {
+          if (fileList[i].response.resultCode === 0) {
+            urlList.push(this.fileList[i].response.data.path);
+            //上传成功,则添加到已经保存的列表
+            if (this.uploadedList.indexOf(this.fileList[i].uid) === -1) {
+              this.uploadedList.push(this.fileList[i].uid);
+              this.$message.success('图片上传成功!');
+              this.$emit('uploaded', urlList.join(','));
+            }
           } else {
-            this.$message.success('上传图片失败!');
-          }
-        }
-      }
-      //上传多张图片模式
-      if (this.pictureLength !== 1) {
-        if (fileList[0].status === 'done') {
-          if (fileList[0].response.resultCode === 0) {
-            this.$message.success('上传图片成功!');
-            this.$emit('uploaded', this.fileList[0].response.data.path);
-          } else {
-            this.$message.success('上传图片失败!');
+            this.$message.success(this.fileList[i].response.resultMessage);
+            return false;
           }
         }
       }
