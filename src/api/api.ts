@@ -112,12 +112,8 @@ export default class Api {
   };
   // 对外暴露方法
   api: Apis<any> = {};
-<<<<<<< HEAD
 
   constructor(options: {baseUrl: string}) {
-=======
-  constructor(options: { baseUrl: string }) {
->>>>>>> e5f56309490fdfe3a8fc3d475b2b179d9c8bbb3b
     // eslint-ignore-nextline
     this.service = axios.create({
       baseURL: options.baseUrl, // api的base_url

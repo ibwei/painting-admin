@@ -92,13 +92,13 @@ export default class messageBoard extends Vue {
       key: 'updateStatus',
       rowKey: 'id',
       color(value: any) {
-        if (value.status == 0) {
+        if (value.status === 0) {
           return 'red';
         }
         return 'blue';
       },
       text(value: any) {
-        if (value.status == 1) {
+        if (value.status === 1) {
           return '启用';
         }
         return '禁用';
@@ -106,7 +106,7 @@ export default class messageBoard extends Vue {
       roles: true,
       popconfirm: true,
       msg(value: any) {
-        return value.status == 1 ? '是否启用该轮播图片' : '是否禁用该轮播图片';
+        return value.status === 1 ? '是否启用该轮播图片' : '是否禁用该轮播图片';
       },
     },
     {
