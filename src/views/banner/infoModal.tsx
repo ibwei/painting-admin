@@ -1,4 +1,4 @@
-import { Vue, Component, Prop } from 'vue-property-decorator';
+import {Vue, Component, Prop} from 'vue-property-decorator';
 import {
   Modal,
   Form,
@@ -8,6 +8,7 @@ import {
   InputNumber,
   Cascader,
   Button,
+  Spin,
 } from 'ant-design-vue';
 
 @Component({
@@ -22,6 +23,8 @@ import {
     'a-radio-group': Radio.Group,
     'a-date-picker': DatePicker,
     'a-cascader': Cascader,
+    'a-textarea': Input.TextArea,
+    'a-spin': Spin,
   },
   props: {
     Form,
@@ -36,40 +39,51 @@ class InfoModal extends Vue {
 
   @Prop() data!: any;
 
-  @Prop() changeDetail?: any;
-
   formItemLayout = {
     labelCol: {
-      xs: { span: 24 },
-      sm: { span: 4 },
+      xs: {span: 24},
+      sm: {span: 4},
     },
     wrapperCol: {
-      xs: { span: 24 },
-      sm: { span: 20 },
+      xs: {span: 24},
+      sm: {span: 20},
     },
   };
 
+  spinShow: boolean = false;
+
   submit() {
+    if (this.data.result) {
+      this.spinShow = true;
+    }
     this.$props.Form.validateFields((err: any, values: any) => {
       if (!err) {
         if (this.type === 'edit') {
-          window.api.areaBaseInfoUpdate({ id: this.data.id, ...values }).then((res: any) => {
-            const {
-              result: { resultCode, resultMessage },
-            } = res.data;
-            if (!resultCode) {
-              this.$message.success(resultMessage);
-              this.Form.resetFields();
-              this.$emit('success');
-            } else {
-              this.$message.error(resultMessage);
-            }
-          });
+          if (this.data.status === 1) {
+            this.cancel();
+            return false;
+          }
+          window.api
+            .courseEnrollUpdate({
+              id: this.data.id,
+              result: this.data.result,
+            })
+            .then((res: any) => {
+              this.spinShow = false;
+              const {resultCode, resultMessage} = res.data;
+              if (!resultCode) {
+                this.$message.success(resultMessage);
+                this.Form.resetFields();
+                this.$emit('success');
+              } else {
+                this.$message.error(resultMessage);
+              }
+            });
         } else if (this.type === 'add') {
-          window.api.areaBaseInfoAdd(values).then((res: any) => {
+          window.api.courseEnrollAdd(values).then((res: any) => {
             const {
               err_code,
-              result: { resultMessage },
+              result: {resultMessage},
             } = res.data;
             if (!err_code) {
               this.$message.success(resultMessage);
@@ -88,27 +102,12 @@ class InfoModal extends Vue {
     this.$emit('close');
   }
 
-  showMap(type: string) {
-    this.$emit('showEditMap', type);
+  resultChange(e: any) {
+    this.data.result = e.target.value;
   }
 
   render() {
-    const { getFieldDecorator } = this.Form;
-    console.log(this.type);
-    console.log(this);
-    const formItem = () => (
-      <div style={{ display: this.type === 'edit' ? 'block' : 'none' }}>
-        <a-form-item {...{ props: this.formItemLayout }} label="关联管道">
-          <a-button onClick={this.$props.changeDetail.bind(this, 'guandao')}>选择管道</a-button>
-        </a-form-item>
-        <a-form-item {...{ props: this.formItemLayout }} label="关联设施">
-          <a-button onClick={this.$props.changeDetail.bind(this, 'sheshi')}>选择设施</a-button>
-        </a-form-item>
-        <a-form-item {...{ props: this.formItemLayout }} label="关联设备">
-          <a-button onClick={this.$props.changeDetail.bind(this, 'shebei')}>选择设备</a-button>
-        </a-form-item>
-      </div>
-    );
+    const {getFieldDecorator} = this.Form;
     return (
       <a-modal
         title={this.title}
@@ -116,20 +115,20 @@ class InfoModal extends Vue {
         on-ok={this.submit}
         on-cancel={this.cancel}
       >
+        {this.spinShow ? (
+          <div class='spin'>
+            <a-spin tip='正在发送邮件,请稍后...'></a-spin>
+          </div>
+        ) : (
+          ''
+        )}
+
         <a-form>
-          <a-form-item {...{ props: this.formItemLayout }} label="区域名称">
-            {getFieldDecorator('name', {
-              initialValue: this.data.name,
-              rules: [{ required: true, message: '请输入区域名' }],
-            })(<a-input placeholder="请输入区域名"></a-input>)}
+          <a-form-item {...{props: this.formItemLayout}} label='轮播图描述'>
+            {getFieldDecorator('desc', {
+              initialValue: this.data.desc,
+            })(<a-input placeholder='请输入轮播图'></a-input>)}
           </a-form-item>
-          <a-form-item {...{ props: this.formItemLayout }} label="区域范围">
-            {getFieldDecorator('type', {
-              initialValue: this.data.type,
-              rules: [{ required: true, message: '请选择类型' }],
-            })(<a-button onClick={this.showMap.bind(null, 'edit')}>选取区域范围</a-button>)}
-          </a-form-item>
-          {formItem()}
         </a-form>
       </a-modal>
     );
@@ -142,6 +141,5 @@ export default Form.create({
     visible: Boolean,
     type: String,
     data: Object,
-    changeDetail: Function,
   },
 })(InfoModal);
