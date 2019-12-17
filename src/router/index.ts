@@ -1,6 +1,6 @@
 import Vue from 'vue';
-import Router, { RouterOptions } from 'vue-router';
-import { routerItem } from '@/interface';
+import Router, {RouterOptions} from 'vue-router';
+import {routerItem} from '@/interface';
 
 const getComponent = require(`./import_${process.env.NODE_ENV}`);
 
@@ -10,7 +10,7 @@ export const constantRouterMap: routerItem[] & RouterOptions['routes'] = [
     path: '/dashboard',
     name: '数据看板',
     component: getComponent('dashboard/index'),
-    meta: { key: 'Dashboard' },
+    meta: {key: 'Dashboard'},
   },
   {
     path: '/',
@@ -57,7 +57,7 @@ export const asyncRouterMap: routerItem[] = [
     name: '数据看板',
     component: getComponent('dashboard/index'),
     permission: true,
-    meta: { key: 'Dashboard' },
+    meta: {key: 'Dashboard'},
   },
   {
     path: '/studio',
@@ -65,15 +65,15 @@ export const asyncRouterMap: routerItem[] = [
     name: '画室管理',
     component: getComponent('studio/index'),
     permission: true,
-    meta: { key: 'studio' },
+    meta: {key: 'Studio'},
   },
   {
-    path: '/courseenroll',
+    path: '/courseEnroll',
     icon: 'pay-circle',
     name: '在线报名',
     component: getComponent('courseenroll/index'),
     permission: true,
-    meta: { key: 'courseenroll' },
+    meta: {key: 'CourseEnroll'},
   },
   {
     path: '/feedback',
@@ -81,7 +81,15 @@ export const asyncRouterMap: routerItem[] = [
     name: '反馈管理',
     component: getComponent('feedback/index'),
     permission: true,
-    meta: { key: 'feedback' },
+    meta: {key: 'Feedback'},
+  },
+  {
+    path: '/article',
+    icon: 'file-text',
+    name: '文章管理',
+    component: getComponent('article/index'),
+    permission: true,
+    meta: {key: 'Article'},
   },
   {
     path: '/banner',
@@ -89,7 +97,7 @@ export const asyncRouterMap: routerItem[] = [
     name: '轮播图片管理',
     component: getComponent('banner/index'),
     permission: true,
-    meta: { key: 'banner' },
+    meta: {key: 'banner'},
   },
 ];
 

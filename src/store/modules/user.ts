@@ -1,7 +1,7 @@
 import axios from 'axios';
 import config from '@/utils/config';
-import router, { asyncRouterMap, constantRouterMap } from '@/router';
-import { routerItem } from '@/interface';
+import router, {asyncRouterMap, constantRouterMap} from '@/router';
+import {routerItem} from '@/interface';
 
 interface UserData {
   username: string;
@@ -71,7 +71,7 @@ const user = {
         })
           .then(res => {
             context.commit('LOADING', true);
-            const { resultCode, resultMessage, data } = res.data;
+            const {resultCode, resultMessage, data} = res.data;
             let userData: UserData;
             if (!resultCode) {
               userData = {
@@ -84,7 +84,7 @@ const user = {
               };
               context.commit('SVAEUSER', userData);
               context.commit('SAVEROLES', data.permissions);
-              const getRouter = hasPermission(data.permissions.permission);
+              const getRouter = hasPermission(data.permissions);
               context.dispatch('GetMenuData', getRouter);
               resolve(data);
             } else {
