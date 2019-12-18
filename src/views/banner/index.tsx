@@ -98,7 +98,7 @@ export default class messageBoard extends Vue {
         return 'blue';
       },
       text(value: any) {
-        if (value.status === 1) {
+        if (value.status === 0) {
           return '启用';
         }
         return '禁用';
@@ -127,77 +127,24 @@ export default class messageBoard extends Vue {
     },
   ];
 
-  changeVis: boolean = false;
-
-  detailVis: boolean = false;
-
   title: string = '新增图片';
 
   visible: boolean = false;
 
-  modelType: string = 'add';
+  type: string = 'add';
 
   editData: object = {};
-
-  dataSource: Array<any> = [];
-
-  //打开地图的入口 [查看|编辑]
-  openType: string = '';
-
-  //地图需要展示的图形 [多边形,圆形,自定义等]
-  type: string = '';
-
-  handleOk() {
-    this.detailVis = true;
-  }
 
   nameRender(name: string, row: any) {
     return <a-tag color='green'>{name}</a-tag>;
   }
 
   statusRender(status: number) {
-    return status === 0 ? '启用' : '禁用';
+    if (status === 1) return <a-tag color='green'>已启用</a-tag>;
+    return <a-tag color='red'>已禁用</a-tag>;
   }
   ImgRender(url: string) {
     return <a-avatar shape='square' size={96} src={url} />;
-  }
-  handleCancel() {
-    this.detailVis = false;
-  }
-
-  handleSelectDetail(data: string[], e?: any) {
-    const tmp: any = [];
-    const random = Math.floor(Math.random() * 10) + 1;
-    const random2 = Math.floor(Math.random() * 10) + 1;
-    data.forEach((item: any, index: number) => {
-      tmp.push({
-        name: item,
-        type: `类型${index + random}`,
-        area: `区域${index + random2}`,
-      });
-    });
-    this.dataSource = tmp;
-    this.detailVis = true;
-  }
-
-  mapVisible: boolean = false;
-
-  showMap(others: any) {
-    if (typeof others === 'object') {
-      this.type = others.type;
-      this.openType = 'read';
-    } else if (others === '异常') {
-      this.type = '异常';
-      this.openType = 'read';
-    } else {
-      this.type = others;
-      this.openType = 'edit';
-    }
-    this.mapVisible = true;
-  }
-
-  hideMapModal() {
-    this.mapVisible = false;
   }
 
   tableClick(key: string, row: any) {
@@ -231,7 +178,6 @@ export default class messageBoard extends Vue {
         this.type = 'edit';
         this.visible = true;
         this.editData = row;
-
         break;
       default:
         break;
@@ -243,24 +189,6 @@ export default class messageBoard extends Vue {
     this.type = 'add';
     this.visible = true;
     this.editData = {};
-  }
-
-  // 关闭地理位置故障列表modal
-  hideWarnDeviceList() {
-    this.warnListModalShow = false;
-  }
-
-  showWarnDeviceList(num: number) {
-    if (num > 0) {
-      this.showMap('异常');
-    } else {
-      this.$message.info('无设备故障');
-    }
-  }
-
-  //编辑框传回来的edit
-  showEditMap(type: string) {
-    this.showMap(type);
   }
 
   closeModal() {

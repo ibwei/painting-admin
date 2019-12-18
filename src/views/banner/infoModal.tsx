@@ -1,15 +1,7 @@
 import {Vue, Component, Prop} from 'vue-property-decorator';
-import {
-  Modal,
-  Form,
-  Input,
-  Radio,
-  DatePicker,
-  InputNumber,
-  Cascader,
-  Button,
-  Spin,
-} from 'ant-design-vue';
+import {Modal, Form, Input, InputNumber, Select, Avatar} from 'ant-design-vue';
+//@ts-ignore
+import UploadImage from '@/components/UploadImage';
 
 @Component({
   components: {
@@ -17,14 +9,10 @@ import {
     'a-form': Form,
     'a-form-item': Form.Item,
     'a-input': Input,
-    'a-button': Button,
     'a-input-number': InputNumber,
-    'a-radio': Radio,
-    'a-radio-group': Radio.Group,
-    'a-date-picker': DatePicker,
-    'a-cascader': Cascader,
-    'a-textarea': Input.TextArea,
-    'a-spin': Spin,
+    'a-select': Select,
+    'a-avatar': Avatar,
+    UploadImage,
   },
   props: {
     Form,
@@ -50,42 +38,29 @@ class InfoModal extends Vue {
     },
   };
 
-  spinShow: boolean = false;
-
   submit() {
-    if (this.data.result) {
-      this.spinShow = true;
-    }
     this.$props.Form.validateFields((err: any, values: any) => {
       if (!err) {
         if (this.type === 'edit') {
-          if (this.data.status === 1) {
-            this.cancel();
+          window.api.bannerBaseInfoUpdate({id: this.data.id, ...values}).then((res: any) => {
+            const {resultCode, resultMessage} = res.data;
+            if (!resultCode) {
+              this.$message.success(resultMessage);
+              this.Form.resetFields();
+              this.$emit('success');
+            } else {
+              this.$message.error(resultMessage);
+            }
+          });
+        } else if (this.type === 'add') {
+          console.log('values :', values);
+          if (this.imgUrl === '') {
+            this.$message.error('请选择上传的图片');
             return false;
           }
-          window.api
-            .courseEnrollUpdate({
-              id: this.data.id,
-              result: this.data.result,
-            })
-            .then((res: any) => {
-              this.spinShow = false;
-              const {resultCode, resultMessage} = res.data;
-              if (!resultCode) {
-                this.$message.success(resultMessage);
-                this.Form.resetFields();
-                this.$emit('success');
-              } else {
-                this.$message.error(resultMessage);
-              }
-            });
-        } else if (this.type === 'add') {
-          window.api.courseEnrollAdd(values).then((res: any) => {
-            const {
-              err_code,
-              result: {resultMessage},
-            } = res.data;
-            if (!err_code) {
+          window.api.bannerBaseInfoAdd({...values, url: this.imgUrl}).then((res: any) => {
+            const {resultCode, resultMessage} = res.data;
+            if (!resultCode) {
               this.$message.success(resultMessage);
               this.Form.resetFields();
               this.$emit('success');
@@ -102,10 +77,16 @@ class InfoModal extends Vue {
     this.$emit('close');
   }
 
-  resultChange(e: any) {
-    this.data.result = e.target.value;
-  }
+  optionStatus = [
+    {value: 0, label: '禁用'},
+    {value: 1, label: '启用'},
+  ];
 
+  imgUrl: string = '';
+  //图片上传完成
+  uploaded(e: any) {
+    this.imgUrl = e;
+  }
   render() {
     const {getFieldDecorator} = this.Form;
     return (
@@ -115,19 +96,37 @@ class InfoModal extends Vue {
         on-ok={this.submit}
         on-cancel={this.cancel}
       >
-        {this.spinShow ? (
-          <div class='spin'>
-            <a-spin tip='正在发送邮件,请稍后...'></a-spin>
-          </div>
-        ) : (
-          ''
-        )}
-
         <a-form>
           <a-form-item {...{props: this.formItemLayout}} label='轮播图描述'>
             {getFieldDecorator('desc', {
+              rules: [{required: true, message: '请输入轮播图描述'}],
               initialValue: this.data.desc,
             })(<a-input placeholder='请输入轮播图'></a-input>)}
+          </a-form-item>
+          <a-form-item {...{props: this.formItemLayout}} label='跳转链接'>
+            {getFieldDecorator('routerUrl', {
+              initialValue: this.data.routerUrl,
+            })(<a-input placeholder='请输入轮播图跳转链接'></a-input>)}
+          </a-form-item>
+          <a-form-item {...{props: this.formItemLayout}} label='展示权重'>
+            {getFieldDecorator('order', {
+              rules: [{required: true, message: '请输入轮播图展示权重，权重越大，轮播图越先展示'}],
+              initialValue: this.data.order,
+            })(<a-input-number placeholder='请输入轮播图展示权重'></a-input-number>)}
+          </a-form-item>
+          <a-form-item {...{props: this.formItemLayout}} label='是否启用'>
+            {getFieldDecorator('status', {
+              rules: [{required: true, message: '请选择轮播图状态'}],
+              initialValue: this.data.status,
+            })(<a-select options={this.optionStatus}></a-select>)}
+          </a-form-item>
+          <a-form-item {...{props: this.formItemLayout}} label='轮播图'>
+            <div v-show={this.data.url === undefined}>
+              <upload-image on-uploaded={this.uploaded}></upload-image>
+            </div>
+            <div v-show={this.data.url !== undefined}>
+              <a-avatar shape='square' size={96} src={this.data.url} />
+            </div>
           </a-form-item>
         </a-form>
       </a-modal>
