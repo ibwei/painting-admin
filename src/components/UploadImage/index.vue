@@ -4,7 +4,7 @@
       listType="picture-card"
       :fileList="fileList"
       :showUploadList="true"
-      action="/api/image/upload"
+      action="http://274c4308e2.qicp.vip:14761/album/upload2"
       @preview="handlePreview"
       @change="handleChange"
     >

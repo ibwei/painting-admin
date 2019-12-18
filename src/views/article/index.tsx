@@ -61,7 +61,8 @@ export default class Article extends Vue {
     {
       title: '文章缩略图',
       dataIndex: 'thumbnail',
-      customRender: this.thumbnailRender,
+      align: 'center',
+      customRender: this.imgRender,
     },
     {
       title: '文章分类',
@@ -153,6 +154,19 @@ export default class Article extends Vue {
 
   handleCancel() {
     this.detailVis = false;
+  }
+
+  imgRender(tags: string) {
+    const tagArray = tags.split(',');
+    /* eslint-disable-next-line */
+    const dom = tagArray.map((item, index) => {
+      return (
+        <img key={Math.random() + index} width='100px' src={item}>
+          {item}
+        </img>
+      );
+    });
+    return dom;
   }
 
   tableClick(key: string, row: any) {

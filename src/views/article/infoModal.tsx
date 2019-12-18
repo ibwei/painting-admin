@@ -67,16 +67,9 @@ class InfoModal extends Vue {
   spinShow: boolean = false;
 
   submit() {
-    if (this.data.result) {
-      this.spinShow = true;
-    }
     this.$props.Form.validateFields((err: any, values: any) => {
       if (!err) {
         if (this.type === 'edit') {
-          if (this.data.status === 1) {
-            this.cancel();
-            return false;
-          }
           window.api
             .articleUpdate({
               ...values,
@@ -85,7 +78,6 @@ class InfoModal extends Vue {
               thumbnail: this.thumbnail,
             })
             .then((res: any) => {
-              this.spinShow = false;
               const {resultCode, resultMessage} = res.data;
               if (!resultCode) {
                 this.$message.success(resultMessage);
@@ -96,17 +88,22 @@ class InfoModal extends Vue {
               }
             });
         } else if (this.type === 'add') {
-          window.api.articleAdd(values).then((res: any) => {
-            this.spinShow = false;
-            const {resultCode, resultMessage} = res.data;
-            if (!resultCode) {
-              this.$message.success(resultMessage);
-              this.Form.resetFields();
-              this.$emit('success');
-            } else {
-              this.$message.error(resultMessage);
-            }
-          });
+          window.api
+            .articleAdd({
+              ...values,
+              content: this.contentHTML,
+              thumbnail: this.thumbnail,
+            })
+            .then((res: any) => {
+              const {resultCode, resultMessage} = res.data;
+              if (!resultCode) {
+                this.$message.success(resultMessage);
+                this.Form.resetFields();
+                this.$emit('success');
+              } else {
+                this.$message.error(resultMessage);
+              }
+            });
         }
       }
     });
@@ -169,7 +166,7 @@ class InfoModal extends Vue {
           </a-form-item>
           <a-form-item {...{props: this.formItemLayout}} label='文章缩略图'>
             <div>
-              <upload-image on-uploaded={this.uploaded}></upload-image>
+              <upload-image pictureLength={3} on-uploaded={this.uploaded}></upload-image>
             </div>
           </a-form-item>
           <a-form-item {...{props: this.formItemLayout}} label='正文'>
