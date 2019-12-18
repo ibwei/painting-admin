@@ -128,6 +128,29 @@ export default class Api {
       fetchType: 'json',
       method: 'post',
     },
+
+    //学生作品表
+
+    studentWorksList: {
+      url: '/studentWorks/studentWorksList',
+      fetchType: 'json',
+      method: 'post',
+    },
+    studentWorksAdd: {
+      url: '/studentWorks/studentWorksAdd',
+      fetchType: 'json',
+      method: 'post',
+    },
+    studentWorksUpdate: {
+      url: '/studentWorks/studentWorksUpdate',
+      fetchType: 'json',
+      method: 'post',
+    },
+    studentWorksDelete: {
+      url: '/studentWorks/studentWorksDelete',
+      fetchType: 'json',
+      method: 'post',
+    },
   };
   // 对外暴露方法
   api: Apis<any> = {};

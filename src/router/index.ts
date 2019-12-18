@@ -92,12 +92,20 @@ export const asyncRouterMap: routerItem[] = [
     meta: {key: 'Article'},
   },
   {
+    path: '/studentWorks',
+    icon: 'gitlab',
+    name: '学生作品管理',
+    component: getComponent('studentWorks/index'),
+    permission: true,
+    meta: {key: 'StudentWorks'},
+  },
+  {
     path: '/banner',
     icon: 'picture',
     name: '轮播图片管理',
     component: getComponent('banner/index'),
     permission: true,
-    meta: {key: 'banner'},
+    meta: {key: 'Banner'},
   },
 ];
 
