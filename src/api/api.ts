@@ -111,6 +111,23 @@ export default class Api {
       method: 'post',
     },
 
+    // 教师管理
+    teacherBaseInfoAdd: {
+      url: '/teacher/teacherAdd',
+      fetchType: 'json',
+      method: 'post',
+    },
+    teacherBaseInfoUpdate: {
+      url: '/teacher/teacherUpdate',
+      fetchType: 'json',
+      method: 'post',
+    },
+    teacherBaseInfoDelete: {
+      url: '/teacher/teacherDelete',
+      fetchType: 'json',
+      method: 'post',
+    },
+
     //文章表
 
     articleAdd: {

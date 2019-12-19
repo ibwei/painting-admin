@@ -107,6 +107,14 @@ export const asyncRouterMap: routerItem[] = [
     permission: true,
     meta: {key: 'Banner'},
   },
+  {
+    path: '/teacherDetail',
+    icon: 'picture',
+    name: '教师详情管理',
+    component: getComponent('teacherDetail/index'),
+    permission: true,
+    meta: {key: 'teacherDetail'},
+  },
 ];
 
 Vue.use(Router);
