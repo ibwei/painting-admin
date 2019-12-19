@@ -1,0 +1,73 @@
+@import url('../../styles/var.less');
+
+.studio-wrap {
+  background: url('../../assets/login-bg.jpeg') top center no-repeat;
+  height    : auto;
+  min-height: 100%;
+
+  .form-item {
+    display        : flex;
+    flex-flow      : row nowrap;
+    justify-content: flex-start;
+    align-items    : center;
+    margin-bottom  : 10px;
+
+    .title {
+      color       : #000;
+      font-weight : bold;
+      margin-right: 5px;
+      width       : 100px;
+    }
+  }
+
+  .img-item {
+    margin-right: 20px;
+    width       : 100px;
+    height      : auto;
+    border      : 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .upload-item {
+    height         : 100px;
+    display        : flex;
+    justify-content: flex-start;
+    align-items    : center;
+  }
+
+  .sure {
+    margin-left: 20px;
+    color      : #f00;
+    border     : 1px solid red;
+    padding    : 2px 5px;
+  }
+
+
+  .area {
+    padding: 20px;
+  }
+
+  .read {
+    color: @primary-color;
+  }
+
+  .edit {
+    color: @success;
+  }
+
+  .button-group {
+    display        : flex;
+    flex-flow      : row nowrap;
+    justify-content: center;
+    align-items    : center;
+    margin         : 60px;
+  }
+
+  .upload {
+    margin-top: 20px;
+  }
+}
+
+#map {
+  width     : 100%;
+  min-height: 600px;
+}

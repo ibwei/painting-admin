@@ -4,13 +4,13 @@
       listType="picture-card"
       :fileList="fileList"
       :showUploadList="true"
-      action="http://274c4308e2.qicp.vip:14761/album/upload2"
+      action="/api/image/upload"
       @preview="handlePreview"
       @change="handleChange"
     >
       <div v-if="fileList.length < pictureLength">
         <a-icon type="plus" />
-        <div class="ant-upload-text">上传图片</div>
+        <div class="ant-upload-text">{{placeholder}}</div>
       </div>
     </a-upload>
     <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
@@ -33,6 +33,10 @@ export default {
     pictureLength: {
       type: Number,
       default: 1,
+    },
+    placeholder: {
+      type: String,
+      default: '上传图片',
     },
   },
   data () {
