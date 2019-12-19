@@ -19,6 +19,7 @@ module.exports = {
     'implicit-arrow-linebreak': 'off',
     'eslint-import-resolver-typescript': {extensions: ['.ts', '.tsx', '.d.ts']},
     'operator-linebreak': 'off',
+    'space-before-function-paren': 'off',
     'space-infix-ops': 'off',
     'import/prefer-default-export': 'off',
     'no-restricted-syntax': 0,

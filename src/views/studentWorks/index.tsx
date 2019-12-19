@@ -1,11 +1,10 @@
 import {Component, Vue} from 'vue-property-decorator';
 import {Tag, Modal, Button, Table} from 'ant-design-vue';
-import moment from 'moment';
 import {tableList, FilterFormList, Opreat} from '@/interface';
 import InfoModal from './infoModal';
 
 @Component({
-  name: 'article',
+  name: 'studentWorks',
   components: {
     'a-tag': Tag,
     'info-modal': InfoModal,
@@ -14,7 +13,7 @@ import InfoModal from './infoModal';
     'a-table': Table,
   },
 })
-export default class Article extends Vue {
+export default class StudentWorks extends Vue {
   filterParams: any = {
     name: '',
     address: [],
@@ -35,10 +34,10 @@ export default class Article extends Vue {
 
   filterList: FilterFormList[] = [
     {
-      key: 'title',
-      label: 'title',
+      key: 'name',
+      label: '学生姓名',
       type: 'input',
-      placeholder: '请输入文章标题',
+      placeholder: '请输入学生姓名',
     },
     {
       key: 'createtime',
@@ -55,37 +54,33 @@ export default class Article extends Vue {
       dataIndex: 'id',
     },
     {
-      title: '文章标题',
-      dataIndex: 'title',
+      title: '学生作品',
+      dataIndex: 'url',
+      customRender: this.thumbnailRender,
     },
     {
-      title: '文章缩略图',
-      dataIndex: 'thumbnail',
-      align: 'center',
-      customRender: this.imgRender,
+      title: '作品描述',
+      dataIndex: 'desc',
     },
     {
-      title: '文章分类',
+      title: '所属学生',
+      dataIndex: 'name',
+    },
+    {
+      title: '分类',
       dataIndex: 'category',
     },
     {
-      title: '文章标签',
+      title: '标签',
       dataIndex: 'tags',
+      customRender: this.tagsRender,
     },
     {
-      title: '阅读数',
-      dataIndex: 'read_count',
+      title: '排序权重',
+      dataIndex: 'order',
     },
     {
-      title: '点赞数',
-      dataIndex: 'praise_count',
-    },
-    {
-      title: '评论数',
-      dataIndex: 'comment_count',
-    },
-    {
-      title: '发表时间',
+      title: '上传时间',
       dataIndex: 'created_at',
     },
     {
@@ -117,7 +112,7 @@ export default class Article extends Vue {
 
   detailVis: boolean = false;
 
-  title: string = '新增文章';
+  title: string = '新增学生作品';
 
   visible: boolean = false;
 
@@ -145,6 +140,20 @@ export default class Article extends Vue {
     return <a-tag color='red'>无</a-tag>;
   }
 
+  tagsRender(tags: string) {
+    const tagArray = tags.split('-');
+    const color = ['green', 'blue', 'cyan', 'pink', 'purple', 'orange'];
+    const dom = tagArray.map((item, index) => {
+      const c = Math.floor(Math.random() * 6);
+      return (
+        <a-tag key={Math.random() + index} color={color[c]}>
+          {item}
+        </a-tag>
+      );
+    });
+    return dom;
+  }
+
   device(device: number) {
     if (device === 0) {
       return <a-tag color={'green'}>手机</a-tag>;
@@ -156,19 +165,6 @@ export default class Article extends Vue {
     this.detailVis = false;
   }
 
-  imgRender(tags: string) {
-    const tagArray = tags.split(',');
-    /* eslint-disable-next-line */
-    const dom = tagArray.map((item, index) => {
-      return (
-        <img key={Math.random() + index} width='100px' src={item}>
-          {item}
-        </img>
-      );
-    });
-    return dom;
-  }
-
   tableClick(key: string, row: any) {
     const data = JSON.parse(JSON.stringify(row));
     this.type = row.type;
@@ -176,11 +172,11 @@ export default class Article extends Vue {
       case 'edit':
         this.editData = data;
         this.visible = true;
-        this.title = '编辑文章';
+        this.title = '编辑学生作品';
         this.type = 'edit';
         break;
       case 'delete':
-        window.api.articleDelete({id: row.id}).then((res: any) => {
+        window.api.studentWorksDelete({id: row.id}).then((res: any) => {
           const {resultCode} = res.data;
           if (resultCode === 0) {
             this.$message.success('删除成功');
@@ -196,7 +192,7 @@ export default class Article extends Vue {
   }
 
   add() {
-    this.title = '新增文章';
+    this.title = '新增学生作品';
     this.type = 'add';
     this.visible = true;
     this.editData = {};
@@ -223,9 +219,10 @@ export default class Article extends Vue {
           filterList={this.filterList}
           filterGrade={[]}
           scroll={{x: 900}}
-          url={'/article/articleList'}
+          url={'/studentWorks/studentWorksList'}
           filterParams={this.filterParams}
           outParams={this.outParams}
+          localName={'StudentWorks'}
           addBtn={true}
           exportBtn={false}
           opreatWidth={'120px'}

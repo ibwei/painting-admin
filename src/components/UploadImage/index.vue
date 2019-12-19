@@ -4,7 +4,7 @@
       listType="picture-card"
       :fileList="fileList"
       :showUploadList="true"
-      action="/api/image/upload"
+      action="http://274c4308e2.qicp.vip:14761/album/upload2"
       @preview="handlePreview"
       @change="handleChange"
     >
@@ -19,9 +19,10 @@
   </div>
 </template>
 <script>
-import {Upload, Modal, Icon} from 'ant-design-vue';
+import { Upload, Modal, Icon } from 'ant-design-vue';
 import axios from 'axios';
 export default {
+  name: 'UploadImage',
   components: {
     'a-upload': Upload,
     'a-modal': Modal,
@@ -34,7 +35,7 @@ export default {
       default: 1,
     },
   },
-  data() {
+  data () {
     return {
       previewVisible: false,
       previewImage: '',
@@ -45,15 +46,15 @@ export default {
     };
   },
   methods: {
-    handleCancel() {
+    handleCancel () {
       this.previewVisible = false;
     },
-    handlePreview(file) {
+    handlePreview (file) {
       this.previewImage = file.url || file.thumbUrl;
       this.previewVisible = true;
     },
 
-    handleChange({fileList}) {
+    handleChange ({ fileList }) {
       this.fileList = fileList;
       const urlList = [];
       for (let i = 0; i < this.fileList.length; i++) {
