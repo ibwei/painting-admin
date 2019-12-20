@@ -181,6 +181,14 @@ export default class Api {
       method: 'post',
     },
 
+    //3D画廊表
+    galleryPicturesUpdate: {
+      url: '/galleryPictures/update',
+      fetchType: 'json',
+      method: 'post',
+    },
+
+
   };
   // 对外暴露方法
   api: Apis<any> = {};
