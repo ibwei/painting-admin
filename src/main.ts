@@ -14,7 +14,7 @@ import i18n from './locales/index';
 
 import './styles/global.less';
 
-const Apis = new Api({ baseUrl: process.env.NODE_ENV === 'production' ? '/api' : '/api' });
+const Apis = new Api({ baseUrl: process.env.NODE_ENV === 'production' ? 'http://www.paintingapi.ibwei.com/api' : '/api' });
 // 全局api
 // 配置接口
 

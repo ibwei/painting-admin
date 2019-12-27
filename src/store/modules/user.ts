@@ -62,13 +62,8 @@ const user = {
     getUserInfo: (context: any) =>
       new Promise((resolve, reject) => {
         context.commit('LOADING', false);
-        axios({
-          params: {
-            token: localStorage.getItem('token'),
-          },
-          method: 'post',
-          url: '/api/user/getUserInfo',
-        })
+        window.api
+          .getUserInfo({})
           .then(res => {
             context.commit('LOADING', true);
             const {resultCode, resultMessage, data} = res.data;

@@ -4,7 +4,7 @@
       listType="picture-card"
       :fileList="fileList"
       :showUploadList="true"
-      action="/api/image/upload"
+      action="http://www.paintingapi.ibwei.com/api/image/upload"
       @preview="handlePreview"
       @change="handleChange"
     >
