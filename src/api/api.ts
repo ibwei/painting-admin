@@ -180,13 +180,13 @@ export default class Api {
       fetchType: 'json',
       method: 'post',
     },
-
     //3D画廊表
     galleryPicturesUpdate: {
       url: '/galleryPictures/update',
       fetchType: 'json',
       method: 'post',
     },
+<<<<<<< HEAD
 
     // 画室环境
 
@@ -205,6 +205,8 @@ export default class Api {
       fetchType: 'json',
       method: 'post',
     },
+=======
+>>>>>>> ca9f41c830fea063c6f20f7b7c9f0a004cc5d2f3
   };
   // 对外暴露方法
   api: Apis<any> = {};

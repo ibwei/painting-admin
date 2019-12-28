@@ -1,7 +1,7 @@
-import { Component, Vue } from 'vue-property-decorator';
-import { Tag, Modal, Button, Table } from 'ant-design-vue';
+import {Component, Vue} from 'vue-property-decorator';
+import {Tag, Modal, Button, Table} from 'ant-design-vue';
 import moment from 'moment';
-import { tableList, FilterFormList, Opreat } from '@/interface';
+import {tableList, FilterFormList, Opreat} from '@/interface';
 import InfoModal from './infoModal';
 
 @Component({
@@ -52,11 +52,13 @@ export default class Feedback extends Vue {
   tableList: tableList[] = [
     {
       title: '序号',
+      align: 'center',
       dataIndex: 'id',
     },
     {
       title: '姓名',
       dataIndex: 'name',
+      align: 'center',
       customRender: this.nameRender,
     },
     {
@@ -74,6 +76,7 @@ export default class Feedback extends Vue {
     {
       title: '用户设备',
       dataIndex: 'device',
+      align: 'center',
       customRender: this.device,
     },
     {
@@ -170,8 +173,8 @@ export default class Feedback extends Vue {
         this.type = 'edit';
         break;
       case 'delete':
-        window.api.feedbackDelete({ id: row.id }).then((res: any) => {
-          const { resultCode } = res.data;
+        window.api.feedbackDelete({id: row.id}).then((res: any) => {
+          const {resultCode} = res.data;
           if (resultCode === 0) {
             this.$message.success('删除成功');
             this.success();
@@ -212,7 +215,7 @@ export default class Feedback extends Vue {
           tableList={this.tableList}
           filterList={this.filterList}
           filterGrade={[]}
-          scroll={{ x: 900 }}
+          scroll={{x: 900}}
           url={'/feedback/feedbackList'}
           filterParams={this.filterParams}
           outParams={this.outParams}
@@ -221,6 +224,7 @@ export default class Feedback extends Vue {
           opreatWidth={'120px'}
           dataType={'json'}
           rowKey={'id'}
+          localName={'feedback'}
           opreat={this.opreat}
           fetchType={'post'}
           backParams={this.BackParams}

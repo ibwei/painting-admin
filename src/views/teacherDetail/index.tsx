@@ -61,16 +61,19 @@ export default class messageBoard extends Vue {
     {
       title: '序号',
       dataIndex: 'id',
+      align: 'center',
       customRender: this.nameRender,
     },
     {
       title: '教师姓名',
       dataIndex: 'name',
+      align: 'center',
       customRender: this.nameRender,
     },
     {
       title: '照片预览',
       dataIndex: 'photo',
+      align: 'center',
       customRender: this.ImgRender,
     },
     {
@@ -79,10 +82,12 @@ export default class messageBoard extends Vue {
     },
     {
       title: '教师评分',
+      align: 'center',
       dataIndex: 'rate',
     },
     {
       title: '学生印象',
+      align: 'center',
       dataIndex: 'impression',
     },
     {
@@ -193,6 +198,7 @@ export default class messageBoard extends Vue {
           filterParams={this.filterParams}
           outParams={this.outParams}
           addBtn={true}
+          localName={'teacherList'}
           exportBtn={false}
           dataType={'json'}
           rowKey={'id'}

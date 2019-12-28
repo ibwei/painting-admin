@@ -66,22 +66,28 @@ export default class Article extends Vue {
     },
     {
       title: '文章分类',
+      align: 'center',
       dataIndex: 'category',
     },
     {
       title: '文章标签',
       dataIndex: 'tags',
+      align: 'center',
+      customRender: this.tagsRender,
     },
     {
       title: '阅读数',
+      align: 'center',
       dataIndex: 'read_count',
     },
     {
       title: '点赞数',
+      align: 'center',
       dataIndex: 'praise_count',
     },
     {
       title: '评论数',
+      align: 'center',
       dataIndex: 'comment_count',
     },
     {
@@ -156,6 +162,20 @@ export default class Article extends Vue {
     this.detailVis = false;
   }
 
+  tagsRender(tags: string) {
+    const tagArray = tags.split('-');
+    const color = ['green', 'blue', 'cyan', 'pink', 'purple', 'orange'];
+    const dom = tagArray.map((item, index) => {
+      const c = Math.floor(Math.random() * 6);
+      return (
+        <a-tag key={Math.random() + index} color={color[c]}>
+          {item}
+        </a-tag>
+      );
+    });
+    return dom;
+  }
+
   imgRender(tags: string) {
     const tagArray = tags.split(',');
     /* eslint-disable-next-line */
@@ -227,6 +247,7 @@ export default class Article extends Vue {
           filterParams={this.filterParams}
           outParams={this.outParams}
           addBtn={true}
+          localName={'article'}
           exportBtn={false}
           opreatWidth={'120px'}
           dataType={'json'}

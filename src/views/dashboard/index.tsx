@@ -235,9 +235,6 @@ export default class Dashboard extends Vue {
   render() {
     return (
       <div class='container'>
-        <a-row>
-          <upload-image pictureLength={3} on-uploaded={this.getImageUrl}></upload-image>
-        </a-row>
         <a-row gutter={{xs: 8, md: 12, xl: 20}} class='dash-col'>
           <a-col span={10} xxl={10} xl={10} lg={12} md={24} sm={24} xs={24}>
             <a-row gutter={{xs: 8, md: 12, xl: 20}}>

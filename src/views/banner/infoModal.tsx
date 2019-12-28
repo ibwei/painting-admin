@@ -42,16 +42,18 @@ class InfoModal extends Vue {
     this.$props.Form.validateFields((err: any, values: any) => {
       if (!err) {
         if (this.type === 'edit') {
-          window.api.bannerBaseInfoUpdate({id: this.data.id, ...values}).then((res: any) => {
-            const {resultCode, resultMessage} = res.data;
-            if (!resultCode) {
-              this.$message.success(resultMessage);
-              this.Form.resetFields();
-              this.$emit('success');
-            } else {
-              this.$message.error(resultMessage);
-            }
-          });
+          window.api
+            .bannerBaseInfoUpdate({id: this.data.id, ...values, url: this.imgUrl})
+            .then((res: any) => {
+              const {resultCode, resultMessage} = res.data;
+              if (!resultCode) {
+                this.$message.success(resultMessage);
+                this.Form.resetFields();
+                this.$emit('success');
+              } else {
+                this.$message.error(resultMessage);
+              }
+            });
         } else if (this.type === 'add') {
           console.log('values :', values);
           if (this.imgUrl === '') {
@@ -121,11 +123,8 @@ class InfoModal extends Vue {
             })(<a-select options={this.optionStatus}></a-select>)}
           </a-form-item>
           <a-form-item {...{props: this.formItemLayout}} label='轮播图'>
-            <div v-show={this.data.url === undefined}>
-              <upload-image on-uploaded={this.uploaded}></upload-image>
-            </div>
-            <div v-show={this.data.url !== undefined}>
-              <a-avatar shape='square' size={96} src={this.data.url} />
+            <div>
+              <upload-image pictureLength={1} on-uploaded={this.uploaded}></upload-image>
             </div>
           </a-form-item>
         </a-form>

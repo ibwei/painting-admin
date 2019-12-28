@@ -3,10 +3,12 @@
     <a-upload
       listType="picture-card"
       :fileList="fileList"
+      :remove="removeImage"
       :showUploadList="true"
-      action="/api/image/upload"
+      :withCredentials="true"
       @preview="handlePreview"
       @change="handleChange"
+      :customRequest="handleUpload"
     >
       <div v-if="fileList.length < pictureLength">
         <a-icon type="plus" />
@@ -19,7 +21,7 @@
   </div>
 </template>
 <script>
-import { Upload, Modal, Icon } from 'ant-design-vue';
+import { Upload, Modal, Icon, Spin } from 'ant-design-vue';
 import axios from 'axios';
 export default {
   name: 'UploadImage',
@@ -41,15 +43,20 @@ export default {
   },
   data () {
     return {
+      visible: true,
       previewVisible: false,
       previewImage: '',
       fileList: [],
       // 远程返回的图片url,单张图片是字符串,多张图片以逗号分隔
       remoteUrl: '',
       uploadedList: [],
+      urlList: [],
+      defaultFileList: [],
+      index: 0,
     };
   },
   methods: {
+
     handleCancel () {
       this.previewVisible = false;
     },
@@ -58,25 +65,59 @@ export default {
       this.previewVisible = true;
     },
 
-    handleChange ({ fileList }) {
-      this.fileList = fileList;
-      const urlList = [];
+    removeImage (file) {
+      const id = file.uid;
+      const currentList = [];
+      this.urlList = [];
       for (let i = 0; i < this.fileList.length; i++) {
-        if (fileList[i].status && fileList[i].status === 'done') {
-          if (fileList[i].response.resultCode === 0) {
-            urlList.push(this.fileList[i].response.data.path);
-            //上传成功,则添加到已经保存的列表
-            if (this.uploadedList.indexOf(this.fileList[i].uid) === -1) {
-              this.uploadedList.push(this.fileList[i].uid);
-              this.$message.success('图片上传成功!');
-              this.$emit('uploaded', urlList.join(','));
-            }
-          } else {
-            this.$message.success(this.fileList[i].response.resultMessage);
-            return false;
-          }
+        if (this.fileList[i].uid !== id) {
+          currentList.push(this.fileList[i]);
+          this.urlList.push(this.fileList[i].url);
         }
       }
+      this.fileList = currentList;
+      this.$emit('uploaded', this.urlList.join(','));
+    },
+
+    handleChange ({ file, fileList }) {
+      if (file.status !== 'done') {
+        file.status = 'done';
+      }
+    },
+
+    handleUpload ({ file }) {
+      this.$message.loading('正在上传图片,请勿重复操作....', 0);
+      const formData = new FormData();
+      formData.append('file', file);
+      axios({
+        url: 'http://www.paintingapi.ibwei.com/api/image/upload',
+        method: 'post',
+        processData: false,
+        data: formData,
+        timeout: 10000, //10秒超时
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }).then((res) => {
+        this.$message.destroy();
+        if (res.data.resultCode === 0) {
+          this.urlList.push(res.data.data.path);
+          this.$message.success('上传成功!');
+          const f = {
+            uid: String(this.index++),
+            name: 'xxx.png',
+            status: 'done',
+            url: res.data.data.path,
+          };
+          this.fileList.push(f);
+          this.$emit('uploaded', this.urlList.join(','));
+        } else {
+          this.$message.error('上传失败');
+        }
+      }).catch((e) => {
+        this.$message.destroy();
+        this.$message.error('网络异常');
+      })
     },
   },
 };
