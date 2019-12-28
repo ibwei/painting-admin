@@ -21,7 +21,7 @@
   </div>
 </template>
 <script>
-import { Upload, Modal, Icon } from 'ant-design-vue';
+import { Upload, Modal, Icon, Spin } from 'ant-design-vue';
 import axios from 'axios';
 export default {
   name: 'UploadImage',
@@ -43,6 +43,7 @@ export default {
   },
   data () {
     return {
+      visible: true,
       previewVisible: false,
       previewImage: '',
       fileList: [],
@@ -66,13 +67,16 @@ export default {
 
     removeImage (file) {
       const id = file.uid;
-      for (let i = 0; i < this.index; i++) {
-        if (this.fileList[i].uid === id) {
-          this.fileList.splice(id, 1);
-          this.urlList.splice(id, 1);
-          this.$emit('uploaded', this.urlList.join(','));
+      const currentList = [];
+      this.urlList = [];
+      for (let i = 0; i < this.fileList.length; i++) {
+        if (this.fileList[i].uid !== id) {
+          currentList.push(this.fileList[i]);
+          this.urlList.push(this.fileList[i].url);
         }
       }
+      this.fileList = currentList;
+      this.$emit('uploaded', this.urlList.join(','));
     },
 
     handleChange ({ file, fileList }) {
@@ -82,6 +86,7 @@ export default {
     },
 
     handleUpload ({ file }) {
+      this.$message.loading('正在上传图片,请勿重复操作....', 0);
       const formData = new FormData();
       formData.append('file', file);
       axios({
@@ -89,10 +94,12 @@ export default {
         method: 'post',
         processData: false,
         data: formData,
+        timeout: 10000, //10秒超时
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       }).then((res) => {
+        this.$message.destroy();
         if (res.data.resultCode === 0) {
           this.urlList.push(res.data.data.path);
           this.$message.success('上传成功!');
@@ -108,6 +115,7 @@ export default {
           this.$message.error('上传失败');
         }
       }).catch((e) => {
+        this.$message.destroy();
         this.$message.error('网络异常');
       })
     },

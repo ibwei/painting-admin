@@ -144,7 +144,7 @@ export default class messageBoard extends Vue {
     return <a-tag color='red'>已禁用</a-tag>;
   }
   ImgRender(url: string) {
-    return <a-avatar shape='square' size={96} src={url} />;
+    return <img src={url} />;
   }
 
   tableClick(key: string, row: any) {
