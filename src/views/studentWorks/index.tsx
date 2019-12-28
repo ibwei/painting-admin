@@ -56,6 +56,7 @@ export default class StudentWorks extends Vue {
     {
       title: '学生作品',
       dataIndex: 'url',
+      align: 'center',
       customRender: this.thumbnailRender,
     },
     {
@@ -64,19 +65,23 @@ export default class StudentWorks extends Vue {
     },
     {
       title: '所属学生',
+      align: 'center',
       dataIndex: 'name',
     },
     {
       title: '分类',
+      align: 'center',
       dataIndex: 'category',
     },
     {
       title: '标签',
       dataIndex: 'tags',
+      align: 'center',
       customRender: this.tagsRender,
     },
     {
       title: '排序权重',
+      align: 'center',
       dataIndex: 'order',
     },
     {

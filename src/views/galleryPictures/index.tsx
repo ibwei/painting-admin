@@ -1,7 +1,7 @@
-import { Component, Vue } from 'vue-property-decorator';
-import { Tag, Modal, Button, Table } from 'ant-design-vue';
+import {Component, Vue} from 'vue-property-decorator';
+import {Tag, Modal, Button, Table} from 'ant-design-vue';
 import moment from 'moment';
-import { tableList, FilterFormList, Opreat } from '@/interface';
+import {tableList, FilterFormList, Opreat} from '@/interface';
 import InfoModal from './infoModal';
 
 @Component({
@@ -145,7 +145,14 @@ export default class GalleryPictures extends Vue {
   }
 
   imageRender(url: string) {
-    return <img width="200px" style={{ cursor: 'pointer' }} onClick={this.imageClick.bind(this, url)} src={url}></img>;
+    return (
+      <img
+        width='200px'
+        style={{cursor: 'pointer'}}
+        onClick={this.imageClick.bind(this, url)}
+        src={url}
+      ></img>
+    );
   }
 
   closeModal() {
@@ -156,7 +163,6 @@ export default class GalleryPictures extends Vue {
   imageClick(url: string) {
     window.open(url, 'blank');
   }
-
 
   success() {
     this.visible = false;
@@ -173,11 +179,12 @@ export default class GalleryPictures extends Vue {
           tableList={this.tableList}
           filterList={this.filterList}
           filterGrade={[]}
-          scroll={{ x: 900 }}
+          scroll={{x: 900}}
           url={'/galleryPictures/list'}
           filterParams={this.filterParams}
           outParams={this.outParams}
           addBtn={false}
+          localName={'galleryPictures'}
           defaultPageSize={12}
           exportBtn={false}
           dataType={'json'}
@@ -198,8 +205,8 @@ export default class GalleryPictures extends Vue {
             visible={this.visible}
           ></info-modal>
         ) : (
-            ''
-          )}
+          ''
+        )}
       </div>
     );
   }

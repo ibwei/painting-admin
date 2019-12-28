@@ -61,28 +61,34 @@ export default class messageBoard extends Vue {
     {
       title: '序号',
       dataIndex: 'id',
+      align: 'center',
       customRender: this.nameRender,
     },
     {
       title: '图片预览',
       dataIndex: 'url',
+      align: 'center',
       customRender: this.ImgRender,
     },
     {
       title: '图片描述',
       dataIndex: 'desc',
+      align: 'center',
     },
     {
       title: '跳转链接',
       dataIndex: 'routerUrl',
+      align: 'center',
     },
     {
       title: '图片显示先后顺序',
       dataIndex: 'order',
+      align: 'center',
     },
     {
       title: '图片状态',
       dataIndex: 'status',
+      align: 'center',
       customRender: this.statusRender,
     },
   ];
@@ -144,7 +150,7 @@ export default class messageBoard extends Vue {
     return <a-tag color='red'>已禁用</a-tag>;
   }
   ImgRender(url: string) {
-    return <img src={url} />;
+    return <img width='500px' height='auto' src={url} />;
   }
 
   tableClick(key: string, row: any) {
@@ -218,6 +224,7 @@ export default class messageBoard extends Vue {
           addBtn={true}
           exportBtn={false}
           dataType={'json'}
+          localName={'banner'}
           rowKey={'id'}
           opreat={this.opreat}
           opreatWidth='120px'

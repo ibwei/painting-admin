@@ -53,10 +53,12 @@ export default class CourseEnroll extends Vue {
     {
       title: '序号',
       dataIndex: 'id',
+      align: 'center',
     },
     {
       title: '姓名',
       dataIndex: 'name',
+      align: 'center',
       customRender: this.nameRender,
     },
     {
@@ -70,10 +72,12 @@ export default class CourseEnroll extends Vue {
     {
       title: '用户设备',
       dataIndex: 'device',
+      align: 'center',
       customRender: this.device,
     },
     {
       title: '所报课程',
+      align: 'center',
       dataIndex: 'course_name',
       customRender: this.courseRender,
     },
@@ -218,6 +222,7 @@ export default class CourseEnroll extends Vue {
           outParams={this.outParams}
           addBtn={false}
           exportBtn={false}
+          localName={'courseEnroll'}
           opreatWidth={'120px'}
           dataType={'json'}
           rowKey={'id'}
