@@ -89,6 +89,7 @@ export default class messageBoard extends Vue {
       title: '学生印象',
       align: 'center',
       dataIndex: 'impression',
+      customRender: this.tagsRender,
     },
     {
       title: '擅长内容',
@@ -138,6 +139,20 @@ export default class messageBoard extends Vue {
 
   ImgRender(url: string) {
     return <a-avatar shape='square' size={96} src={url} />;
+  }
+
+  tagsRender(tags: string) {
+    const tagArray = tags.split('-');
+    const color = ['green', 'blue', 'cyan', 'pink', 'purple', 'orange'];
+    const dom = tagArray.map((item, index) => {
+      const c = Math.floor(Math.random() * 6);
+      return (
+        <a-tag key={Math.random() + index} color={color[c]}>
+          {item}
+        </a-tag>
+      );
+    });
+    return dom;
   }
 
   tableClick(key: string, row: any) {
