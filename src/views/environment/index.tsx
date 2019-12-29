@@ -1,6 +1,6 @@
-import {Component, Vue} from 'vue-property-decorator';
-import {Tag, Modal, Button, Table} from 'ant-design-vue';
-import {tableList, FilterFormList, Opreat} from '@/interface';
+import { Component, Vue } from 'vue-property-decorator';
+import { Tag, Modal, Button, Table } from 'ant-design-vue';
+import { tableList, FilterFormList, Opreat } from '@/interface';
 import InfoModal from './infoModal';
 
 @Component({
@@ -52,6 +52,7 @@ export default class StudentWorks extends Vue {
     {
       title: 'ID',
       dataIndex: 'id',
+      align: 'center',
     },
     {
       title: '教室环境',
@@ -61,15 +62,18 @@ export default class StudentWorks extends Vue {
     {
       title: '教室环境描述',
       dataIndex: 'desc',
+      align: 'center',
     },
     {
       title: '图片状态',
       dataIndex: 'status',
       customRender: this.statusRender,
+      align: 'center',
     },
     {
       title: '排序权重',
       dataIndex: 'order',
+      align: 'center',
     },
     {
       title: '上传时间',
@@ -171,8 +175,8 @@ export default class StudentWorks extends Vue {
         this.type = 'edit';
         break;
       case 'delete':
-        window.api.environmentDelete({id: row.id}).then((res: any) => {
-          const {resultCode} = res.data;
+        window.api.environmentDelete({ id: row.id }).then((res: any) => {
+          const { resultCode } = res.data;
           if (resultCode === 0) {
             this.$message.success('删除成功');
             this.success();
@@ -213,7 +217,7 @@ export default class StudentWorks extends Vue {
           tableList={this.tableList}
           filterList={this.filterList}
           filterGrade={[]}
-          scroll={{x: 900}}
+          scroll={{ x: 900 }}
           url={'/environment/environmentList'}
           filterParams={this.filterParams}
           outParams={this.outParams}
@@ -239,8 +243,8 @@ export default class StudentWorks extends Vue {
             visible={this.visible}
           ></info-modal>
         ) : (
-          ''
-        )}
+            ''
+          )}
       </div>
     );
   }

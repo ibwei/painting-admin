@@ -1,4 +1,4 @@
-import {Vue, Component, Prop} from 'vue-property-decorator';
+import { Vue, Component, Prop } from 'vue-property-decorator';
 import {
   Modal,
   Form,
@@ -12,7 +12,7 @@ import {
   Select,
 } from 'ant-design-vue';
 
-import {quillEditor} from 'vue-quill-editor';
+import { quillEditor } from 'vue-quill-editor';
 // @ts-ignore
 import UploadImage from '@/components/UploadImage';
 
@@ -52,12 +52,12 @@ class InfoModal extends Vue {
 
   formItemLayout = {
     labelCol: {
-      xs: {span: 24},
-      sm: {span: 4},
+      xs: { span: 24 },
+      sm: { span: 4 },
     },
     wrapperCol: {
-      xs: {span: 24},
-      sm: {span: 20},
+      xs: { span: 24 },
+      sm: { span: 20 },
     },
   };
 
@@ -87,7 +87,7 @@ class InfoModal extends Vue {
             })
             .then((res: any) => {
               this.spinShow = false;
-              const {resultCode, resultMessage} = res.data;
+              const { resultCode, resultMessage } = res.data;
               if (!resultCode) {
                 this.$message.success(resultMessage);
                 this.Form.resetFields();
@@ -97,9 +97,9 @@ class InfoModal extends Vue {
               }
             });
         } else if (this.type === 'add') {
-          window.api.environmentAdd({...values, url: this.url}).then((res: any) => {
+          window.api.environmentAdd({ ...values, url: this.url }).then((res: any) => {
             this.spinShow = false;
-            const {resultCode, resultMessage} = res.data;
+            const { resultCode, resultMessage } = res.data;
             if (!resultCode) {
               this.$message.success(resultMessage);
               this.Form.resetFields();
@@ -132,11 +132,11 @@ class InfoModal extends Vue {
   }
 
   render() {
-    const {getFieldDecorator} = this.Form;
+    const { getFieldDecorator } = this.Form;
 
     const options = [
-      {label: '启用', value: 1},
-      {label: '禁用', value: 0},
+      { label: '启用', value: 1 },
+      { label: '禁用', value: 0 },
     ];
     return (
       <a-modal
@@ -148,36 +148,37 @@ class InfoModal extends Vue {
       >
         <a-form>
           {this.type === 'edit' ? (
-            <a-form-item {...{props: this.formItemLayout}} label='环境图片'>
+            <a-form-item {...{ props: this.formItemLayout }} label='环境图片'>
               <img src={this.url} width='80%'></img>
             </a-form-item>
           ) : (
-            ''
-          )}
+              ''
+            )}
           <a-form-item
-            {...{props: this.formItemLayout}}
-            label={this.type === 'edit' ? '更换图片' : '上传图片'}
+            {...{ props: this.formItemLayout }}
+            label={'画室图片'}
           >
             <div>
               <upload-image on-uploaded={this.uploaded}></upload-image>
             </div>
           </a-form-item>
-          <a-form-item {...{props: this.formItemLayout}} label='是否启用'>
-            {getFieldDecorator('status', {
-              rules: [{required: true, message: '请选择轮播图状态'}],
-              initialValue: this.data.status,
-            })(<a-select options={options}></a-select>)}
-          </a-form-item>
-          <a-form-item {...{props: this.formItemLayout}} label='排序权重'>
+          <a-form-item {...{ props: this.formItemLayout }} label='排序权重'>
             {getFieldDecorator('order', {
               initialValue: this.data.order,
             })(<a-input placeholder='数值越大排序越靠前'></a-input>)}
           </a-form-item>
-          <a-form-item {...{props: this.formItemLayout}} label='作品描述'>
+          <a-form-item {...{ props: this.formItemLayout }} label='环境标签'>
             {getFieldDecorator('desc', {
               initialValue: this.data.desc,
-            })(<a-textarea rows={6} placeholder='请输入描述'></a-textarea>)}
+            })(<a-input placeholder='请输入描述'></a-input>)}
           </a-form-item>
+          <a-form-item {...{ props: this.formItemLayout }} label='是否启用'>
+            {getFieldDecorator('status', {
+              rules: [{ required: true, message: '请选择轮播图状态' }],
+              initialValue: this.data.status,
+            })(<a-select options={options}></a-select>)}
+          </a-form-item>
+
         </a-form>
       </a-modal>
     );
