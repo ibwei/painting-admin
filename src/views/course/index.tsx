@@ -1,20 +1,21 @@
 import {Component, Vue} from 'vue-property-decorator';
-import {Tag, Modal, Button, Table} from 'ant-design-vue';
+import {Tag, Modal, Button, Table, Switch} from 'ant-design-vue';
 import moment from 'moment';
 import {tableList, FilterFormList, Opreat} from '@/interface';
 import InfoModal from './infoModal';
 
 @Component({
-  name: 'courseenroll',
+  name: 'course',
   components: {
     'a-tag': Tag,
     'info-modal': InfoModal,
     'a-modal': Modal,
     'a-button': Button,
     'a-table': Table,
+    'a-switch': Switch,
   },
 })
-export default class CourseEnroll extends Vue {
+export default class Course extends Vue {
   filterParams: any = {
     name: '',
     address: [],
@@ -35,10 +36,10 @@ export default class CourseEnroll extends Vue {
 
   filterList: FilterFormList[] = [
     {
-      key: 'name',
-      label: 'name',
+      key: 'title',
+      label: 'title',
       type: 'input',
-      placeholder: '请输入报名人姓名',
+      placeholder: '请输入课程名称',
     },
     {
       key: 'createtime',
@@ -51,38 +52,63 @@ export default class CourseEnroll extends Vue {
 
   tableList: tableList[] = [
     {
-      title: '序号',
+      title: 'ID',
       dataIndex: 'id',
-      align: 'center',
     },
     {
-      title: '姓名',
+      title: '课程名称',
       dataIndex: 'name',
+    },
+    {
+      title: '课程分类',
       align: 'center',
-      customRender: this.nameRender,
+      dataIndex: 'category',
     },
     {
-      title: '电话',
-      dataIndex: 'phone',
-    },
-    {
-      title: '电子邮箱',
-      dataIndex: 'email',
-    },
-    {
-      title: '用户设备',
-      dataIndex: 'device',
+      title: '课程标签',
       align: 'center',
-      customRender: this.device,
+      dataIndex: 'tags',
+      customRender: this.tagsRender,
     },
     {
-      title: '所报课程',
+      title: '学费',
       align: 'center',
-      dataIndex: 'course_name',
-      customRender: this.courseRender,
+      dataIndex: 'tuition',
     },
     {
-      title: '报名时间',
+      title: '有效期至',
+      align: 'center',
+      dataIndex: 'valid_time',
+    },
+    {
+      title: '课程教师',
+      align: 'center',
+      dataIndex: 'teacher',
+    },
+    {
+      title: '课程图片',
+      dataIndex: 'url',
+      align: 'center',
+      customRender: this.imgRender,
+    },
+    {
+      title: '课程描述',
+      dataIndex: 'desc',
+    },
+    {
+      title: '排序权重',
+      dataIndex: 'order',
+      align: 'center',
+    },
+    {
+      title: '启用',
+      dataIndex: 'status',
+      align: 'center',
+      customRender: this.switchRender,
+    },
+
+    {
+      title: '添加时间',
       dataIndex: 'created_at',
     },
   ];
@@ -91,18 +117,8 @@ export default class CourseEnroll extends Vue {
     {
       key: 'edit',
       rowKey: 'id',
-      color(value: any) {
-        if (value.status === 0) {
-          return 'blue';
-        }
-        return 'green';
-      },
-      text(value: any) {
-        if (value.status === 0) {
-          return '去处理';
-        }
-        return '查看结果';
-      },
+      color: 'blue',
+      text: '编辑',
       roles: true,
       popconfirm: false,
     },
@@ -120,7 +136,7 @@ export default class CourseEnroll extends Vue {
 
   detailVis: boolean = false;
 
-  title: string = '新增报名';
+  title: string = '新增课程';
 
   visible: boolean = false;
 
@@ -140,12 +156,12 @@ export default class CourseEnroll extends Vue {
     this.detailVis = true;
   }
 
-  nameRender(name: string, row: any) {
-    return <a-tag color='green'>{name}</a-tag>;
-  }
-
-  courseRender(courseName: number, row: any) {
-    return <a-tag type='primary'>{courseName}</a-tag>;
+  thumbnailRender(url: string) {
+    console.log(url);
+    if (url) {
+      return <img src={url} class='thumbnail-image'></img>;
+    }
+    return <a-tag color='red'>无</a-tag>;
   }
 
   device(device: number) {
@@ -159,6 +175,51 @@ export default class CourseEnroll extends Vue {
     this.detailVis = false;
   }
 
+  switchRender(status: number, row: any) {
+    return <a-switch checked={Boolean(status)} onClick={this.statusClick.bind(null, row)} />;
+  }
+
+  tagsRender(tags: string) {
+    const tagArray = tags.split('-');
+    const color = ['green', 'blue', 'cyan', 'pink', 'purple', 'orange'];
+    const dom = tagArray.map((item, index) => {
+      const c = Math.floor(Math.random() * 6);
+      return (
+        <a-tag key={Math.random() + index} color={color[c]}>
+          {item}
+        </a-tag>
+      );
+    });
+    return dom;
+  }
+
+  imgRender(tags: string) {
+    const tagArray = tags.split(',');
+    /* eslint-disable-next-line */
+    const dom = tagArray.map((item, index) => {
+      return (
+        <img key={Math.random() + index} width='100px' src={item}>
+          {item}
+        </img>
+      );
+    });
+    return dom;
+  }
+
+  /* 课程状态变更 */
+
+  statusClick(rows: any) {
+    window.api.courseUpdate({...rows, status: rows.status === 0 ? 1 : 0}).then((res: any) => {
+      const {resultCode} = res.data;
+      if (resultCode === 0) {
+        this.$message.success('操作成功');
+        this.success();
+      } else {
+        this.$message.error('操作失败');
+      }
+    });
+  }
+
   tableClick(key: string, row: any) {
     const data = JSON.parse(JSON.stringify(row));
     this.type = row.type;
@@ -166,15 +227,11 @@ export default class CourseEnroll extends Vue {
       case 'edit':
         this.editData = data;
         this.visible = true;
-        if (row.status === 0) {
-          this.title = '处理报名';
-        } else {
-          this.title = '查看报名处理结果';
-        }
+        this.title = '编辑课程';
         this.type = 'edit';
         break;
       case 'delete':
-        window.api.courseEnrollDelete({id: row.id}).then((res: any) => {
+        window.api.courseDelete({id: row.id}).then((res: any) => {
           const {resultCode} = res.data;
           if (resultCode === 0) {
             this.$message.success('删除成功');
@@ -190,7 +247,7 @@ export default class CourseEnroll extends Vue {
   }
 
   add() {
-    this.title = '新增报名';
+    this.title = '新增课程';
     this.type = 'add';
     this.visible = true;
     this.editData = {};
@@ -217,12 +274,12 @@ export default class CourseEnroll extends Vue {
           filterList={this.filterList}
           filterGrade={[]}
           scroll={{x: 900}}
-          url={'/courseEnroll/courseEnrollList'}
+          url={'/course/list'}
           filterParams={this.filterParams}
           outParams={this.outParams}
-          addBtn={false}
+          addBtn={true}
+          localName={'article'}
           exportBtn={false}
-          localName={'courseEnroll'}
           opreatWidth={'140px'}
           dataType={'json'}
           rowKey={'id'}

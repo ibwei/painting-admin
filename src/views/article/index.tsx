@@ -249,7 +249,7 @@ export default class Article extends Vue {
           addBtn={true}
           localName={'article'}
           exportBtn={false}
-          opreatWidth={'120px'}
+          opreatWidth={'140px'}
           dataType={'json'}
           rowKey={'id'}
           opreat={this.opreat}

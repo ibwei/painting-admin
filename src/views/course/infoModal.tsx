@@ -1,4 +1,5 @@
 import {Vue, Component, Prop} from 'vue-property-decorator';
+import moment from 'moment';
 import {
   Modal,
   Form,
@@ -9,17 +10,10 @@ import {
   Cascader,
   Button,
   Spin,
+  Switch,
 } from 'ant-design-vue';
-
-import {quillEditor} from 'vue-quill-editor';
 // @ts-ignore
-import UploadImage from '@/components/UploadImage';
-
-// 富文本框样式
-import 'quill/dist/quill.core.css';
-import 'quill/dist/quill.snow.css';
-import 'quill/dist/quill.bubble.css';
-import './infoModal.less';
+import UploadImage from '../../components/UploadImage';
 
 @Component({
   components: {
@@ -35,8 +29,8 @@ import './infoModal.less';
     'a-cascader': Cascader,
     'a-textarea': Input.TextArea,
     'a-spin': Spin,
+    'a-switch': Switch,
     UploadImage,
-    quillEditor,
   },
   props: {
     Form,
@@ -65,18 +59,28 @@ class InfoModal extends Vue {
   };
 
   spinShow: boolean = false;
-  thumbnail: string = '';
+
+  url: string = '';
+
+  created() {
+    this.url = this.data.url;
+  }
+
+  statusChange(e: boolean) {
+    this.data.status = e === true ? 1 : 0;
+    console.log(this.data);
+  }
 
   submit() {
     this.$props.Form.validateFields((err: any, values: any) => {
       if (!err) {
         if (this.type === 'edit') {
           window.api
-            .articleUpdate({
+            .courseUpdate({
               ...values,
               id: this.data.id,
-              content: this.contentHTML,
-              thumbnail: this.thumbnail,
+              url: this.url,
+              valid_time: this.data.valid_time,
             })
             .then((res: any) => {
               const {resultCode, resultMessage} = res.data;
@@ -90,10 +94,10 @@ class InfoModal extends Vue {
             });
         } else if (this.type === 'add') {
           window.api
-            .articleAdd({
+            .courseAdd({
               ...values,
-              content: this.contentHTML,
-              thumbnail: this.thumbnail,
+              url: this.url,
+              valid_time: this.data.valid_time,
             })
             .then((res: any) => {
               const {resultCode, resultMessage} = res.data;
@@ -114,33 +118,24 @@ class InfoModal extends Vue {
     this.$emit('close');
   }
 
+  thumbnail: string = '';
   //图片上传完成
   uploaded(e: any) {
-    console.log(e);
-    this.thumbnail = e;
+    this.url = e;
   }
 
-  onEditorBlur = (e: any) => {};
-
-  onEditorFocus = (e: any) => {};
-
-  onEditorReady = (e: any) => {};
-
-  //富文本编辑器的内容
-  contentHTML: string = '';
-
-  created() {
-    this.thumbnail = this.data.thumbnail;
-    this.$nextTick(() => {
-      this.contentHTML = this.data.content;
-    });
+  dateChange(e: any, dateString: string) {
+    console.log(dateString);
+    this.data.valid_time = dateString;
+    console.log(this.data.valid_time);
   }
 
   render() {
     const {getFieldDecorator} = this.Form;
+
     const imageList =
-      this.thumbnail &&
-      this.thumbnail
+      this.url &&
+      this.url
         .split(',')
         .map((item, index) => (
           <img src={item} key={index} width='100px' height='auto' style={{marginRight: '10px'}} />
@@ -154,41 +149,68 @@ class InfoModal extends Vue {
         on-cancel={this.cancel}
       >
         <a-form>
-          <a-form-item {...{props: this.formItemLayout}} label='文章标题'>
-            {getFieldDecorator('title', {
+          <a-form-item {...{props: this.formItemLayout}} label='课程标题'>
+            {getFieldDecorator('name', {
               rules: [{required: true, message: '请输入标题'}],
-              initialValue: this.data.title,
-            })(<a-input placeholder='请输入标题'></a-input>)}
+              initialValue: this.data.name,
+            })(
+              <a-input placeholder='标题必须包含(课时),如--体验课(三小时),绘画基础课(20课时)'></a-input>,
+            )}
           </a-form-item>
-          <a-form-item {...{props: this.formItemLayout}} label='文章分类'>
+          <a-form-item {...{props: this.formItemLayout}} label='课程分类'>
             {getFieldDecorator('category', {
               initialValue: this.data.category,
               rules: [{required: true, message: '请输入分类'}],
-            })(<a-input placeholder='请输入分类'></a-input>)}
+            })(<a-input placeholder='请确保同一个分类的名字一致'></a-input>)}
           </a-form-item>
-          <a-form-item {...{props: this.formItemLayout}} label='文章标签'>
+          <a-form-item {...{props: this.formItemLayout}} label='课程标签'>
             {getFieldDecorator('tags', {
               initialValue: this.data.tags,
               rules: [{required: true, message: '请输入标签'}],
             })(<a-input placeholder='请输入标签,多个标签-分隔'></a-input>)}
           </a-form-item>
-          <a-form-item {...{props: this.formItemLayout}} label='文章缩略图'>
+          <a-form-item {...{props: this.formItemLayout}} label='课程学费'>
+            {getFieldDecorator('tuition', {
+              initialValue: this.data.tuition,
+              rules: [{required: true, message: '请输入学费'}],
+            })(<a-input placeholder='请输入学费'></a-input>)}
+          </a-form-item>
+          <a-form-item {...{props: this.formItemLayout}} label='课程有效期'>
+            <a-date-picker
+              onChange={this.dateChange}
+              format='YYYY-MM-DD'
+              placeholder='请选择有效期'
+              defaultValue={moment(
+                this.data.valid_time ? this.data.valid_time : moment().format('YYYY-MM-DD'),
+              )}
+            ></a-date-picker>
+          </a-form-item>
+          <a-form-item {...{props: this.formItemLayout}} label='课程教师'>
+            {getFieldDecorator('teacher', {
+              initialValue: this.data.teacher,
+            })(<a-input placeholder='请输入教师'></a-input>)}
+          </a-form-item>
+          <a-form-item {...{props: this.formItemLayout}} label='排序权重'>
+            {getFieldDecorator('order', {
+              initialValue: this.data.order,
+            })(<a-input placeholder='请输入权重,值越大,排序越靠前'></a-input>)}
+          </a-form-item>
+          <a-form-item {...{props: this.formItemLayout}} label='课程描述'>
+            {getFieldDecorator('desc', {
+              initialValue: this.data.desc,
+              rules: [{required: true, message: '请输入课程描述'}],
+            })(<a-textarea rows={4} placeholder='请输入课程描述'></a-textarea>)}
+          </a-form-item>
+          <a-form-item {...{props: this.formItemLayout}} label='课程缩略图'>
             <div style={{display: 'flex', flexFlow: 'row nowrap', justifyContent: 'flex-start'}}>
               {imageList}
-              <upload-image pictureLength={3} on-uploaded={this.uploaded}></upload-image>
+              <upload-image pictureLength={1} on-uploaded={this.uploaded}></upload-image>
             </div>
           </a-form-item>
-          <a-form-item {...{props: this.formItemLayout}} label='正文'>
-            <div>
-              <quill-editor
-                v-model={this.contentHTML}
-                ref='myQuillEditor'
-                options={this.editorOption}
-                on-blur={this.onEditorBlur.bind(this)}
-                on-focus={this.onEditorFocus.bind(this)}
-                on-ready={this.onEditorReady.bind(this)}
-              ></quill-editor>
-            </div>
+          <a-form-item {...{props: this.formItemLayout}} label='启用'>
+            {getFieldDecorator('status', {
+              initialValue: this.data.status,
+            })(<a-switch checked={Boolean(this.data.status)} onClick={this.statusChange} />)}
           </a-form-item>
         </a-form>
       </a-modal>

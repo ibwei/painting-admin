@@ -221,7 +221,7 @@ export default class Feedback extends Vue {
           outParams={this.outParams}
           addBtn={false}
           exportBtn={false}
-          opreatWidth={'120px'}
+          opreatWidth={'140px'}
           dataType={'json'}
           rowKey={'id'}
           localName={'feedback'}

@@ -230,7 +230,7 @@ export default class StudentWorks extends Vue {
           localName={'StudentWorks'}
           addBtn={true}
           exportBtn={false}
-          opreatWidth={'120px'}
+          opreatWidth={'140px'}
           dataType={'json'}
           rowKey={'id'}
           opreat={this.opreat}

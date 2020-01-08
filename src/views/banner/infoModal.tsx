@@ -38,12 +38,16 @@ class InfoModal extends Vue {
     },
   };
 
+  created() {
+    this.url = this.data.url;
+  }
+
   submit() {
     this.$props.Form.validateFields((err: any, values: any) => {
       if (!err) {
         if (this.type === 'edit') {
           window.api
-            .bannerBaseInfoUpdate({id: this.data.id, ...values, url: this.imgUrl})
+            .bannerBaseInfoUpdate({id: this.data.id, ...values, url: this.url})
             .then((res: any) => {
               const {resultCode, resultMessage} = res.data;
               if (!resultCode) {
@@ -56,11 +60,11 @@ class InfoModal extends Vue {
             });
         } else if (this.type === 'add') {
           console.log('values :', values);
-          if (this.imgUrl === '') {
+          if (this.url === '') {
             this.$message.error('请选择上传的图片');
             return false;
           }
-          window.api.bannerBaseInfoAdd({...values, url: this.imgUrl}).then((res: any) => {
+          window.api.bannerBaseInfoAdd({...values, url: this.url}).then((res: any) => {
             const {resultCode, resultMessage} = res.data;
             if (!resultCode) {
               this.$message.success(resultMessage);
@@ -84,13 +88,20 @@ class InfoModal extends Vue {
     {value: 1, label: '启用'},
   ];
 
-  imgUrl: string = '';
+  url: string = '';
   //图片上传完成
   uploaded(e: any) {
-    this.imgUrl = e;
+    this.url = e;
   }
   render() {
     const {getFieldDecorator} = this.Form;
+    const imageList =
+      this.url &&
+      this.url
+        .split(',')
+        .map((item, index) => (
+          <img src={item} key={index} width='100px' height='auto' style={{marginRight: '10px'}} />
+        ));
     return (
       <a-modal
         title={this.title}
@@ -123,7 +134,8 @@ class InfoModal extends Vue {
             })(<a-select options={this.optionStatus}></a-select>)}
           </a-form-item>
           <a-form-item {...{props: this.formItemLayout}} label='轮播图'>
-            <div>
+            <div style={{display: 'flex', flexFlow: 'row nowrap', justifyContent: 'flex-start'}}>
+              {imageList}
               <upload-image pictureLength={1} on-uploaded={this.uploaded}></upload-image>
             </div>
           </a-form-item>

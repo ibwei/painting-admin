@@ -204,6 +204,23 @@ export default class Api {
       fetchType: 'json',
       method: 'post',
     },
+    //画室课程
+
+    courseAdd: {
+      url: '/course/add',
+      fetchType: 'json',
+      method: 'post',
+    },
+    courseUpdate: {
+      url: '/course/update',
+      fetchType: 'json',
+      method: 'post',
+    },
+    courseDelete: {
+      url: '/course/delete',
+      fetchType: 'json',
+      method: 'post',
+    },
   };
   // 对外暴露方法
   api: Apis<any> = {};

@@ -186,6 +186,7 @@ export default class GalleryPictures extends Vue {
           addBtn={false}
           localName={'galleryPictures'}
           defaultPageSize={12}
+          opreatWidth={'120px'}
           exportBtn={false}
           dataType={'json'}
           rowKey={'id'}

@@ -227,7 +227,7 @@ export default class messageBoard extends Vue {
           localName={'banner'}
           rowKey={'id'}
           opreat={this.opreat}
-          opreatWidth='120px'
+          opreatWidth={'160px'}
           fetchType={'get'}
           backParams={this.BackParams}
           on-menuClick={this.tableClick}

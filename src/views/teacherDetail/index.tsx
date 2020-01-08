@@ -1,8 +1,8 @@
 /* eslint-disabled */
-import { Component, Vue } from 'vue-property-decorator';
-import { Tag, Modal, Button, Table, Avatar } from 'ant-design-vue';
+import {Component, Vue} from 'vue-property-decorator';
+import {Tag, Modal, Button, Table, Avatar} from 'ant-design-vue';
 import moment from 'moment';
-import { tableList, FilterFormList, Opreat } from '@/interface';
+import {tableList, FilterFormList, Opreat} from '@/interface';
 import city from '@/utils/city';
 import InfoModal from './infoModal';
 
@@ -49,8 +49,8 @@ export default class messageBoard extends Vue {
       type: 'cascader',
       placeholder: '请选择图片状态',
       options: [
-        { value: 0, label: '启用' },
-        { value: 1, label: '禁用' },
+        {value: 0, label: '启用'},
+        {value: 1, label: '禁用'},
       ],
     },
   ];
@@ -162,7 +162,7 @@ export default class messageBoard extends Vue {
     this.type = row.type;
     switch (key) {
       case 'delete':
-        window.api.teacherBaseInfoDelete({ id: data.id }).then((res: any) => {
+        window.api.teacherBaseInfoDelete({id: data.id}).then((res: any) => {
           const resultCode = res.data.resultCode;
           if (resultCode === 0) {
             this.$message.success('删除成功');
@@ -210,13 +210,14 @@ export default class messageBoard extends Vue {
           tableList={this.tableList}
           filterList={this.filterList}
           filterGrade={[]}
-          scroll={{ x: 900 }}
+          scroll={{x: 900}}
           url={'/teacher/teacherList'}
           filterParams={this.filterParams}
           outParams={this.outParams}
           addBtn={true}
           localName={'teacherList'}
           exportBtn={false}
+          opreatWidth={'140px'}
           dataType={'json'}
           rowKey={'id'}
           opreat={this.opreat}
@@ -236,8 +237,8 @@ export default class messageBoard extends Vue {
             visible={this.visible}
           ></info-modal>
         ) : (
-            ''
-          )}
+          ''
+        )}
       </div>
     );
   }
