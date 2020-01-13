@@ -90,7 +90,7 @@ export default {
       const formData = new FormData();
       formData.append('file', file);
       axios({
-        url: 'http://www.paintingapi.ibwei.com/api/image/upload',
+        url: 'http://www.paintingapi.pinxianhs.com/api/image/upload',
         method: 'post',
         processData: false,
         data: formData,

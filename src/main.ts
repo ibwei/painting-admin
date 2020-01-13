@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { message } from 'ant-design-vue';
+import {message} from 'ant-design-vue';
 // 自定义全局组件
 //@ts-ignore
 import FilterTable from '@/components/FilterTable/index.vue';
@@ -15,7 +15,10 @@ import i18n from './locales/index';
 import './styles/global.less';
 
 const Apis = new Api({
-  baseUrl: process.env.NODE_ENV === 'production' ? 'http://www.paintingapi.ibwei.com/api' : '/api',
+  baseUrl:
+    process.env.NODE_ENV === 'production'
+      ? 'http://www.paintingapi.pinxianhs.com/api'
+      : 'http://www.paintingapi.pinxianhs.com/api',
 });
 // 全局api
 // 配置接口
@@ -86,7 +89,7 @@ router.beforeEach((to, from, next) => {
       .catch((err: any) => {
         console.log(err);
         if (config.noLoginList.indexOf(to.path) < 0) {
-          next({ name: 'login', replace: true });
+          next({name: 'login', replace: true});
         }
         next();
       });
