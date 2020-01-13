@@ -41,17 +41,15 @@ class InfoModal extends Vue {
   max = 5;
   min = 0;
 
-  photo: string = '';
-
   created() {
-    this.photo = this.data.photo;
+    this.imgUrl = this.data.photo;
   }
   submit() {
     this.$props.Form.validateFields((err: any, values: any) => {
       if (!err) {
         if (this.type === 'edit') {
           window.api
-            .teacherBaseInfoUpdate({id: this.data.id, photoUrl: this.data.photo, ...values})
+            .teacherBaseInfoUpdate({...values, id: this.data.id, photoUrl: this.imgUrl})
             .then((res: any) => {
               console.log('res :', res);
               const {resultCode, resultMessage} = res.data;
@@ -90,14 +88,16 @@ class InfoModal extends Vue {
   imgUrl: string = '';
   //图片上传完成
   uploaded(e: any) {
+    console.log(e);
     this.imgUrl = e;
+    this.data.photo = e;
   }
   render() {
     const {getFieldDecorator} = this.Form;
 
     const imageList =
-      this.photo &&
-      this.photo
+      this.imgUrl &&
+      this.imgUrl
         .split(',')
         .map((item, index) => (
           <img src={item} key={index} width='100px' height='auto' style={{marginRight: '10px'}} />

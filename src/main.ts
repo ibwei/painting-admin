@@ -16,7 +16,9 @@ import './styles/global.less';
 
 const Apis = new Api({
   baseUrl:
-    process.env.NODE_ENV === 'production' ? 'http://www.paintingapi.pinxianhs.com/api' : '/api',
+    process.env.NODE_ENV === 'production'
+      ? 'http://www.paintingapi.pinxianhs.com/api'
+      : 'http://www.paintingapi.pinxianhs.com/api',
 });
 // 全局api
 // 配置接口
