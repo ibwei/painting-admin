@@ -1,6 +1,6 @@
 import axios from 'axios';
 import config from '@/utils/config';
-import router, {asyncRouterMap, constantRouterMap} from '@/router';
+import {router, asyncRouterMap, constantRouterMap} from '@/router';
 import {routerItem} from '@/interface';
 
 interface UserData {

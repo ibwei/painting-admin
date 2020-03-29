@@ -4,7 +4,7 @@ import qs from 'qs';
 import jsonp from 'jsonp';
 import lodash from 'lodash';
 import {message} from 'ant-design-vue';
-import router from '@/router/index';
+import {router} from '@/router/index';
 
 interface ApiList {
   [key: string]: {

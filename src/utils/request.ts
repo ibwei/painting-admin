@@ -4,9 +4,9 @@ import qs from 'qs';
 import jsonp from 'jsonp';
 import lodash from 'lodash';
 import pathToRegexp from 'path-to-regexp';
-import { message } from 'ant-design-vue';
+import {message} from 'ant-design-vue';
 import config from '@/utils/config';
-import router from '@/router';
+import {router} from '@/router';
 
 /* axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded'; */
 
@@ -25,9 +25,9 @@ const fetch = (options: {
   fetchType?: string;
   headers?: any;
 }) => {
-  const { data } = options;
-  let { url } = options;
-  const { method = 'get', fetchType } = options;
+  const {data} = options;
+  let {url} = options;
+  const {method = 'get', fetchType} = options;
   options.headers = {
     ...options.headers,
     token: window.localStorage.getItem('token'),
@@ -68,7 +68,7 @@ const fetch = (options: {
           if (error) {
             reject(error);
           }
-          resolve({ statusText: 'OK', status: 200, data: result });
+          resolve({statusText: 'OK', status: 200, data: result});
         },
       );
     });
@@ -89,11 +89,11 @@ const fetch = (options: {
   }
   switch (method.toLowerCase()) {
     case 'post':
-      return service.post(url, cloneData, { headers: options.headers });
+      return service.post(url, cloneData, {headers: options.headers});
     case 'get':
-      return service.get(`${url}?${cloneData}`, { headers: options.headers });
+      return service.get(`${url}?${cloneData}`, {headers: options.headers});
     default:
-      return service.get(`${url}?${cloneData}`, { headers: options.headers });
+      return service.get(`${url}?${cloneData}`, {headers: options.headers});
   }
 };
 
@@ -108,8 +108,8 @@ interface Option {
 export default function request(options: Option): Promise<any> {
   return fetch(options)
     .then((response: any) => {
-      const { statusText, status } = response;
-      let { data } = response;
+      const {statusText, status} = response;
+      let {data} = response;
       if (data instanceof Array) {
         data = {
           list: data,
@@ -129,11 +129,11 @@ export default function request(options: Option): Promise<any> {
       });
     })
     .catch(error => {
-      const { response } = error;
+      const {response} = error;
       let msg;
       let statusCode;
       if (response && response instanceof Object) {
-        const { data, statusText } = response;
+        const {data, statusText} = response;
         statusCode = response.status;
         msg = data.message || statusText;
       } else {

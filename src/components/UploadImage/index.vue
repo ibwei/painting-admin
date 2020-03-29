@@ -86,11 +86,13 @@ export default {
     },
 
     handleUpload ({ file }) {
+      const CDNURL = 'http://img.pinxianhs.com/'
       this.$message.loading('正在上传图片,请勿重复操作....', 0);
       const formData = new FormData();
       formData.append('file', file);
       axios({
-        url: 'http://www.paintingapi.pinxianhs.com/api/image/upload',
+        // url: 'http://www.paintingapi.pinxianhs.com/api/image/upload',
+        url: 'http://111.229.132.102:8888/album/upload',
         method: 'post',
         processData: false,
         data: formData,
@@ -99,15 +101,16 @@ export default {
           'Content-Type': 'multipart/form-data',
         },
       }).then((res) => {
+        console.log(res)
         this.$message.destroy();
-        if (res.data.resultCode === 0) {
-          this.urlList.push(res.data.data.path);
+        if (res.data.code === 0 && res.data.data.key) {
+          this.urlList.push(CDNURL + res.data.data.key);
           this.$message.success('上传成功!');
           const f = {
             uid: String(this.index++),
             name: 'xxx.png',
             status: 'done',
-            url: res.data.data.path,
+            url: CDNURL + res.data.data.key,
           };
           this.fileList.push(f);
           this.$emit('uploaded', this.urlList.join(','));

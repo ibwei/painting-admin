@@ -6,12 +6,10 @@ import getters from '@/store/getters';
 
 Vue.use(Vuex);
 
-const store = new Vuex.Store({
+export const store = new Vuex.Store({
   modules: {
     app,
     user,
   },
   getters,
 });
-
-export default store;

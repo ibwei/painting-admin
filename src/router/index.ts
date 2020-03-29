@@ -2,111 +2,91 @@ import Vue from 'vue';
 import Router, {RouterOptions} from 'vue-router';
 import {routerItem} from '@/interface';
 
-const getComponent = require(`./import_${process.env.NODE_ENV}`);
+//const getComponent = require('./import_development');
 
 // 不需要权限判断的路由
 export const constantRouterMap: routerItem[] & RouterOptions['routes'] = [
   {
     path: '/dashboard',
     name: '数据看板',
-    component: getComponent('dashboard/index'),
+    component: () => import('../views/dashboard/index'),
     meta: {key: 'Dashboard'},
   },
   {
     path: '/',
     name: 'dashboard',
-    component: getComponent('dashboard/index'),
+    component: () => import('../views/dashboard/index'),
   },
   {
     path: '/login',
     name: 'login',
-    component: getComponent('login/index'),
-  },
-  {
-    path: '/modiflyPwd',
-    name: 'modiflyPwd',
-    component: getComponent('updatePwd/index.vue'),
-  },
-  {
-    path: '/updateSelf',
-    name: 'personCenter',
-    component: getComponent('updateSelf/index.vue'),
+    component: () => import('../views/login/index'),
   },
   {
     path: '/dashboard',
     name: '数据看板',
-    component: getComponent('dashboard/index'),
+    component: () => import('../views/dashboard/index'),
     meta: {key: 'Dashboard'},
   },
   {
     path: '/studio',
     name: '画室管理',
-    component: getComponent('studio/index'),
+    component: () => import('../views/studio/index'),
     meta: {key: 'Studio'},
   },
   {
     path: '/environment',
     name: '画室环境管理',
-    component: getComponent('environment/index'),
+    component: () => import('../views/environment/index'),
     meta: {key: 'environment'},
   },
   {
     path: '/course',
     name: '课程管理',
-    component: getComponent('course/index'),
+    component: () => import('../views/course/index'),
     meta: {key: 'Course'},
   },
   {
     path: '/courseEnroll',
     name: '在线报名',
-    component: getComponent('courseenroll/index'),
+    component: () => import('../views/courseenroll/index'),
     meta: {key: 'CourseEnroll'},
   },
   {
     path: '/feedback',
     name: '反馈管理',
-    component: getComponent('feedback/index'),
+    component: () => import('../views/feedback/index'),
     meta: {key: 'Feedback'},
   },
   {
     path: '/article',
     name: '文章管理',
-    component: getComponent('article/index'),
+    component: () => import('../views/article/index'),
     meta: {key: 'Article'},
   },
   {
     path: '/studentWorks',
     name: '学生作品管理',
-    component: getComponent('studentWorks/index'),
+    component: () => import('../views/studentWorks/index'),
     meta: {key: 'StudentWorks'},
   },
   {
     path: '/banner',
     name: '轮播图片管理',
-    component: getComponent('banner/index'),
+    component: () => import('../views/banner/index'),
     meta: {key: 'Banner'},
   },
   {
     path: '/teacherDetail',
     name: '教师详情管理',
-    component: getComponent('teacherDetail/index'),
+    component: () => import('../views/teacherDetail/index'),
     meta: {key: 'teacherDetail'},
   },
   {
     path: '/galleryPictures',
     name: '3D画廊图片',
-    component: getComponent('galleryPictures/index'),
+    component: () => import('../views/galleryPictures/index'),
     meta: {key: 'GalleryPictures'},
-  },
-  {
-    path: '*',
-    name: '404',
-    component: getComponent('error/404.vue'),
-  },
-  {
-    path: '/401',
-    name: '401',
-    component: getComponent('error/401.vue'),
   },
 ];
 /**
@@ -121,7 +101,7 @@ export const asyncRouterMap: routerItem[] = [
     path: '/dashboard',
     icon: 'dashboard',
     name: '数据看板',
-    component: getComponent('dashboard/index'),
+    component: () => import('../views/dashboard/index'),
     permission: true,
     meta: {key: 'Dashboard'},
   },
@@ -129,7 +109,7 @@ export const asyncRouterMap: routerItem[] = [
     path: '/studio',
     icon: 'home',
     name: '画室管理',
-    component: getComponent('studio/index'),
+    component: () => import('../views/studio/index'),
     permission: true,
     meta: {key: 'Studio'},
   },
@@ -137,7 +117,7 @@ export const asyncRouterMap: routerItem[] = [
     path: '/course',
     icon: 'book',
     name: '课程管理',
-    component: getComponent('course/index'),
+    component: () => import('../views/course/index'),
     permission: true,
     meta: {key: 'Course'},
   },
@@ -145,7 +125,7 @@ export const asyncRouterMap: routerItem[] = [
     path: '/courseEnroll',
     icon: 'pay-circle',
     name: '在线报名',
-    component: getComponent('courseenroll/index'),
+    component: () => import('../views/courseenroll/index'),
     permission: true,
     meta: {key: 'CourseEnroll'},
   },
@@ -153,7 +133,7 @@ export const asyncRouterMap: routerItem[] = [
     path: '/feedback',
     icon: 'smile',
     name: '反馈管理',
-    component: getComponent('feedback/index'),
+    component: () => import('../views/feedback/index'),
     permission: true,
     meta: {key: 'Feedback'},
   },
@@ -161,7 +141,7 @@ export const asyncRouterMap: routerItem[] = [
     path: '/article',
     icon: 'file-text',
     name: '文章管理',
-    component: getComponent('article/index'),
+    component: () => import('../views/article/index'),
     permission: true,
     meta: {key: 'Article'},
   },
@@ -169,7 +149,7 @@ export const asyncRouterMap: routerItem[] = [
     path: '/galleryPictures',
     icon: 'switcher',
     name: '3D画廊图片',
-    component: getComponent('galleryPictures/index'),
+    component: () => import('../views/galleryPictures/index'),
     permission: true,
     meta: {key: 'GalleryPictures'},
   },
@@ -177,7 +157,7 @@ export const asyncRouterMap: routerItem[] = [
     path: '/studentWorks',
     icon: 'gitlab',
     name: '学生作品管理',
-    component: getComponent('studentWorks/index'),
+    component: () => import('../views/studentWorks/index'),
     permission: true,
     meta: {key: 'StudentWorks'},
   },
@@ -185,7 +165,7 @@ export const asyncRouterMap: routerItem[] = [
     path: '/banner',
     icon: 'chrome',
     name: '轮播图片管理',
-    component: getComponent('banner/index'),
+    component: () => import('../views/banner/index'),
     permission: true,
     meta: {key: 'Banner'},
   },
@@ -193,7 +173,7 @@ export const asyncRouterMap: routerItem[] = [
     path: '/teacherDetail',
     icon: 'picture',
     name: '教师详情管理',
-    component: getComponent('teacherDetail/index'),
+    component: () => import('../views/teacherDetail/index'),
     permission: true,
     meta: {key: 'teacherDetail'},
   },
@@ -201,7 +181,7 @@ export const asyncRouterMap: routerItem[] = [
     path: '/environment',
     icon: 'bank',
     name: '画室环境管理',
-    component: getComponent('environment/index'),
+    component: () => import('../views/environment/index'),
     permission: true,
     meta: {key: 'environment'},
   },
@@ -209,6 +189,6 @@ export const asyncRouterMap: routerItem[] = [
 
 Vue.use(Router);
 
-export default new Router({
+export const router = new Router({
   routes: constantRouterMap,
 });

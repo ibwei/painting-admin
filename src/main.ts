@@ -5,8 +5,8 @@ import {message} from 'ant-design-vue';
 import FilterTable from '@/components/FilterTable/index.vue';
 
 import App from '@/App';
-import router from '@/router';
-import store from '@/store';
+import {router} from '@/router';
+import {store} from '@/store';
 import config from '@/utils/config';
 import Api from '@/api/api';
 
