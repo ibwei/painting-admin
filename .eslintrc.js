@@ -6,6 +6,7 @@ module.exports = {
     'max-len': 'off',
     'new-cap': 'off',
     'no-continue': 'off',
+    'no-else-return': 'off',
     experimentalDecorators: 'off',
     'consistent-return': 'off',
     'no-plusplus': 'off',

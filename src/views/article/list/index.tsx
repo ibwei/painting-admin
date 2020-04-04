@@ -1,24 +1,22 @@
-/* eslint-disabled */
 import {Component, Vue} from 'vue-property-decorator';
-import {Tag, Modal, Button, Table, Avatar, Rate} from 'ant-design-vue';
+import {Tag, Modal, Button, Table} from 'ant-design-vue';
 import {tableList, FilterFormList, Opreat} from '@/interface';
 import InfoModal from '../infoModal';
 
 @Component({
-  name: 'comment',
+  name: 'article',
   components: {
     'a-tag': Tag,
     'info-modal': InfoModal,
     'a-modal': Modal,
     'a-button': Button,
     'a-table': Table,
-    'a-avatar': Avatar,
-    'a-rate': Rate,
   },
 })
-export default class Comment extends Vue {
+export default class Article extends Vue {
   filterParams: any = {
     name: '',
+    address: [],
     createtime: [],
     startTime: '',
     endTime: '',
@@ -36,129 +34,131 @@ export default class Comment extends Vue {
 
   filterList: FilterFormList[] = [
     {
-      key: 'desc',
-      label: 'desc',
+      key: 'title',
+      label: 'title',
       type: 'input',
-      placeholder: '请输入图片描述',
+      placeholder: '请输入文章标题',
     },
     {
-      key: 'status',
-      label: 'status',
-      type: 'cascader',
-      placeholder: '请选择图片状态',
-      options: [
-        {value: 0, label: '启用'},
-        {value: 1, label: '禁用'},
-      ],
+      key: 'createtime',
+      label: 'Createtime',
+      type: 'datetimerange',
+      placeholder: ['开始时间', '结束时间'],
+      value: ['startTime', 'endTime'],
     },
   ];
 
-  warnListModalShow: boolean = false;
-
   tableList: tableList[] = [
     {
-      title: '序号',
+      title: 'ID',
       dataIndex: 'id',
-      align: 'center',
     },
     {
-      title: '用户名',
-      dataIndex: 'username',
-      align: 'center',
+      title: '文章标题',
+      dataIndex: 'title',
     },
     {
-      title: '被评教师',
-      dataIndex: 'teachername',
+      title: '文章缩略图',
+      dataIndex: 'thumbnail',
       align: 'center',
-      customRender: this.nameRender,
+      customRender: this.imgRender,
     },
     {
-      title: '评分',
-      dataIndex: 'star',
+      title: '文章分类',
       align: 'center',
-      customRender: this.starRender,
+      dataIndex: 'category',
     },
     {
-      title: '评论内容',
+      title: '文章标签',
+      dataIndex: 'tags',
       align: 'center',
-      dataIndex: 'content',
+      customRender: this.tagsRender,
     },
     {
-      title: '评论时间',
+      title: '阅读数',
       align: 'center',
+      dataIndex: 'read_count',
+    },
+    {
+      title: '点赞数',
+      align: 'center',
+      dataIndex: 'praise_count',
+    },
+    {
+      title: '评论数',
+      align: 'center',
+      dataIndex: 'comment_count',
+    },
+    {
+      title: '发表时间',
       dataIndex: 'created_at',
+    },
+    {
+      title: '修改时间',
+      dataIndex: 'updated_at',
     },
   ];
 
   opreat: Opreat[] = [
     {
-      key: 'pass',
+      key: 'edit',
       rowKey: 'id',
-      color: 'green',
-      text(value: any) {
-        if (value.status === 0) {
-          return '通过审核';
-        }
-        return '';
-      },
+      color: 'blue',
+      text: '编辑',
       roles: true,
-    },
-    {
-      key: 'reject',
-      rowKey: 'id',
-      color(value: any) {
-        if (value.status === 0) {
-          return 'green';
-        } else if (value.status === 1) {
-          return 'red';
-        }
-        return 'gray';
-      },
-      text(value: any) {
-        if (value.status === 0) {
-          return '驳回评论';
-        } else if (value.status === 1) {
-          return '已通过';
-        }
-        return '未通过';
-      },
-      disabled(value: any) {
-        if (value.status !== 0) {
-          return true;
-        }
-        return false;
-      },
-      roles: true,
+      popconfirm: false,
     },
     {
       key: 'delete',
       rowKey: 'id',
-      color: 'black',
+      color: 'red',
       text: '删除',
       roles: true,
-      popconfirm: true,
-      msg: '是否删除该条教师评论',
+      msg: '确定删除？',
     },
   ];
 
-  title: string = '新增图片';
+  changeVis: boolean = false;
+
+  detailVis: boolean = false;
+
+  title: string = '新增文章';
 
   visible: boolean = false;
 
-  type: string = 'add';
+  modelType: string = 'add';
 
   editData: object = {};
 
-  nameRender(name: string, row: any) {
-    return <a-tag color='green'>{name}</a-tag>;
+  dataSource: Array<any> = [];
+
+  //打开地图的入口 [查看|编辑]
+  openType: string = '';
+
+  //地图需要展示的图形 [多边形,圆形,自定义等]
+  type: string = '';
+
+  handleOk() {
+    this.detailVis = true;
   }
 
-  ImgRender(url: string) {
-    return <a-avatar shape='square' size={96} src={url} />;
+  thumbnailRender(url: string) {
+    console.log(url);
+    if (url) {
+      return <img src={url} class='thumbnail-image'></img>;
+    }
+    return <a-tag color='red'>无</a-tag>;
   }
 
-  starRender(star: number) {
-    return <a-rate defaultValue={star} allowHalf disabled />;
+  device(device: number) {
+    if (device === 0) {
+      return <a-tag color={'green'}>手机</a-tag>;
+    }
+    return <a-tag color={'blue'}>PC</a-tag>;
+  }
+
+  handleCancel() {
+    this.detailVis = false;
   }
 
   tagsRender(tags: string) {
@@ -175,13 +175,32 @@ export default class Comment extends Vue {
     return dom;
   }
 
+  imgRender(tags: string) {
+    const tagArray = tags.split(',');
+    /* eslint-disable-next-line */
+    const dom = tagArray.map((item, index) => {
+      return (
+        <img key={Math.random() + index} width='100px' src={item}>
+          {item}
+        </img>
+      );
+    });
+    return dom;
+  }
+
   tableClick(key: string, row: any) {
     const data = JSON.parse(JSON.stringify(row));
     this.type = row.type;
     switch (key) {
+      case 'edit':
+        this.editData = data;
+        this.visible = true;
+        this.title = '编辑文章';
+        this.type = 'edit';
+        break;
       case 'delete':
-        window.api.teacherCommentDelete({id: data.id}).then((res: any) => {
-          const resultCode = res.data.resultCode;
+        window.api.articleDelete({id: row.id}).then((res: any) => {
+          const {resultCode} = res.data;
           if (resultCode === 0) {
             this.$message.success('删除成功');
             this.success();
@@ -190,35 +209,13 @@ export default class Comment extends Vue {
           }
         });
         break;
-      case 'pass':
-        window.api.teacherCommentUpdate({id: data.id, status: 1}).then((res: any) => {
-          const resultCode = res.data.resultCode;
-          if (resultCode === 0) {
-            this.$message.success(res.data.resultMessage);
-            this.success();
-          } else {
-            this.$message.error('处理失败');
-          }
-        });
-        break;
-      case 'reject':
-        window.api.teacherCommentUpdate({id: data.id, status: 2}).then((res: any) => {
-          const resultCode = res.data.resultCode;
-          if (resultCode === 0) {
-            this.$message.success(res.data.resultMessage);
-            this.success();
-          } else {
-            this.$message.error('处理失败');
-          }
-        });
-        break;
       default:
-        console.log('默认处理');
+        break;
     }
   }
 
   add() {
-    this.title = '添加轮播图';
+    this.title = '新增文章';
     this.type = 'add';
     this.visible = true;
     this.editData = {};
@@ -245,13 +242,13 @@ export default class Comment extends Vue {
           filterList={this.filterList}
           filterGrade={[]}
           scroll={{x: 900}}
-          url={'/teacher/comment/list'}
+          url={'/article/articleList'}
           filterParams={this.filterParams}
           outParams={this.outParams}
           addBtn={true}
-          localName={'teacherList'}
+          localName={'article'}
           exportBtn={false}
-          opreatWidth={'180px'}
+          opreatWidth={'140px'}
           dataType={'json'}
           rowKey={'id'}
           opreat={this.opreat}
@@ -260,7 +257,6 @@ export default class Comment extends Vue {
           on-menuClick={this.tableClick}
           on-add={this.add}
         />
-
         {this.visible ? (
           <info-modal
             on-close={this.closeModal}

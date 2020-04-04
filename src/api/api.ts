@@ -3,7 +3,6 @@ import axios, {AxiosPromise, AxiosInstance} from 'axios';
 import qs from 'qs';
 import jsonp from 'jsonp';
 import lodash from 'lodash';
-import {message} from 'ant-design-vue';
 import {router} from '@/router/index';
 
 interface ApiList {
@@ -127,9 +126,22 @@ export default class Api {
       fetchType: 'json',
       method: 'post',
     },
-
+    teacherCommentList: {
+      url: '/teacher/comment/list',
+      fetchType: 'json',
+      method: 'post',
+    },
+    teacherCommentUpdate: {
+      url: '/teacher/comment/update',
+      fetchType: 'json',
+      method: 'post',
+    },
+    teacherCommentDelete: {
+      url: '/teacher/comment/delete',
+      fetchType: 'json',
+      method: 'post',
+    },
     //文章表
-
     articleAdd: {
       url: '/article/articleAdd',
       fetchType: 'json',
@@ -145,9 +157,23 @@ export default class Api {
       fetchType: 'json',
       method: 'post',
     },
+    articleCommentList: {
+      url: '/article/comment/list',
+      fetchType: 'json',
+      method: 'post',
+    },
+    articleCommentUpdate: {
+      url: '/article/comment/update',
+      fetchType: 'json',
+      method: 'post',
+    },
+    articleCommentDelete: {
+      url: '/article/comment/delete',
+      fetchType: 'json',
+      method: 'post',
+    },
 
     //学生作品表
-
     studentWorksList: {
       url: '/studentWorks/studentWorksList',
       fetchType: 'json',
@@ -188,7 +214,6 @@ export default class Api {
     },
 
     // 画室环境
-
     environmentAdd: {
       url: '/environment/environmentAdd',
       fetchType: 'json',
@@ -218,6 +243,16 @@ export default class Api {
     },
     courseDelete: {
       url: '/course/delete',
+      fetchType: 'json',
+      method: 'post',
+    },
+    scheduleList: {
+      url: '/schedule/list',
+      fetchType: 'json',
+      method: 'post',
+    },
+    scheduleUpdate: {
+      url: '/schedule/update',
       fetchType: 'json',
       method: 'post',
     },

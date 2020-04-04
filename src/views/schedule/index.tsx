@@ -1,7 +1,7 @@
 import {Component, Vue} from 'vue-property-decorator';
 
 @Component({
-  name: 'Article',
+  name: 'Schedule',
 })
 export default class Customers extends Vue {
   render() {

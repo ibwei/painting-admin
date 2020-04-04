@@ -2,13 +2,11 @@
 import {Component, Vue} from 'vue-property-decorator';
 import {Tag, Modal, Button, Table, Avatar, Rate} from 'ant-design-vue';
 import {tableList, FilterFormList, Opreat} from '@/interface';
-import InfoModal from '../infoModal';
 
 @Component({
   name: 'comment',
   components: {
     'a-tag': Tag,
-    'info-modal': InfoModal,
     'a-modal': Modal,
     'a-button': Button,
     'a-table': Table,
@@ -67,20 +65,21 @@ export default class Comment extends Vue {
       align: 'center',
     },
     {
-      title: '被评教师',
-      dataIndex: 'teachername',
+      title: '评论文章',
+      dataIndex: 'title',
       align: 'center',
+      width: 200,
       customRender: this.nameRender,
     },
     {
-      title: '评分',
-      dataIndex: 'star',
+      title: '评论层级',
+      dataIndex: 'level',
       align: 'center',
-      customRender: this.starRender,
     },
     {
       title: '评论内容',
       align: 'center',
+      width: '300px',
       dataIndex: 'content',
     },
     {
@@ -137,7 +136,7 @@ export default class Comment extends Vue {
       text: '删除',
       roles: true,
       popconfirm: true,
-      msg: '是否删除该条教师评论',
+      msg: '是否删除该条文章评论',
     },
   ];
 
@@ -180,7 +179,7 @@ export default class Comment extends Vue {
     this.type = row.type;
     switch (key) {
       case 'delete':
-        window.api.teacherCommentDelete({id: data.id}).then((res: any) => {
+        window.api.articleCommentDelete({id: data.id}).then((res: any) => {
           const resultCode = res.data.resultCode;
           if (resultCode === 0) {
             this.$message.success('删除成功');
@@ -191,7 +190,7 @@ export default class Comment extends Vue {
         });
         break;
       case 'pass':
-        window.api.teacherCommentUpdate({id: data.id, status: 1}).then((res: any) => {
+        window.api.articleCommentUpdate({id: data.id, status: 1}).then((res: any) => {
           const resultCode = res.data.resultCode;
           if (resultCode === 0) {
             this.$message.success(res.data.resultMessage);
@@ -202,7 +201,7 @@ export default class Comment extends Vue {
         });
         break;
       case 'reject':
-        window.api.teacherCommentUpdate({id: data.id, status: 2}).then((res: any) => {
+        window.api.articleCommentUpdate({id: data.id, status: 2}).then((res: any) => {
           const resultCode = res.data.resultCode;
           if (resultCode === 0) {
             this.$message.success(res.data.resultMessage);
@@ -245,11 +244,11 @@ export default class Comment extends Vue {
           filterList={this.filterList}
           filterGrade={[]}
           scroll={{x: 900}}
-          url={'/teacher/comment/list'}
+          url={'/article/comment/list'}
           filterParams={this.filterParams}
           outParams={this.outParams}
           addBtn={true}
-          localName={'teacherList'}
+          localName={'articleCommentList'}
           exportBtn={false}
           opreatWidth={'180px'}
           dataType={'json'}
