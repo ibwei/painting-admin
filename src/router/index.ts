@@ -1,6 +1,6 @@
 import Vue from 'vue';
-import Router, {RouterOptions} from 'vue-router';
-import {routerItem} from '@/interface';
+import Router, { RouterOptions } from 'vue-router';
+import { routerItem } from '@/interface';
 
 //const getComponent = require('./import_development');
 
@@ -10,7 +10,7 @@ export const constantRouterMap: routerItem[] & RouterOptions['routes'] = [
     path: '/dashboard',
     name: '数据看板',
     component: () => import('../views/dashboard/index'),
-    meta: {key: 'Dashboard'},
+    meta: { key: 'Dashboard' },
   },
   {
     path: '/',
@@ -26,67 +26,81 @@ export const constantRouterMap: routerItem[] & RouterOptions['routes'] = [
     path: '/dashboard',
     name: '数据看板',
     component: () => import('../views/dashboard/index'),
-    meta: {key: 'Dashboard'},
+    meta: { key: 'Dashboard' },
   },
   {
     path: '/studio',
     name: '画室管理',
     component: () => import('../views/studio/index'),
-    meta: {key: 'Studio'},
+    meta: { key: 'Studio' },
   },
   {
     path: '/environment',
     name: '画室环境管理',
     component: () => import('../views/environment/index'),
-    meta: {key: 'environment'},
+    meta: { key: 'environment' },
   },
   {
     path: '/course',
     name: '课程管理',
     component: () => import('../views/course/index'),
-    meta: {key: 'Course'},
+    meta: { key: 'Course' },
   },
   {
     path: '/courseEnroll',
     name: '在线报名',
     component: () => import('../views/courseenroll/index'),
-    meta: {key: 'CourseEnroll'},
+    meta: { key: 'CourseEnroll' },
   },
   {
     path: '/feedback',
     name: '反馈管理',
     component: () => import('../views/feedback/index'),
-    meta: {key: 'Feedback'},
+    meta: { key: 'Feedback' },
   },
   {
     path: '/article',
     name: '文章管理',
     component: () => import('../views/article/index'),
-    meta: {key: 'Article'},
+    meta: { key: 'Article' },
   },
   {
     path: '/studentWorks',
     name: '学生作品管理',
     component: () => import('../views/studentWorks/index'),
-    meta: {key: 'StudentWorks'},
+    meta: { key: 'StudentWorks' },
   },
   {
     path: '/banner',
     name: '轮播图片管理',
     component: () => import('../views/banner/index'),
-    meta: {key: 'Banner'},
+    meta: { key: 'Banner' },
   },
   {
     path: '/teacherDetail',
-    name: '教师详情管理',
-    component: () => import('../views/teacherDetail/index'),
-    meta: {key: 'teacherDetail'},
+    name: '教师管理',
+    component: () => import('../views/teacher/index'),
+    meta: { key: 'teacherDetail' },
+    children: [
+      {
+        path: '/teacherDetail',
+        name: '教师列表',
+        component: () => import('../views/teacher/index'),
+        meta: { key: 'teacherDetail' },
+      },
+      {
+        path: '/teacherDetail',
+        name: '教师评论',
+        component: () => import('../views/teacher/index'),
+        meta: { key: 'teacherDetail' },
+      },
+    ],
   },
   {
     path: '/galleryPictures',
     name: '3D画廊图片',
     component: () => import('../views/galleryPictures/index'),
-    meta: {key: 'GalleryPictures'},
+    meta: { key: 'GalleryPictures' },
   },
 ];
 /**
@@ -103,7 +117,7 @@ export const asyncRouterMap: routerItem[] = [
     name: '数据看板',
     component: () => import('../views/dashboard/index'),
     permission: true,
-    meta: {key: 'Dashboard'},
+    meta: { key: 'Dashboard' },
   },
   {
     path: '/studio',
@@ -111,7 +125,7 @@ export const asyncRouterMap: routerItem[] = [
     name: '画室管理',
     component: () => import('../views/studio/index'),
     permission: true,
-    meta: {key: 'Studio'},
+    meta: { key: 'Studio' },
   },
   {
     path: '/course',
@@ -119,7 +133,7 @@ export const asyncRouterMap: routerItem[] = [
     name: '课程管理',
     component: () => import('../views/course/index'),
     permission: true,
-    meta: {key: 'Course'},
+    meta: { key: 'Course' },
   },
   {
     path: '/courseEnroll',
@@ -127,7 +141,7 @@ export const asyncRouterMap: routerItem[] = [
     name: '在线报名',
     component: () => import('../views/courseenroll/index'),
     permission: true,
-    meta: {key: 'CourseEnroll'},
+    meta: { key: 'CourseEnroll' },
   },
   {
     path: '/feedback',
@@ -135,7 +149,7 @@ export const asyncRouterMap: routerItem[] = [
     name: '反馈管理',
     component: () => import('../views/feedback/index'),
     permission: true,
-    meta: {key: 'Feedback'},
+    meta: { key: 'Feedback' },
   },
   {
     path: '/article',
@@ -143,7 +157,7 @@ export const asyncRouterMap: routerItem[] = [
     name: '文章管理',
     component: () => import('../views/article/index'),
     permission: true,
-    meta: {key: 'Article'},
+    meta: { key: 'Article' },
   },
   {
     path: '/galleryPictures',
@@ -151,7 +165,7 @@ export const asyncRouterMap: routerItem[] = [
     name: '3D画廊图片',
     component: () => import('../views/galleryPictures/index'),
     permission: true,
-    meta: {key: 'GalleryPictures'},
+    meta: { key: 'GalleryPictures' },
   },
   {
     path: '/studentWorks',
@@ -159,7 +173,7 @@ export const asyncRouterMap: routerItem[] = [
     name: '学生作品管理',
     component: () => import('../views/studentWorks/index'),
     permission: true,
-    meta: {key: 'StudentWorks'},
+    meta: { key: 'StudentWorks' },
   },
   {
     path: '/banner',
@@ -167,15 +181,29 @@ export const asyncRouterMap: routerItem[] = [
     name: '轮播图片管理',
     component: () => import('../views/banner/index'),
     permission: true,
-    meta: {key: 'Banner'},
+    meta: { key: 'Banner' },
   },
   {
-    path: '/teacherDetail',
+    path: '/teacher',
     icon: 'picture',
-    name: '教师详情管理',
-    component: () => import('../views/teacherDetail/index'),
+    name: '教师管理',
+    component: () => import('../views/teacher/index'),
     permission: true,
-    meta: {key: 'teacherDetail'},
+    meta: { key: 'teacherDetail' },
+    children: [
+      {
+        path: 'detail',
+        name: '教师列表',
+        component: () => import('../views/teacher/detail/index'),
+        meta: { key: 'teacherDetail' },
+      },
+      {
+        path: 'comment',
+        name: '教师评论',
+        component: () => import('../views/teacher/comment/index'),
+        meta: { key: 'teacherDetail' },
+      },
+    ],
   },
   {
     path: '/environment',
@@ -183,7 +211,7 @@ export const asyncRouterMap: routerItem[] = [
     name: '画室环境管理',
     component: () => import('../views/environment/index'),
     permission: true,
-    meta: {key: 'environment'},
+    meta: { key: 'environment' },
   },
 ];
 
