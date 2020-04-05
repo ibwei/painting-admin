@@ -1,24 +1,23 @@
 /* eslint-disabled */
 import { Component, Vue } from 'vue-property-decorator';
-import { Tag, Modal, Button, Table, Avatar } from 'ant-design-vue';
+import { Tag, Modal, Button, Table, Avatar, Rate, Badge } from 'ant-design-vue';
 import { tableList, FilterFormList, Opreat } from '@/interface';
-import InfoModal from '../infoModal';
 
 @Component({
-  name: 'detail',
+  name: 'comment',
   components: {
     'a-tag': Tag,
-    'info-modal': InfoModal,
     'a-modal': Modal,
     'a-button': Button,
     'a-table': Table,
     'a-avatar': Avatar,
+    'a-rate': Rate,
+    'a-badge': Badge,
   },
 })
-export default class Detail extends Vue {
+export default class Comment extends Vue {
   filterParams: any = {
     name: '',
-    address: [],
     createtime: [],
     startTime: '',
     endTime: '',
@@ -60,58 +59,83 @@ export default class Detail extends Vue {
       title: '序号',
       dataIndex: 'id',
       align: 'center',
-      customRender: this.nameRender,
     },
     {
-      title: '教师姓名',
+      title: '用户名称',
       dataIndex: 'name',
       align: 'center',
-      customRender: this.nameRender,
     },
     {
-      title: '照片预览',
-      dataIndex: 'photo',
+      title: '头像',
+      dataIndex: 'avatar',
       align: 'center',
+      width: 200,
       customRender: this.ImgRender,
     },
     {
-      title: '教师简介',
-      dataIndex: 'desc',
-      width: '400px',
-    },
-    {
-      title: '教师评分',
+      title: '电话',
+      dataIndex: 'phone',
       align: 'center',
-      dataIndex: 'rate',
     },
     {
-      title: '学生印象',
+      title: 'Email',
       align: 'center',
-      dataIndex: 'impression',
-      customRender: this.tagsRender,
+      width: '300px',
+      dataIndex: 'email',
     },
     {
-      title: '擅长内容',
-      dataIndex: 'good_at',
-      customRender: this.tagsRender,
+      title: '性别',
+      align: 'center',
+      dataIndex: 'gender',
+      customRender: this.genderRender,
     },
     {
-      title: '奖项',
-      dataIndex: 'deeds',
+      title: '积分',
+      align: 'center',
+      dataIndex: 'points',
+    },
+    {
+      title: '账号类型',
+      align: 'center',
+      dataIndex: 'is_admin',
+      customRender: this.typeRender,
+    },
+    {
+      title: '注册来源',
+      align: 'center',
+      dataIndex: 'device',
+      customRender: this.deviceRender,
+    },
+    {
+      title: '账号状态',
+      align: 'center',
+      dataIndex: 'status',
+      customRender: this.statusRender,
+    },
+    {
+      title: '上次登录',
+      align: 'center',
+      dataIndex: 'login_time',
     },
   ];
 
   opreat: Opreat[] = [
     {
-      key: 'edit',
+      key: 'pass',
       rowKey: 'id',
       color(value: any) {
         if (value.status === 0) {
-          return 'red';
+          return 'green';
         }
-        return 'blue';
+        return 'red';
+
       },
-      text: '编辑',
+      text(value: any) {
+        if (value.status === 0) {
+          return '解冻账户';
+        }
+        return '禁用账户';
+      },
       roles: true,
     },
     {
@@ -121,7 +145,7 @@ export default class Detail extends Vue {
       text: '删除',
       roles: true,
       popconfirm: true,
-      msg: '是否删除该教师信息',
+      msg: '是否删除该条文章评论',
     },
   ];
 
@@ -137,8 +161,42 @@ export default class Detail extends Vue {
     return <a-tag color='green'>{name}</a-tag>;
   }
 
+  genderRender(gender: number) {
+    if (gender === 1) {
+      return <a-tag color='blue'>男</a-tag>;
+    }
+    return <a-tag color='green'>女</a-tag>;
+  }
+
+  typeRender(gender: number) {
+    if (gender === 1) {
+      return <a-badge status='success' text="正常" />;
+    }
+    return <a-badge status='default' text="已禁用" />;
+
+  }
+
+  statusRender(gender: number) {
+    if (gender === 1) {
+      return <a-badge status='success' text="正常" />;
+    }
+    return <a-badge status='default' text="已禁用" />;
+  }
+
+
+  deviceRender(gender: number) {
+    if (gender === 1) {
+      return <a-badge status='success' text="PC端" />;
+    }
+    return <a-badge status='processing' text="移动端" />;
+  }
+
   ImgRender(url: string) {
     return <a-avatar shape='square' size={96} src={url} />;
+  }
+
+  starRender(star: number) {
+    return <a-rate defaultValue={star} allowHalf disabled />;
   }
 
   tagsRender(tags: string) {
@@ -160,7 +218,7 @@ export default class Detail extends Vue {
     this.type = row.type;
     switch (key) {
       case 'delete':
-        window.api.teacherBaseInfoDelete({ id: data.id }).then((res: any) => {
+        window.api.articleCommentDelete({ id: data.id }).then((res: any) => {
           const resultCode = res.data.resultCode;
           if (resultCode === 0) {
             this.$message.success('删除成功');
@@ -170,19 +228,35 @@ export default class Detail extends Vue {
           }
         });
         break;
-      case 'edit':
-        this.title = '编辑教师信息';
-        this.type = 'edit';
-        this.visible = true;
-        this.editData = row;
+      case 'pass':
+        window.api.articleCommentUpdate({ id: data.id, status: 1 }).then((res: any) => {
+          const resultCode = res.data.resultCode;
+          if (resultCode === 0) {
+            this.$message.success(res.data.resultMessage);
+            this.success();
+          } else {
+            this.$message.error('处理失败');
+          }
+        });
+        break;
+      case 'reject':
+        window.api.articleCommentUpdate({ id: data.id, status: 2 }).then((res: any) => {
+          const resultCode = res.data.resultCode;
+          if (resultCode === 0) {
+            this.$message.success(res.data.resultMessage);
+            this.success();
+          } else {
+            this.$message.error('处理失败');
+          }
+        });
         break;
       default:
-        break;
+        console.log('默认处理');
     }
   }
 
   add() {
-    this.title = '添加教师';
+    this.title = '添加用户';
     this.type = 'add';
     this.visible = true;
     this.editData = {};
@@ -209,13 +283,13 @@ export default class Detail extends Vue {
           filterList={this.filterList}
           filterGrade={[]}
           scroll={{ x: 900 }}
-          url={'/teacher/teacherList'}
+          url={'/user/list'}
           filterParams={this.filterParams}
           outParams={this.outParams}
           addBtn={true}
-          localName={'teacherList'}
+          localName={'articleCommentList'}
           exportBtn={false}
-          opreatWidth={'140px'}
+          opreatWidth={'120px'}
           dataType={'json'}
           rowKey={'id'}
           opreat={this.opreat}

@@ -1,9 +1,9 @@
 /* eslint-disabled */
-import axios, {AxiosPromise, AxiosInstance} from 'axios';
+import axios, { AxiosPromise, AxiosInstance } from 'axios';
 import qs from 'qs';
 import jsonp from 'jsonp';
 import lodash from 'lodash';
-import {router} from '@/router/index';
+import { router } from '@/router/index';
 
 interface ApiList {
   [key: string]: {
@@ -34,6 +34,21 @@ export default class Api {
     //用户类
     login: {
       url: '/user/login',
+      fetchType: 'json',
+      method: 'post',
+    },
+    userList: {
+      url: '/user/list',
+      fetchType: 'json',
+      method: 'post',
+    },
+    userUpdate: {
+      url: '/user/update',
+      fetchType: 'json',
+      method: 'post',
+    },
+    userDelete: {
+      url: '/user/delete',
       fetchType: 'json',
       method: 'post',
     },
@@ -256,11 +271,26 @@ export default class Api {
       fetchType: 'json',
       method: 'post',
     },
+    bookScheduleList: {
+      url: '/bookschedule/list',
+      fetchType: 'json',
+      method: 'post',
+    },
+    bookScheduleUpdate: {
+      url: '/bookschedule/update',
+      fetchType: 'json',
+      method: 'post',
+    },
+    bookScheduleDelete: {
+      url: '/bookschedule/delete',
+      fetchType: 'json',
+      method: 'post',
+    },
   };
   // 对外暴露方法
   api: Apis<any> = {};
 
-  constructor(options: {baseUrl: string}) {
+  constructor(options: { baseUrl: string }) {
     // eslint-ignore-nextline
     this.service = axios.create({
       baseURL: options.baseUrl, // api的base_url
@@ -268,7 +298,7 @@ export default class Api {
     });
     for (const i in this.apiList) {
       this.api[i] = (data: any) => {
-        const {url} = this.apiList[i];
+        const { url } = this.apiList[i];
         if (i === 'gpsToAddress') {
           data = {
             callback: 'renderReverse',
@@ -293,8 +323,8 @@ export default class Api {
   request = (options: Options) =>
     this.fetch(options)
       .then((response: any) => {
-        const {statusText, status} = response;
-        let {data} = response;
+        const { statusText, status } = response;
+        let { data } = response;
         if (data instanceof Array) {
           data = {
             list: data,
@@ -302,14 +332,14 @@ export default class Api {
         }
         // 登录超时判断
         if (response.data.result && response.data.result.resultCode === 3) {
-          router.replace({name: 'login'});
+          router.replace({ name: 'login' });
           return Promise.reject({
             success: false,
             message: response.data.result.resultMessage,
           });
         }
         if (response.data.resultCode && response.data.resultCode === 401) {
-          router.replace({name: 'login'});
+          router.replace({ name: 'login' });
           return Promise.reject({
             success: false,
             message: response.data.result.resultMessage,
@@ -323,9 +353,9 @@ export default class Api {
         });
       })
       .catch((error: any) => {
-        const {response} = error;
+        const { response } = error;
         if (response.status === 401) {
-          router.replace({name: 'login'});
+          router.replace({ name: 'login' });
         }
         return Promise.reject({
           success: false,
@@ -335,7 +365,7 @@ export default class Api {
       });
 
   fetch = (options: Options) => {
-    const {url, data, fetchType, method = 'get'} = options;
+    const { url, data, fetchType, method = 'get' } = options;
     let cloneData: any = lodash.cloneDeep(data);
     cloneData = qs.stringify(cloneData);
     const headers = {
@@ -356,7 +386,7 @@ export default class Api {
             if (error) {
               reject(error);
             }
-            resolve({statusText: 'OK', status: 200, data: result});
+            resolve({ statusText: 'OK', status: 200, data: result });
           },
         );
       });
@@ -376,25 +406,25 @@ export default class Api {
       });
     }
     if (fetchType === 'jsonfile') {
-      return axios.get(url, {headers});
+      return axios.get(url, { headers });
     }
     if (fetchType === 'mock') {
-      return axios.get(url, {headers});
+      return axios.get(url, { headers });
     }
     switch (method.toLowerCase()) {
       case 'get':
-        return this.service.get(`${url}?${cloneData}`, {headers});
+        return this.service.get(`${url}?${cloneData}`, { headers });
       case 'delete':
         return this.service.delete(url, {
           data: cloneData,
           headers,
         });
       case 'post':
-        return this.service.post(url, cloneData, {headers});
+        return this.service.post(url, cloneData, { headers });
       case 'put':
-        return this.service.put(url, cloneData, {headers});
+        return this.service.put(url, cloneData, { headers });
       case 'patch':
-        return this.service.patch(url, cloneData, {headers});
+        return this.service.patch(url, cloneData, { headers });
       default:
         return this.service(options);
     }

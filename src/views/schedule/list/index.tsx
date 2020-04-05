@@ -1,5 +1,5 @@
-import {Component, Vue} from 'vue-property-decorator';
-import {Table, Card, Tag, Select} from 'ant-design-vue';
+import { Component, Vue } from 'vue-property-decorator';
+import { Table, Card, Tag, Select } from 'ant-design-vue';
 import './index.less';
 
 @Component({
@@ -71,6 +71,7 @@ export default class ScheduleList extends Vue {
       <a-select
         defaultValue={status[value]}
         style='width: 100px'
+        class={`select-${value}`}
         onChange={this.handleChange.bind(this, day, state.name)}
       >
         <a-select-option value='0'>放假</a-select-option>
@@ -86,7 +87,7 @@ export default class ScheduleList extends Vue {
       '晚上',
     }
     window.api
-      .scheduleUpdate({day, time: Number(status[time]), status: Number(value)})
+      .scheduleUpdate({ day, time: Number(status[time]), status: Number(value) })
       .then((res: any) => {
         const resultCode = res.data.resultCode;
         if (resultCode === 0) {
@@ -101,19 +102,19 @@ export default class ScheduleList extends Vue {
     let item = {};
     switch (index) {
       case 0:
-        item = {name: '上午'};
+        item = { name: '上午' };
         break;
       case 1:
-        item = {name: '下午'};
+        item = { name: '下午' };
         break;
       case 2:
-        item = {name: '晚上'};
+        item = { name: '晚上' };
         break;
       default:
         console.log('default');
     }
     for (const [key, value] of arr.entries()) {
-      item = {...item, [key]: value.status};
+      item = { ...item, [key]: value.status };
     }
     this.tableData.push(item);
   }
@@ -123,23 +124,15 @@ export default class ScheduleList extends Vue {
       const resultCode = res.data.resultCode;
       if (resultCode === 0) {
         const data = res.data.data;
-        console.log(data);
-        /*  for (let i = 0; i < 7; i++) {
-          for (let j = 0; j < 3; j++) {
-            this.tableData.splice(j, 1, {...this.tableData[j], [i]: data[index++].status});
-          }
-        } */
         const am = data.filter((item: any) => item.time === 0);
         const pm = data.filter((item: any) => item.time === 1);
         const gn = data.filter((item: any) => item.time === 2);
-
         this.handleArrayToObject(am, 0);
         this.handleArrayToObject(pm, 1);
         this.handleArrayToObject(gn, 2);
-        console.log('table', this.tableData);
         this.$message.success('获取当前课程安排成功');
       } else {
-        this.$message.error('更新上课安排失败');
+        this.$message.error('获取当前课程安排失败');
       }
     });
   }
