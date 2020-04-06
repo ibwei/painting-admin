@@ -1,5 +1,5 @@
-import { Component, Vue } from 'vue-property-decorator';
-import { Table, Card, Tag, Select } from 'ant-design-vue';
+import {Component, Vue} from 'vue-property-decorator';
+import {Table, Card, Tag, Select} from 'ant-design-vue';
 import './index.less';
 
 @Component({
@@ -87,7 +87,7 @@ export default class ScheduleList extends Vue {
       '晚上',
     }
     window.api
-      .scheduleUpdate({ day, time: Number(status[time]), status: Number(value) })
+      .scheduleUpdate({day, time: Number(status[time]), status: Number(value)})
       .then((res: any) => {
         const resultCode = res.data.resultCode;
         if (resultCode === 0) {
@@ -97,25 +97,25 @@ export default class ScheduleList extends Vue {
         }
       });
   }
-
   handleArrayToObject(arr: Array<any>, index: number) {
     let item = {};
     switch (index) {
       case 0:
-        item = { name: '上午' };
+        item = {name: '上午'};
         break;
       case 1:
-        item = { name: '下午' };
+        item = {name: '下午'};
         break;
       case 2:
-        item = { name: '晚上' };
+        item = {name: '晚上'};
         break;
       default:
         console.log('default');
     }
     for (const [key, value] of arr.entries()) {
-      item = { ...item, [key]: value.status };
+      item = {...item, [key]: value.status};
     }
+    console.log(this.tableData);
     this.tableData.push(item);
   }
 

@@ -224,12 +224,40 @@ export default class Dashboard extends Vue {
 
   tabChange() {}
 
-  iconList = ['team', 'shopping-cart', 'pay-circle', 'line-chart'];
+  iconList = ['team', 'transaction', 'history', 'message', 'meh', 'file-text'];
 
   loading: boolean = true;
 
   getImageUrl(url: string) {
     console.log(`已经去获取到${url}`);
+  }
+  navTo(item: any, index: any) {
+    if (!item.value) {
+      this.$message.warning('该项没有可以处理的记录');
+      return;
+    }
+    switch (index) {
+      case 0:
+        this.$router.push({path: '/user'});
+        break;
+      case 1:
+        this.$router.push({path: '/courseEnroll'});
+        break;
+      case 2:
+        this.$router.push({path: '/schedule/check'});
+        break;
+      case 3:
+        this.$router.push({path: '/feedback'});
+        break;
+      case 4:
+        this.$router.push({path: '/teacher/comment'});
+        break;
+      case 5:
+        this.$router.push({path: '/article/comment'});
+        break;
+      default:
+        console.log('default');
+    }
   }
 
   render() {
@@ -241,16 +269,24 @@ export default class Dashboard extends Vue {
               {this.pageData &&
                 this.pageData.dataList.map((item: any, index: number) => (
                   <a-col {...{props: this.ColLayout}} class='sub-item'>
-                    <a-card loading={this.loading} class='dash-card'>
+                    <a-card
+                      loading={this.loading}
+                      class='dash-card'
+                      style='cursor:pointer;'
+                      onClick={this.navTo.bind(this, item, index)}
+                    >
                       <h3>{item.name}</h3>
                       <a-icon class='icon' type={this.iconList[index]}></a-icon>
-                      <p class='number'>{numFormat(item.value)}</p>
+                      <p class='number' style={{color: item.value === 0 ? '#6b757c' : '#fa5777'}}>
+                        {numFormat(item.value)}
+                      </p>
                       <div class='footer'>
-                        <span class={`s-number ${index % 2 ? 'green' : 'red'}`}>
-                          <a-icon type={index % 2 ? 'arrow-up' : 'arrow-down'}></a-icon>
-                          {item.number}%
-                        </span>
-                        <span class='txt'>截止今天</span>
+                        <span class='s-number'>{item.number}</span>
+                        {item.name === '今日登录' ? (
+                          <span class='txt'>总注册人数</span>
+                        ) : (
+                          <span class='txt'>已经处理</span>
+                        )}
                       </div>
                     </a-card>
                   </a-col>
@@ -269,7 +305,7 @@ export default class Dashboard extends Vue {
             <a-card loading={this.loading} class='dash-box dash-bar-chart'>
               <a-icon class='opreat' type='ellipsis'></a-icon>
               <h2 class='title'>每月课程报名统计</h2>
-              <div style='height: 263px;' class='chartjs-chart'>
+              <div style='height: 420px;' class='chartjs-chart'>
                 <canvas height='86px' id='BarChart'></canvas>
               </div>
             </a-card>
@@ -283,21 +319,17 @@ export default class Dashboard extends Vue {
               <div class='week-data'>
                 <div class='item'>
                   <h4 class='item-title'>这周</h4>
-                  <p class='number'>${this.pageData && numFormat(this.pageData.CurrentWeek)}</p>
+                  <p class='number'>¥{this.pageData && numFormat(this.pageData.CurrentWeek)}</p>
                 </div>
                 <div class='item'>
                   <h4 class='item-title'>上周</h4>
                   <p class='number number2'>
-                    ${this.pageData && numFormat(this.pageData.PreviousWeek)}
+                    ¥{this.pageData && numFormat(this.pageData.PreviousWeek)}
                   </p>
                 </div>
               </div>
               <div class='float-text'>
-                <p class='txt'>今日成交总额: $2,562.30</p>
-                <p class='tips'>订单系统待接入...</p>
-                <a-button type='dashed'>
-                  View Statements <a-icon type='arrow-right'></a-icon>
-                </a-button>
+                <a-button type='dashed'>悬浮以查看详情</a-button>
               </div>
               <div style='height: 364px; margin-top: 40px' class='chartjs-chart'>
                 <canvas height='100px' id='LineChart'></canvas>
@@ -306,7 +338,7 @@ export default class Dashboard extends Vue {
           </a-col>
           <a-col span={8} xxl={8} xl={8} lg={24} md={24} sm={24} xs={24}>
             <a-card loading={this.loading} class='dash-box total-wrap'>
-              <h2 class='title'>用户设备统计</h2>
+              <h2 class='title'>访问来源统计</h2>
               <a-icon class='opreat' type='ellipsis'></a-icon>
               <div class='filter-wrap'>
                 <a-radio-group defaultValue='a' buttonStyle='solid'>

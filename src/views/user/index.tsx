@@ -1,7 +1,7 @@
 /* eslint-disabled */
-import { Component, Vue } from 'vue-property-decorator';
-import { Tag, Modal, Button, Table, Avatar, Rate, Badge } from 'ant-design-vue';
-import { tableList, FilterFormList, Opreat } from '@/interface';
+import {Component, Vue} from 'vue-property-decorator';
+import {Tag, Modal, Button, Table, Avatar, Rate, Badge} from 'ant-design-vue';
+import {tableList, FilterFormList, Opreat} from '@/interface';
 
 @Component({
   name: 'comment',
@@ -35,19 +35,20 @@ export default class Comment extends Vue {
 
   filterList: FilterFormList[] = [
     {
-      key: 'desc',
-      label: 'desc',
+      key: 'name',
+      label: '请输入学生姓名',
       type: 'input',
-      placeholder: '请输入图片描述',
+      placeholder: '请输入姓名',
     },
     {
-      key: 'status',
+      key: 'is_admin',
       label: 'status',
       type: 'cascader',
-      placeholder: '请选择图片状态',
+      placeholder: '请选择账号类型',
       options: [
-        { value: 0, label: '启用' },
-        { value: 1, label: '禁用' },
+        {value: 0, label: '学生'},
+        {value: 1, label: '管理员'},
+        {value: 2, label: '老师'},
       ],
     },
   ];
@@ -128,7 +129,6 @@ export default class Comment extends Vue {
           return 'green';
         }
         return 'red';
-
       },
       text(value: any) {
         if (value.status === 0) {
@@ -137,6 +137,13 @@ export default class Comment extends Vue {
         return '禁用账户';
       },
       roles: true,
+      popconfirm: true,
+      msg(value: any) {
+        if (value.status === 0) {
+          return '确认解冻账户吗？';
+        }
+        return '确定禁用改账户吗？';
+      },
     },
     {
       key: 'delete',
@@ -145,7 +152,7 @@ export default class Comment extends Vue {
       text: '删除',
       roles: true,
       popconfirm: true,
-      msg: '是否删除该条文章评论',
+      msg: '是否删除该用户?',
     },
   ];
 
@@ -170,29 +177,33 @@ export default class Comment extends Vue {
 
   typeRender(gender: number) {
     if (gender === 1) {
-      return <a-badge status='success' text="正常" />;
+      return <a-badge status='success' text='管理员' />;
     }
-    return <a-badge status='default' text="已禁用" />;
-
+    if (gender === 0) {
+      return <a-badge status='warning' text='学生' />;
+    }
+    return <a-badge status='default' text='教师' />;
   }
 
   statusRender(gender: number) {
     if (gender === 1) {
-      return <a-badge status='success' text="正常" />;
+      return <a-badge status='success' text='正常' />;
     }
-    return <a-badge status='default' text="已禁用" />;
+    return <a-badge status='default' text='已禁用' />;
   }
-
 
   deviceRender(gender: number) {
     if (gender === 1) {
-      return <a-badge status='success' text="PC端" />;
+      return <a-badge status='success' text='PC端' />;
     }
-    return <a-badge status='processing' text="移动端" />;
+    return <a-badge status='processing' text='移动端' />;
   }
 
   ImgRender(url: string) {
-    return <a-avatar shape='square' size={96} src={url} />;
+    if (!url) {
+      url = 'http://img.pinxianhs.com/timg.jpeg';
+    }
+    return <a-avatar shape='circle' size={56} src={url} />;
   }
 
   starRender(star: number) {
@@ -216,9 +227,13 @@ export default class Comment extends Vue {
   tableClick(key: string, row: any) {
     const data = JSON.parse(JSON.stringify(row));
     this.type = row.type;
+    if (row.is_admin === 1) {
+      this.$message.info('禁止对管理员账户进行任何操作！');
+      return;
+    }
     switch (key) {
       case 'delete':
-        window.api.articleCommentDelete({ id: data.id }).then((res: any) => {
+        window.api.articleCommentDelete({id: data.id}).then((res: any) => {
           const resultCode = res.data.resultCode;
           if (resultCode === 0) {
             this.$message.success('删除成功');
@@ -229,26 +244,17 @@ export default class Comment extends Vue {
         });
         break;
       case 'pass':
-        window.api.articleCommentUpdate({ id: data.id, status: 1 }).then((res: any) => {
-          const resultCode = res.data.resultCode;
-          if (resultCode === 0) {
-            this.$message.success(res.data.resultMessage);
-            this.success();
-          } else {
-            this.$message.error('处理失败');
-          }
-        });
-        break;
-      case 'reject':
-        window.api.articleCommentUpdate({ id: data.id, status: 2 }).then((res: any) => {
-          const resultCode = res.data.resultCode;
-          if (resultCode === 0) {
-            this.$message.success(res.data.resultMessage);
-            this.success();
-          } else {
-            this.$message.error('处理失败');
-          }
-        });
+        window.api
+          .userUpdate({...row, id: data.id, status: row.status === 1 ? 0 : 1})
+          .then((res: any) => {
+            const resultCode = res.data.resultCode;
+            if (resultCode === 0) {
+              this.$message.success(res.data.resultMessage);
+              this.success();
+            } else {
+              this.$message.error('处理失败');
+            }
+          });
         break;
       default:
         console.log('默认处理');
@@ -282,12 +288,12 @@ export default class Comment extends Vue {
           tableList={this.tableList}
           filterList={this.filterList}
           filterGrade={[]}
-          scroll={{ x: 900 }}
+          scroll={{x: 900}}
           url={'/user/list'}
           filterParams={this.filterParams}
           outParams={this.outParams}
           addBtn={true}
-          localName={'articleCommentList'}
+          localName={'userList'}
           exportBtn={false}
           opreatWidth={'120px'}
           dataType={'json'}
@@ -309,8 +315,8 @@ export default class Comment extends Vue {
             visible={this.visible}
           ></info-modal>
         ) : (
-            ''
-          )}
+          ''
+        )}
       </div>
     );
   }
