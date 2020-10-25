@@ -1,4 +1,4 @@
-# xc-yxj-admin
+# 品贤画室后台管理
 
 ## Project setup
 ```
