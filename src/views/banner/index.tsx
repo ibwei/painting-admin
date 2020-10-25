@@ -150,7 +150,7 @@ export default class messageBoard extends Vue {
     return <a-tag color='red'>已禁用</a-tag>;
   }
   ImgRender(url: string) {
-    return <img width='500px' height='auto' src={url} />;
+    return <img width='300px' height='auto' src={url} />;
   }
 
   tableClick(key: string, row: any) {

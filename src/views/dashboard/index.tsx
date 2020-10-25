@@ -1,7 +1,7 @@
-import {Component, Vue, Emit} from 'vue-property-decorator';
-import {Button, DatePicker, Modal, Row, Col, Card, Icon, Radio} from 'ant-design-vue';
+import { Component, Vue, Emit } from 'vue-property-decorator';
+import { Button, DatePicker, Modal, Row, Col, Card, Icon, Radio } from 'ant-design-vue';
 import Chart from 'chart.js';
-import {numFormat} from '@/utils/index';
+import { numFormat } from '@/utils/index';
 // @ts-ignore
 import UploadImage from '@/components/UploadImage';
 
@@ -28,6 +28,11 @@ export default class Dashboard extends Vue {
   created() {
     window.api.dashboard(null).then((res: returnData) => {
       this.pageData = res.data.data;
+      let unread: number = 0;
+      for (const item of this.pageData.dataList) {
+        unread += item.value
+      }
+      this.$store.commit('CHANGE_UNREAD', unread)
       this.loading = false;
       this.$nextTick(() => {
         this.init();
@@ -222,7 +227,7 @@ export default class Dashboard extends Vue {
     xs: 24,
   };
 
-  tabChange() {}
+  tabChange() { }
 
   iconList = ['team', 'transaction', 'history', 'message', 'meh', 'file-text'];
 
@@ -238,22 +243,22 @@ export default class Dashboard extends Vue {
     }
     switch (index) {
       case 0:
-        this.$router.push({path: '/user'});
+        this.$router.push({ path: '/user' });
         break;
       case 1:
-        this.$router.push({path: '/courseEnroll'});
+        this.$router.push({ path: '/courseEnroll' });
         break;
       case 2:
-        this.$router.push({path: '/schedule/check'});
+        this.$router.push({ path: '/schedule/check' });
         break;
       case 3:
-        this.$router.push({path: '/feedback'});
+        this.$router.push({ path: '/feedback' });
         break;
       case 4:
-        this.$router.push({path: '/teacher/comment'});
+        this.$router.push({ path: '/teacher/comment' });
         break;
       case 5:
-        this.$router.push({path: '/article/comment'});
+        this.$router.push({ path: '/article/comment' });
         break;
       default:
         console.log('default');
@@ -263,12 +268,12 @@ export default class Dashboard extends Vue {
   render() {
     return (
       <div class='container'>
-        <a-row gutter={{xs: 8, md: 12, xl: 20}} class='dash-col'>
+        <a-row gutter={{ xs: 8, md: 12, xl: 20 }} class='dash-col'>
           <a-col span={10} xxl={10} xl={10} lg={12} md={24} sm={24} xs={24}>
-            <a-row gutter={{xs: 8, md: 12, xl: 20}}>
+            <a-row gutter={{ xs: 8, md: 12, xl: 20 }}>
               {this.pageData &&
                 this.pageData.dataList.map((item: any, index: number) => (
-                  <a-col {...{props: this.ColLayout}} class='sub-item'>
+                  <a-col {...{ props: this.ColLayout }} class='sub-item'>
                     <a-card
                       loading={this.loading}
                       class='dash-card'
@@ -277,7 +282,7 @@ export default class Dashboard extends Vue {
                     >
                       <h3>{item.name}</h3>
                       <a-icon class='icon' type={this.iconList[index]}></a-icon>
-                      <p class='number' style={{color: item.value === 0 ? '#6b757c' : '#fa5777'}}>
+                      <p class='number' style={{ color: item.value === 0 ? '#6b757c' : '#fa5777' }}>
                         {numFormat(item.value)}
                       </p>
                       <div class='footer'>
@@ -285,15 +290,15 @@ export default class Dashboard extends Vue {
                         {item.name === '今日登录' ? (
                           <span class='txt'>总注册人数</span>
                         ) : (
-                          <span class='txt'>已经处理</span>
-                        )}
+                            <span class='txt'>已经处理</span>
+                          )}
                       </div>
                     </a-card>
                   </a-col>
                 ))}
               {!this.pageData &&
                 this.iconList.map((item: any) => (
-                  <a-col {...{props: this.ColLayout}} class='sub-item'>
+                  <a-col {...{ props: this.ColLayout }} class='sub-item'>
                     <a-card loading={this.loading} class='dash-card' style='height: 160px'>
                       ............
                     </a-card>
@@ -311,7 +316,7 @@ export default class Dashboard extends Vue {
             </a-card>
           </a-col>
         </a-row>
-        <a-row gutter={{xs: 8, md: 12, xl: 20}}>
+        <a-row gutter={{ xs: 8, md: 12, xl: 20 }}>
           <a-col span={16} xxl={16} xl={16} lg={24} md={24} sm={24} xs={24}>
             <a-card loading={this.loading} class='dash-box revenue-chart'>
               <h2 class='title'>订单统计</h2>

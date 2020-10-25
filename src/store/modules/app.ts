@@ -1,6 +1,6 @@
-import {menuItem, routerItem} from '@/interface';
-import {routeToArray} from '@/utils';
-import {router} from '@/router';
+import { menuItem, routerItem } from '@/interface';
+import { routeToArray } from '@/utils';
+import { router } from '@/router';
 // 循环匹配当前路由数据
 function findMenu(
   data: any,
@@ -11,7 +11,7 @@ function findMenu(
   query?: any,
   key?: string[],
 ) {
-  let result: any = {tabList, tabActiveKey};
+  let result: any = { tabList, tabActiveKey };
   data.forEach((item: any) => {
     if (url.indexOf(item.path.replace(/\/:\w+/g, '')) > -1) {
       if (!key) {
@@ -38,8 +38,9 @@ function findMenu(
 const app = {
   state: {
     sidebar: {
-      opened: localStorage.getItem('sidebarStatus'),
+      opened: 1,
     },
+    unread: 0,
     theme: 'default',
     menuData: [], // 存储菜单路由数据
     tabList: [], // 页面tab功能数据
@@ -58,7 +59,10 @@ const app = {
       // menuData.map(item => list.push(item.name ? item.name : ''));
       // state.keepList = list; // 菜单列表的页面都需要缓存
     },
-    TAB_CHANGE: (state: any, data: {tabList: any; tabActiveKey: string}) => {
+    CHANGE_UNREAD(state: any, count: number) {
+      state.unread = count;
+    },
+    TAB_CHANGE: (state: any, data: { tabList: any; tabActiveKey: string }) => {
       state.tabList = data.tabList;
       state.tabActiveKey = data.tabActiveKey;
     },
@@ -82,7 +86,7 @@ const app = {
     // 新增缓存页面
     addKeep: async (context: any, name: string[]) => {
       // 新增tab，增加缓存状态
-      const {keepList} = context.state;
+      const { keepList } = context.state;
       name.forEach((item: string) => {
         if (keepList.indexOf(item) === -1) {
           keepList.push(item);
@@ -92,8 +96,8 @@ const app = {
     },
     AddTabPane: (context: any, url: string) =>
       new Promise((resolve, reject) => {
-        const {menuData, tabList, tabActiveKey, keepList} = context.state;
-        let resultData = {tabList, tabActiveKey, key: []};
+        const { menuData, tabList, tabActiveKey, keepList } = context.state;
+        let resultData = { tabList, tabActiveKey, key: [] };
         let haveMenu = false;
         const ArrPath = routeToArray(url);
         tabList.map((item: any) => {
@@ -114,16 +118,16 @@ const app = {
         resolve(true);
       }),
     RemoveTab: (context: any, name: string) => {
-      let {tabList} = context.state;
-      const {keepList} = context.state;
-      const resultData = {tabList: [], tabActiveKey: ''};
+      let { tabList } = context.state;
+      const { keepList } = context.state;
+      const resultData = { tabList: [], tabActiveKey: '' };
       tabList = tabList.filter((item: any, index: number) => {
         if (item.name === name) {
           // 关闭tab后，页面跳转到前一个TAB，特殊情况是关闭第一个TAB应该打开第二个TAB
           resultData.tabActiveKey = index ? tabList[index - 1].name : tabList[index + 1].name;
           keepList.splice(keepList.indexOf(item.meta.key), 1);
           context.commit('KEEP_CHANGE', keepList);
-          router.push({name: resultData.tabActiveKey});
+          router.push({ name: resultData.tabActiveKey });
           return false;
         }
         return true;
@@ -132,8 +136,8 @@ const app = {
       context.commit('TAB_CHANGE', resultData);
     },
     TabChange: (context: any, name: string) => {
-      const {tabList} = context.state;
-      const resultData = {tabList, tabActiveKey: name};
+      const { tabList } = context.state;
+      const resultData = { tabList, tabActiveKey: name };
       context.commit('TAB_CHANGE', resultData);
     },
   },

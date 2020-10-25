@@ -1,7 +1,7 @@
 /* eslint-disabled */
-import { Component, Vue } from 'vue-property-decorator';
-import { Tag, Modal, Button, Table, Avatar, Rate } from 'ant-design-vue';
-import { tableList, FilterFormList, Opreat } from '@/interface';
+import {Component, Vue} from 'vue-property-decorator';
+import {Tag, Modal, Button, Table, Avatar, Rate} from 'ant-design-vue';
+import {tableList, FilterFormList, Opreat} from '@/interface';
 
 @Component({
   name: 'ScheduleCheck',
@@ -45,8 +45,8 @@ export default class ScheduleCheck extends Vue {
       type: 'cascader',
       placeholder: '请选择图片状态',
       options: [
-        { value: 0, label: '启用' },
-        { value: 1, label: '禁用' },
+        {value: 0, label: '启用'},
+        {value: 1, label: '禁用'},
       ],
     },
   ];
@@ -131,7 +131,7 @@ export default class ScheduleCheck extends Vue {
       text: '删除',
       roles: true,
       popconfirm: true,
-      msg: '是否删除该条文章评论',
+      msg: '是否删除该预约',
     },
   ];
 
@@ -144,12 +144,27 @@ export default class ScheduleCheck extends Vue {
   editData: object = {};
 
   nameRender(name: any, row: any) {
-    enum week { '星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六' }
-    enum day { '上午', '下午', '晚上' }
+    enum week {
+      '星期日',
+      '星期一',
+      '星期二',
+      '星期三',
+      '星期四',
+      '星期五',
+      '星期六',
+    }
+    enum day {
+      '上午',
+      '下午',
+      '晚上',
+    }
     return (
       <div>
-        <span style="margin-right:10px;"></span>
-        <a-tag>{week[name]}{day[row.time]}</a-tag>
+        <span style='margin-right:10px;'></span>
+        <a-tag>
+          {week[name]}
+          {day[row.time]}
+        </a-tag>
       </div>
     );
   }
@@ -181,7 +196,7 @@ export default class ScheduleCheck extends Vue {
     this.type = row.type;
     switch (key) {
       case 'delete':
-        window.api.articleCommentDelete({ id: data.id }).then((res: any) => {
+        window.api.bookScheduleDelete({id: data.id}).then((res: any) => {
           const resultCode = res.data.resultCode;
           if (resultCode === 0) {
             this.$message.success('删除成功');
@@ -192,26 +207,30 @@ export default class ScheduleCheck extends Vue {
         });
         break;
       case 'pass':
-        window.api.bookScheduleUpdate({ id: data.id, status: 1, email: row.email }).then((res: any) => {
-          const resultCode = res.data.resultCode;
-          if (resultCode === 0) {
-            this.$message.success(res.data.resultMessage);
-            this.success();
-          } else {
-            this.$message.error('处理失败');
-          }
-        });
+        window.api
+          .bookScheduleUpdate({id: data.id, status: 1, email: row.email})
+          .then((res: any) => {
+            const resultCode = res.data.resultCode;
+            if (resultCode === 0) {
+              this.$message.success(res.data.resultMessage);
+              this.success();
+            } else {
+              this.$message.error('处理失败');
+            }
+          });
         break;
       case 'reject':
-        window.api.bookScheduleUpdate({ id: data.id, status: 2, email: row.email }).then((res: any) => {
-          const resultCode = res.data.resultCode;
-          if (resultCode === 0) {
-            this.$message.success(res.data.resultMessage);
-            this.success();
-          } else {
-            this.$message.error('处理失败');
-          }
-        });
+        window.api
+          .bookScheduleUpdate({id: data.id, status: 2, email: row.email})
+          .then((res: any) => {
+            const resultCode = res.data.resultCode;
+            if (resultCode === 0) {
+              this.$message.success(res.data.resultMessage);
+              this.success();
+            } else {
+              this.$message.error('处理失败');
+            }
+          });
         break;
       default:
         console.log('默认处理');
@@ -245,7 +264,7 @@ export default class ScheduleCheck extends Vue {
           tableList={this.tableList}
           filterList={this.filterList}
           filterGrade={[]}
-          scroll={{ x: 900 }}
+          scroll={{x: 900}}
           url={'/bookschedule/list'}
           filterParams={this.filterParams}
           outParams={this.outParams}
@@ -272,8 +291,8 @@ export default class ScheduleCheck extends Vue {
             visible={this.visible}
           ></info-modal>
         ) : (
-            ''
-          )}
+          ''
+        )}
       </div>
     );
   }

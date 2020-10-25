@@ -12,7 +12,7 @@
     >
       <div v-if="fileList.length < pictureLength">
         <a-icon type="plus" />
-        <div class="ant-upload-text">{{placeholder}}</div>
+        <div class="ant-upload-text">{{ placeholder }}</div>
       </div>
     </a-upload>
     <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
@@ -21,7 +21,7 @@
   </div>
 </template>
 <script>
-import { Upload, Modal, Icon, Spin } from 'ant-design-vue';
+import {Upload, Modal, Icon, Spin} from 'ant-design-vue';
 import axios from 'axios';
 export default {
   name: 'UploadImage',
@@ -41,7 +41,7 @@ export default {
       default: '上传图片',
     },
   },
-  data () {
+  data() {
     return {
       visible: true,
       previewVisible: false,
@@ -56,16 +56,15 @@ export default {
     };
   },
   methods: {
-
-    handleCancel () {
+    handleCancel() {
       this.previewVisible = false;
     },
-    handlePreview (file) {
+    handlePreview(file) {
       this.previewImage = file.url || file.thumbUrl;
       this.previewVisible = true;
     },
 
-    removeImage (file) {
+    removeImage(file) {
       const id = file.uid;
       const currentList = [];
       this.urlList = [];
@@ -79,14 +78,14 @@ export default {
       this.$emit('uploaded', this.urlList.join(','));
     },
 
-    handleChange ({ file, fileList }) {
+    handleChange({file, fileList}) {
       if (file.status !== 'done') {
         file.status = 'done';
       }
     },
 
-    handleUpload ({ file }) {
-      const CDNURL = 'http://img.pinxianhs.com/'
+    handleUpload({file}) {
+      const CDNURL = 'http://img.pinxianhs.com/';
       this.$message.loading('正在上传图片,请勿重复操作....', 0);
       const formData = new FormData();
       formData.append('file', file);
@@ -100,27 +99,29 @@ export default {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
-      }).then((res) => {
-        console.log(res)
-        this.$message.destroy();
-        if (res.data.code === 0 && res.data.data.key) {
-          this.urlList.push(CDNURL + res.data.data.key);
-          this.$message.success('上传成功!');
-          const f = {
-            uid: String(this.index++),
-            name: 'xxx.png',
-            status: 'done',
-            url: CDNURL + res.data.data.key,
-          };
-          this.fileList.push(f);
-          this.$emit('uploaded', this.urlList.join(','));
-        } else {
-          this.$message.error('上传失败');
-        }
-      }).catch((e) => {
-        this.$message.destroy();
-        this.$message.error('网络异常');
       })
+        .then(res => {
+          console.log(res);
+          this.$message.destroy();
+          if (res.data.code === 0 && res.data.data.key) {
+            this.urlList.push(CDNURL + res.data.data.key);
+            this.$message.success('上传成功!');
+            const f = {
+              uid: String(this.index++),
+              name: 'xxx.png',
+              status: 'done',
+              url: CDNURL + res.data.data.key,
+            };
+            this.fileList.push(f);
+            this.$emit('uploaded', this.urlList.join(','));
+          } else {
+            this.$message.error('上传失败');
+          }
+        })
+        .catch(e => {
+          this.$message.destroy();
+          this.$message.error('网络异常');
+        });
     },
   },
 };
