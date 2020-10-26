@@ -296,6 +296,11 @@ export default class Api {
       fetchType: 'json',
       method: 'post',
     },
+    getArticle: {
+      url: '/getArticle',
+      fetchType: 'json',
+      method: 'post',
+    },
   };
   // 对外暴露方法
   api: Apis<any> = {};

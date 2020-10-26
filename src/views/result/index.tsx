@@ -36,9 +36,10 @@ export default class Comment extends Vue {
   content: string = '';
 
   data: any = null;
-  isEdit: boolean = false;
 
   spin: boolean = true;
+
+  isEdit: boolean = false;
 
   changeMode() {
     this.isEdit = !this.isEdit;
@@ -65,9 +66,9 @@ export default class Comment extends Vue {
       });
   }
 
-  async created() {
-    await this.$nextTick(() => {
-      window.api.getAnnouncement({}).then(res => {
+  created() {
+    this.$nextTick(() => {
+      window.api.getArticle({id: 2}).then(res => {
         this.data = res.data.data;
         this.contentHTML = this.data[0].content;
         if (!this.isEdit) {
@@ -83,7 +84,7 @@ export default class Comment extends Vue {
     return (
       <a-spin tip='Loading...' spinning={this.spin}>
         <div class='announcement'>
-          <h1 class='title'>招生简介</h1>
+          <h1 class='title'>作品成果</h1>
           {this.isEdit ? (
             <quill-editor
               v-model={this.contentHTML}

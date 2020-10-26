@@ -102,6 +102,12 @@ export const constantRouterMap: routerItem[] & RouterOptions['routes'] = [
     meta: {key: 'announcement'},
   },
   {
+    path: '/result',
+    name: '作品成果',
+    component: () => import('../views/result/index'),
+    meta: {key: 'result'},
+  },
+  {
     path: '/analytics',
     name: '统计分析',
     component: () => import('../views/analytics/index'),
@@ -166,6 +172,14 @@ export const asyncRouterMap: routerItem[] = [
     component: () => import('../views/announcement/index'),
     permission: true,
     meta: {key: 'announcement'},
+  },
+  {
+    path: '/result',
+    icon: 'form',
+    name: '作品成果',
+    component: () => import('../views/result/index'),
+    permission: true,
+    meta: {key: 'result'},
   },
   {
     path: '/user',
