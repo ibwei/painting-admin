@@ -91,7 +91,7 @@ export default {
       formData.append('file', file);
       axios({
         // url: 'http://www.paintingapi.pinxianhs.com/api/image/upload',
-        url: 'http://111.229.132.102:8888/album/upload',
+        url: 'http://182.254.245.105:8888/album/upload',
         method: 'post',
         processData: false,
         data: formData,
